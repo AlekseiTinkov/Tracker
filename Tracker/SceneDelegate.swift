@@ -15,11 +15,16 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions
     ) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        let window = UIWindow(windowScene: scene)
-        let viewController = MainTabBarController()
-        let navigationController = UINavigationController(rootViewController: viewController)
-        window.rootViewController = navigationController
-        self.window = window
-        window.makeKeyAndVisible()
+        window = UIWindow(windowScene: scene)
+        //let viewController = MainTabBarController()
+        //let tabBarController = UINavigationController(rootViewController: viewController)
+        window?.rootViewController = MainTabBarController()
+        //self.window = window
+        window?.makeKeyAndVisible()
+        
+//        guard let scene = (scene as? UIWindowScene) else { return }
+//        window = UIWindow(windowScene: scene)
+//        window?.makeKeyAndVisible()
+//        window?.rootViewController = SplashViewController()
     }
 }
