@@ -9,6 +9,25 @@ import UIKit
 
 enum WeekDay: Int {
     case sunday, monday, tuesday, wednesday, thursday, friday, saturday
+    
+    var numberValue: Int {
+        switch self {
+        case .monday:
+            return 2
+        case .tuesday:
+            return 3
+        case .wednesday:
+            return 4
+        case .thursday:
+            return 5
+        case .friday:
+            return 6
+        case .saturday:
+            return 7
+        case .sunday:
+            return 1
+        }
+    }
 }
 
 struct Tracker {
@@ -32,22 +51,15 @@ struct TrackerRecord: Hashable {
 final class TrackersViewController: UIViewController {
     
     var categories: [TrackerCategory] = []
+    var filtredCategories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord] = []
     var currentDate: Date = Date()
-
-    private let collectionView: UICollectionView = {
-        let collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: UICollectionViewFlowLayout()
-        )
-        collectionView.register(TrackersCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
-        return collectionView
-    }()
     
     private let datePicker = UIDatePicker()
     private let titleLabel = UILabel()
     private let searchField = UISearchTextField()
     private let placeholderView = UIStackView()
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +72,9 @@ final class TrackersViewController: UIViewController {
         setupTitile()
         setupSearchField()
         setupCollectionView()
-        //setupTrackersPlaceholder()
+        setupPlaceholder()
+        
+        updateFiltredCategories()
     }
     
     func setupMoc() {
@@ -73,7 +87,7 @@ final class TrackersViewController: UIViewController {
                                                          trackers: [Tracker.init(name: "Кошка заслонила камеру на созвоне",
                                                                                  color: .orange,
                                                                                  emoji: "😻",
-                                                                                 schedule: [WeekDay.sunday]),
+                                                                                 schedule: [WeekDay.sunday, WeekDay.saturday]),
                                                                     Tracker.init(name: "бабушка прислала открытку в вотсапе",
                                                                                  color: .red,
                                                                                             emoji: "🌺",
@@ -81,7 +95,7 @@ final class TrackersViewController: UIViewController {
                                                                     Tracker.init(name: "Свидания в вапреле",
                                                                                             color: .blue,
                                                                                             emoji: "❤️",
-                                                                                            schedule: [WeekDay.sunday])
+                                                                                 schedule: [WeekDay.sunday, WeekDay.saturday])
                                                          ])
         ]
     }
@@ -92,9 +106,41 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func changeDatePicker() {
-        print(">>> \(currentDate)")
         currentDate = datePicker.date
-        print(">>> \(currentDate)")
+        self.dismiss(animated: false)
+        
+        updateFiltredCategories()
+    }
+    
+    private func updateFiltredCategories() {
+        let filterWeekdey = Calendar.current.component(.weekday, from: currentDate)
+        let filterText = (searchField.text ?? "").lowercased()
+        
+        filtredCategories = categories.compactMap { category in
+            let trackers = category.trackers.filter { tracker in
+                let dateCondition = tracker.schedule?.contains { weekDay in
+                    weekDay.numberValue == filterWeekdey
+                } == true
+                
+                let textCondition = tracker.name.lowercased().contains(filterText) || filterText.isEmpty
+                
+                return dateCondition && textCondition
+            }
+            
+            if trackers.isEmpty {
+                return nil
+            }
+            
+            return TrackerCategory(title: category.title,
+                                   trackers: trackers)
+        }
+        
+        collectionView.reloadData()
+        reloadPlaceholder()
+    }
+    
+    private func reloadPlaceholder() {
+        placeholderView.isHidden = !filtredCategories.isEmpty
     }
     
     private func setupNavBar() {
@@ -107,6 +153,7 @@ final class TrackersViewController: UIViewController {
             datePicker.datePickerMode = .date
             datePicker.locale = Locale(identifier: "ru_RU")
             datePicker.calendar.firstWeekday = 2
+//            datePicker.layer.cornerRadius = 8
 
             datePicker.addTarget(self, action: #selector(changeDatePicker), for: .valueChanged)
             
@@ -137,6 +184,7 @@ final class TrackersViewController: UIViewController {
             searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             searchField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
+        searchField.delegate = self
     }
     
     private func setupCollectionView() {
@@ -157,7 +205,7 @@ final class TrackersViewController: UIViewController {
         collectionView.delegate = self
     }
     
-    private func setupTrackersPlaceholder() {
+    private func setupPlaceholder() {
         let label = UILabel()
         label.text = "Что будем отслеживать?"
         label.font = UIFont.boldSystemFont(ofSize: 12.0)
@@ -187,15 +235,21 @@ final class TrackersViewController: UIViewController {
             placeholderView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             placeholderView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
-        
-        placeholderSubView.alpha = 1
+    }
+}
+
+extension TrackersViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        updateFiltredCategories()
+        return true
     }
 }
 
 extension TrackersViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return categories[section].trackers.count
+        return filtredCategories[section].trackers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -203,41 +257,16 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         cell.delegate = self
         
-        let tracker = categories[indexPath.section].trackers[indexPath.row]
-        cell.nameLabel.text = tracker.name
-        cell.colorView.backgroundColor = tracker.color
-        cell.plusButton.backgroundColor = tracker.color
-        cell.emojiLabel.text = tracker.emoji
-        let daysCount = completedTrackers.filter{$0.trackerId == tracker.trackerId}.count
-        let daysText = getDaysText(daysCount)
-        cell.daysCountLabel.text = "\(daysCount) \(daysText)"
+        let tracker = filtredCategories[indexPath.section].trackers[indexPath.row]
+        cell.configure(tracker: tracker, isComplitedToday: true)
+        
         return cell
     }
 }
 
-func getDaysText(_ daysCount: Int) -> String {
-    var text: String
-    switch daysCount % 10 {
-    case 0:
-        text = "дней"
-    case 1:
-        text = "день"
-    case 2,3,4:
-        text = "дня"
-    default:
-        text = "дней"
-    }
-    
-    if (11...14).contains(daysCount % 100) {
-        text = "дней"
-    }
-    
-    return text
-}
-
 extension TrackersViewController: UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return categories.count
+        return filtredCategories.count
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -246,7 +275,7 @@ extension TrackersViewController: UICollectionViewDelegate {
         
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SupplementaryView
         
-        view.titleLabel.text = categories[indexPath.section].title
+        view.titleLabel.text = filtredCategories[indexPath.section].title
         return view
     }
     
@@ -298,8 +327,12 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension TrackersViewController: TrackersCollectionViewCellDelegate {
-    func plusButtonTapped(cell: TrackersCollectionViewCell) {
-        print(">>><<<")
+    func compliteTracker(_ tracker: UUID) {
+        
+    }
+    
+    func uncompliteTracker(_ tracker: UUID) {
+        
     }
 }
 

@@ -8,33 +8,29 @@
 import UIKit
 
 protocol TrackersCollectionViewCellDelegate: AnyObject {
-    func plusButtonTapped(cell: TrackersCollectionViewCell)
+    func compliteTracker(_ tracker: UUID)
+    func uncompliteTracker(_ tracker: UUID)
 }
 
 final class TrackersCollectionViewCell: UICollectionViewCell {
     weak var delegate: TrackersCollectionViewCellDelegate?
     
+    private var isComplitedToday: Bool = false
+    private var trackerId: UUID = UUID()
+    
     let colorView = UIView()
     let nameLabel = UILabel()
     let emojiLabel = UILabel()
     let daysCountLabel = UILabel()
-    let plusButton = UIButton()
+    let button = UIButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
-//        contentView.addSubview(titleLabel)
-//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-//
-//        NSLayoutConstraint.activate([
-//            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-//            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-//        ])
         
         setupColorView()
         setupNameLabel()
         setupEmojiLabel()
-        setupPlusButton()
+        setupButton()
         setupDayCountLabel()
     }
     
@@ -83,19 +79,17 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    private func setupPlusButton() {
-        //plusButton.setTitle("+", for: .normal)
-        plusButton.setImage(UIImage(named: "cell_plus"), for: .normal)
-        plusButton.setTitleColor(.white, for: .normal)
-        plusButton.layer.cornerRadius = 34 / 2
-        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
-        plusButton.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(plusButton)
+    private func setupButton() {
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 34 / 2
+        button.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(button)
         NSLayoutConstraint.activate([
-            plusButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            plusButton.topAnchor.constraint(equalTo: colorView.bottomAnchor, constant: 8),
-            plusButton.heightAnchor.constraint(equalToConstant: 34),
-            plusButton.widthAnchor.constraint(equalToConstant: 34)
+            button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            button.topAnchor.constraint(equalTo: colorView.bottomAnchor, constant: 8),
+            button.heightAnchor.constraint(equalToConstant: 34),
+            button.widthAnchor.constraint(equalToConstant: 34)
         ])
     }
     
@@ -105,12 +99,49 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         daysCountLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(daysCountLabel)
         NSLayoutConstraint.activate([
-            daysCountLabel.centerYAnchor.constraint(equalTo: plusButton.centerYAnchor),
+            daysCountLabel.centerYAnchor.constraint(equalTo: button.centerYAnchor),
             daysCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12)
         ])
     }
     
+    func configure(tracker: Tracker, isComplitedToday: Bool) {
+        self.isComplitedToday = isComplitedToday
+        self.trackerId = tracker.trackerId
+        nameLabel.text = tracker.name
+        colorView.backgroundColor = tracker.color
+        button.backgroundColor = tracker.color.withAlphaComponent(isComplitedToday ? 0.3 : 1.0)
+        button.setImage(UIImage(named: isComplitedToday ? "cell_done" : "cell_plus"), for: .normal)
+        emojiLabel.text = tracker.emoji
+        let daysCount = 0//completedTrackers.filter{$0.trackerId == tracker.trackerId}.count
+        let daysText = getDaysText(daysCount)
+        daysCountLabel.text = "\(daysCount) \(daysText)"
+    }
+    
+    private func getDaysText(_ daysCount: Int) -> String {
+        var text: String
+        switch daysCount % 10 {
+        case 0:
+            text = "дней"
+        case 1:
+            text = "день"
+        case 2,3,4:
+            text = "дня"
+        default:
+            text = "дней"
+        }
+        
+        if (11...14).contains(daysCount % 100) {
+            text = "дней"
+        }
+        
+        return text
+    }
+    
     @objc private func plusButtonTapped() {
-        delegate?.plusButtonTapped(cell: self)
+        if isComplitedToday {
+            delegate?.uncompliteTracker(trackerId)
+        } else {
+            delegate?.compliteTracker(trackerId)
+        }
     }
 }
