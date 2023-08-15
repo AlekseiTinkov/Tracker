@@ -64,7 +64,7 @@ final class TrackersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = .ypWhite
         
         setupMoc()
         
@@ -102,7 +102,8 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func addTracker() {
-        print(">>>")
+        let newTrackerTypeSelectViewController = NewTrackerTypeSelectViewController()
+        present(newTrackerTypeSelectViewController, animated: true)
     }
     
     @objc private func changeDatePicker() {
