@@ -80,7 +80,6 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupButton() {
-        button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 34 / 2
         button.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
