@@ -7,10 +7,17 @@
 
 import UIKit
 
+protocol NewTrackerTypeSelectViewControllerDelegate: AnyObject {
+    func saveTracker()
+}
+
 final class NewTrackerTypeSelectViewController: UIViewController {
     
+    weak var delegate: NewTrackerTypeSelectViewControllerDelegate?
+    
     let titleLabel = UILabel()
-    let buttonStackView = UIStackView()
+    let buttonStackViewH = UIStackView()
+    let buttonStackViewV = UIStackView()
     let habitButton = UIButton()
     let eventButton = UIButton()
     
@@ -33,23 +40,25 @@ final class NewTrackerTypeSelectViewController: UIViewController {
         view.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: view.topAnchor, constant: 49)
+            titleLabel.heightAnchor.constraint(equalToConstant: 40),
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 14)
         ])
     }
     
     private func setupButtonStackView() {
-        buttonStackView.axis = .vertical
-        buttonStackView.spacing = 16
-        buttonStackView.alignment = .center
-        buttonStackView.distribution = .fillEqually
-        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(buttonStackView)
+        buttonStackViewH.axis = .horizontal
+        buttonStackViewH.alignment = .center
+        buttonStackViewH.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(buttonStackViewH)
         NSLayoutConstraint.activate([
-            buttonStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            buttonStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            buttonStackViewH.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            buttonStackViewH.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            buttonStackViewH.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            buttonStackViewH.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        buttonStackViewV.axis = .vertical
+        buttonStackViewV.spacing = 16
+        buttonStackViewH.addArrangedSubview(buttonStackViewV)
     }
     
     private func setupHabitButton() {
@@ -60,12 +69,11 @@ final class NewTrackerTypeSelectViewController: UIViewController {
         habitButton.layer.cornerRadius = 16
         habitButton.clipsToBounds = true
         habitButton.translatesAutoresizingMaskIntoConstraints = false
-        buttonStackView.addArrangedSubview(habitButton)
+        buttonStackViewV.addArrangedSubview(habitButton)
         NSLayoutConstraint.activate([
-            habitButton.heightAnchor.constraint(equalToConstant: 60),
-            habitButton.leadingAnchor.constraint(equalTo: buttonStackView.leadingAnchor),
-            habitButton.trailingAnchor.constraint(equalTo: buttonStackView.trailingAnchor),
+            habitButton.heightAnchor.constraint(equalToConstant: 60)
         ])
+        habitButton.addTarget(self, action: #selector(habitButtonTapped), for: .touchUpInside)
     }
     
     private func setupEventButton() {
@@ -76,11 +84,31 @@ final class NewTrackerTypeSelectViewController: UIViewController {
         eventButton.layer.cornerRadius = 16
         eventButton.clipsToBounds = true
         eventButton.translatesAutoresizingMaskIntoConstraints = false
-        buttonStackView.addArrangedSubview(eventButton)
+        buttonStackViewV.addArrangedSubview(eventButton)
         NSLayoutConstraint.activate([
-            eventButton.heightAnchor.constraint(equalToConstant: 60),
-            eventButton.leadingAnchor.constraint(equalTo: buttonStackView.leadingAnchor),
-            eventButton.trailingAnchor.constraint(equalTo: buttonStackView.trailingAnchor),
+            eventButton.heightAnchor.constraint(equalToConstant: 60)
         ])
+        eventButton.addTarget(self, action: #selector(eventButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func habitButtonTapped() {
+        let editTrackerViewController = EditTrackerViewController()
+        editTrackerViewController.delegate = self
+        editTrackerViewController.trackerType = .habit
+        present(editTrackerViewController, animated: true)
+    }
+    
+    @objc private func eventButtonTapped() {
+        let editTrackerViewController = EditTrackerViewController()
+        editTrackerViewController.delegate = self
+        editTrackerViewController.trackerType = .event
+        present(editTrackerViewController, animated: true)
+    }
+}
+
+extension NewTrackerTypeSelectViewController: EditTrackerViewControllerDelegate {
+    func saveTracker() {
+        dismiss(animated: true)
+        delegate?.saveTracker()
     }
 }

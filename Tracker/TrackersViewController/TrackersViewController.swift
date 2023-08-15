@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum TrackerType {
+    case habit
+    case event
+}
+
 enum WeekDay: Int {
     case sunday, monday, tuesday, wednesday, thursday, friday, saturday
     
@@ -103,6 +108,7 @@ final class TrackersViewController: UIViewController {
     @objc
     private func addTracker() {
         let newTrackerTypeSelectViewController = NewTrackerTypeSelectViewController()
+        newTrackerTypeSelectViewController.delegate = self
         present(newTrackerTypeSelectViewController, animated: true)
     }
     
@@ -217,13 +223,12 @@ final class TrackersViewController: UIViewController {
         
         let placeholderSubView: UIStackView = UIStackView()
         placeholderSubView.axis = .vertical
-        placeholderSubView.spacing = 0
+        placeholderSubView.spacing = 8
         placeholderSubView.alignment = .center
         placeholderSubView.addArrangedSubview(imageView)
         placeholderSubView.addArrangedSubview(label)
 
         placeholderView.axis = .horizontal
-        placeholderView.spacing = 8
         placeholderView.alignment = .center
 
         placeholderView.addArrangedSubview(placeholderSubView)
@@ -346,6 +351,12 @@ extension TrackersViewController: TrackersCollectionViewCellDelegate {
             collectionView.reloadItems(at: [indexPath])
         }
         collectionView.reloadItems(at: [indexPath])
+    }
+}
+
+extension TrackersViewController: NewTrackerTypeSelectViewControllerDelegate {
+    func saveTracker() {
+        
     }
 }
 
