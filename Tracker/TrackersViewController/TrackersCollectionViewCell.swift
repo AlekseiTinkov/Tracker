@@ -8,15 +8,15 @@
 import UIKit
 
 protocol TrackersCollectionViewCellDelegate: AnyObject {
-    func compliteTracker(_ tracker: UUID)
-    func uncompliteTracker(_ tracker: UUID)
+    func changeTrackerComplite(trackerId: UUID, indexPath: IndexPath)
 }
 
 final class TrackersCollectionViewCell: UICollectionViewCell {
     weak var delegate: TrackersCollectionViewCellDelegate?
     
-    private var isComplitedToday: Bool = false
+    private var isCompletedToday: Bool = false
     private var trackerId: UUID = UUID()
+    private var indexPath: IndexPath = IndexPath()
     
     let colorView = UIView()
     let nameLabel = UILabel()
@@ -104,17 +104,16 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(tracker: Tracker, isComplitedToday: Bool) {
-        self.isComplitedToday = isComplitedToday
+    func configure(tracker: Tracker, isCompletedToday: Bool, completedDays: Int, indexPath: IndexPath) {
+        self.indexPath = indexPath
+        self.isCompletedToday = isCompletedToday
         self.trackerId = tracker.trackerId
         nameLabel.text = tracker.name
         colorView.backgroundColor = tracker.color
-        button.backgroundColor = tracker.color.withAlphaComponent(isComplitedToday ? 0.3 : 1.0)
-        button.setImage(UIImage(named: isComplitedToday ? "cell_done" : "cell_plus"), for: .normal)
+        button.backgroundColor = tracker.color.withAlphaComponent(isCompletedToday ? 0.3 : 1.0)
+        button.setImage(UIImage(named: isCompletedToday ? "cell_done" : "cell_plus"), for: .normal)
         emojiLabel.text = tracker.emoji
-        let daysCount = 0//completedTrackers.filter{$0.trackerId == tracker.trackerId}.count
-        let daysText = getDaysText(daysCount)
-        daysCountLabel.text = "\(daysCount) \(daysText)"
+        daysCountLabel.text = "\(completedDays) \(getDaysText(completedDays))"
     }
     
     private func getDaysText(_ daysCount: Int) -> String {
@@ -138,10 +137,6 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func plusButtonTapped() {
-        if isComplitedToday {
-            delegate?.uncompliteTracker(trackerId)
-        } else {
-            delegate?.compliteTracker(trackerId)
-        }
+        delegate?.changeTrackerComplite(trackerId: trackerId, indexPath: self.indexPath)
     }
 }

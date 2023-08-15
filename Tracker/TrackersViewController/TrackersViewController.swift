@@ -258,9 +258,16 @@ extension TrackersViewController: UICollectionViewDataSource {
         cell.delegate = self
         
         let tracker = filtredCategories[indexPath.section].trackers[indexPath.row]
-        cell.configure(tracker: tracker, isComplitedToday: true)
+        let completedDays = completedTrackers.filter { $0.trackerId == tracker.trackerId }.count
+        cell.configure(tracker: tracker, isCompletedToday: isTrackerCompletedToday(tracker.trackerId), completedDays: completedDays, indexPath: indexPath)
         
         return cell
+    }
+    
+    private func isTrackerCompletedToday(_ trackerId: UUID) -> Bool {
+        completedTrackers.contains { trackerRecord in
+            trackerRecord.trackerId == trackerId && Calendar.current.isDate(trackerRecord.date, inSameDayAs: currentDate)
+        }
     }
 }
 
@@ -327,12 +334,17 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension TrackersViewController: TrackersCollectionViewCellDelegate {
-    func compliteTracker(_ tracker: UUID) {
-        
-    }
-    
-    func uncompliteTracker(_ tracker: UUID) {
-        
+    func changeTrackerComplite(trackerId: UUID, indexPath: IndexPath) {
+        if isTrackerCompletedToday(trackerId) {
+            completedTrackers.removeAll { trackerRecord in
+                trackerRecord.trackerId == trackerId && Calendar.current.isDate(trackerRecord.date, inSameDayAs: currentDate)
+            }
+        } else {
+            let trackerRecord = TrackerRecord(trackerId: trackerId, date: currentDate)
+            completedTrackers.append(trackerRecord)
+            collectionView.reloadItems(at: [indexPath])
+        }
+        collectionView.reloadItems(at: [indexPath])
     }
 }
 
