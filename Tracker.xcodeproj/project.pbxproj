@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		71152F8E2A8CC0FD0065B5E9 /* SchedulerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71152F8D2A8CC0FD0065B5E9 /* SchedulerViewController.swift */; };
 		718D069C2A8BBC9200B53FD8 /* NewTrackerTypeSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718D069B2A8BBC9200B53FD8 /* NewTrackerTypeSelectViewController.swift */; };
 		71ED93422A77DF6E006CF418 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ED93412A77DF6E006CF418 /* AppDelegate.swift */; };
 		71ED93442A77DF6E006CF418 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ED93432A77DF6E006CF418 /* SceneDelegate.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		71152F8D2A8CC0FD0065B5E9 /* SchedulerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulerViewController.swift; sourceTree = "<group>"; };
 		718D069B2A8BBC9200B53FD8 /* NewTrackerTypeSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerTypeSelectViewController.swift; sourceTree = "<group>"; };
 		71ED933E2A77DF6E006CF418 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71ED93412A77DF6E006CF418 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +51,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		71152F8C2A8CC0E50065B5E9 /* SchedulerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				71152F8D2A8CC0FD0065B5E9 /* SchedulerViewController.swift */,
+			);
+			path = SchedulerViewController;
+			sourceTree = "<group>";
+		};
 		718D069A2A8BBC4300B53FD8 /* NewTrackerTypeSelectViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +93,7 @@
 				71ED93622A78DBDD006CF418 /* TrackersViewController */,
 				718D069A2A8BBC4300B53FD8 /* NewTrackerTypeSelectViewController */,
 				71ED938D2A8C0B94006CF418 /* EditTrackerViewController */,
+				71152F8C2A8CC0E50065B5E9 /* SchedulerViewController */,
 				71ED934A2A77DF6E006CF418 /* Assets.xcassets */,
 				71ED934C2A77DF6E006CF418 /* LaunchScreen.storyboard */,
 				71ED934F2A77DF6E006CF418 /* Info.plist */,
@@ -209,6 +220,7 @@
 				71ED938F2A8C0BD9006CF418 /* EditTrackerViewController.swift in Sources */,
 				71ED93642A78DC00006CF418 /* TrackersViewController.swift in Sources */,
 				718D069C2A8BBC9200B53FD8 /* NewTrackerTypeSelectViewController.swift in Sources */,
+				71152F8E2A8CC0FD0065B5E9 /* SchedulerViewController.swift in Sources */,
 				71ED93692A7F8F2E006CF418 /* UIColor+Extensions.swift in Sources */,
 				71ED93442A77DF6E006CF418 /* SceneDelegate.swift in Sources */,
 				71ED936C2A890729006CF418 /* SupplementaryView.swift in Sources */,

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol NewTrackerTypeSelectViewControllerDelegate: AnyObject {
-    func saveTracker()
+    func saveTracker(_ trackerCategory: TrackerCategory)
 }
 
 final class NewTrackerTypeSelectViewController: UIViewController {
@@ -107,8 +107,8 @@ final class NewTrackerTypeSelectViewController: UIViewController {
 }
 
 extension NewTrackerTypeSelectViewController: EditTrackerViewControllerDelegate {
-    func saveTracker() {
+    func saveTracker(_ trackerCategory: TrackerCategory) {
         dismiss(animated: true)
-        delegate?.saveTracker()
+        delegate?.saveTracker(trackerCategory)
     }
 }

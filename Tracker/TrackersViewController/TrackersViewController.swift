@@ -5,6 +5,14 @@
 //  Created by Алексей Тиньков on 01.08.2023.
 //
 
+//нельзя отметить карточку для будущей даты;
+
+//трекеры, которые были «выполнены» в выбранную дату, хранятся в var completedTrackers: [TrackerRecord]. Когда пользователь нажимает на + в ячейке трекера, добавляется соответствующая запись в completedTrackers. Если пользователь убирает пометку о выполненности в ячейке трекера, элемент удаляется из массива. Чтобы не выполнять линейный поиск по массиву, используйте Set, в котором хранятся id выполненных трекеров
+
+//новые трекеры добавляются в соответствующую категорию в массиве categories. Чтобы их добавить, нужно создать новую категорию с новым списком трекеров, а затем создать новый список категорий и присвоить его в categories. Мы не рекомендуем менять существующий массив, лучше создайте новый — так будет меньше пространства для трудноуловимых ошибок синхронизации данных;
+
+//+в фильтре учесть TrackerType
+
 import UIKit
 
 enum TrackerType {
@@ -12,10 +20,14 @@ enum TrackerType {
     case event
 }
 
-enum WeekDay: Int {
-    case sunday, monday, tuesday, wednesday, thursday, friday, saturday
+enum WeekDay: Int, Comparable, CaseIterable {
+    static func < (lhs: WeekDay, rhs: WeekDay) -> Bool {
+        return (lhs.number == 1 ? 8 : lhs.number) < (rhs.number == 1 ? 8 : rhs.number)
+    }
     
-    var numberValue: Int {
+    case monday, tuesday, wednesday, thursday, friday, saturday, sunday
+    
+    var number: Int {
         switch self {
         case .monday:
             return 2
@@ -33,14 +45,53 @@ enum WeekDay: Int {
             return 1
         }
     }
+    
+    var name: String {
+        switch self {
+        case .monday:
+            return "Понедельник"
+        case .tuesday:
+            return "Вторник"
+        case .wednesday:
+            return "Среда"
+        case .thursday:
+            return "Четверг"
+        case .friday:
+            return "Пятница"
+        case .saturday:
+            return "Суббота"
+        case .sunday:
+            return "Воскресенье"
+        }
+    }
+    
+    var shortName: String {
+        switch self {
+        case .monday:
+            return "Пн"
+        case .tuesday:
+            return "Вт"
+        case .wednesday:
+            return "Ср"
+        case .thursday:
+            return "Чт"
+        case .friday:
+            return "Пт"
+        case .saturday:
+            return "Сб"
+        case .sunday:
+            return "Вс"
+        }
+    }
 }
 
 struct Tracker {
     let trackerId = UUID()
+    let trackerType: TrackerType
     let name: String
     let color: UIColor
     let emoji: String
-    let schedule: Set<WeekDay>?
+    let schedule: [WeekDay]
 }
 
 struct TrackerCategory {
@@ -52,6 +103,8 @@ struct TrackerRecord: Hashable {
     let trackerId: UUID
     let date: Date
 }
+
+var categoriesName: [String] = ["Важное"]
 
 final class TrackersViewController: UIViewController {
     
@@ -84,23 +137,23 @@ final class TrackersViewController: UIViewController {
     
     func setupMoc() {
         categories = [TrackerCategory.init(title: "Домашний уют",
-                                           trackers: [Tracker.init(name: "Поливать растения",
+                                           trackers: [Tracker.init(trackerType: .habit, name: "Поливать растения",
                                                                    color: .green,
                                                                    emoji: "❤️",
                                                                    schedule: [WeekDay.sunday])]),
                       TrackerCategory.init(title: "Радостные мелочи",
-                                                         trackers: [Tracker.init(name: "Кошка заслонила камеру на созвоне",
+                                           trackers: [Tracker.init(trackerType: .habit, name: "Кошка заслонила камеру на созвоне",
                                                                                  color: .orange,
                                                                                  emoji: "😻",
                                                                                  schedule: [WeekDay.sunday, WeekDay.saturday]),
-                                                                    Tracker.init(name: "бабушка прислала открытку в вотсапе",
+                                                      Tracker.init(trackerType: .habit, name: "бабушка прислала открытку в вотсапе",
                                                                                  color: .red,
                                                                                             emoji: "🌺",
                                                                                             schedule: [WeekDay.sunday]),
-                                                                    Tracker.init(name: "Свидания в вапреле",
+                                                      Tracker.init(trackerType: .event, name: "Свидания в вапреле",
                                                                                             color: .blue,
                                                                                             emoji: "❤️",
-                                                                                 schedule: [WeekDay.sunday, WeekDay.saturday])
+                                                                                 schedule: [])
                                                          ])
         ]
     }
@@ -125,13 +178,13 @@ final class TrackersViewController: UIViewController {
         
         filtredCategories = categories.compactMap { category in
             let trackers = category.trackers.filter { tracker in
-                let dateCondition = tracker.schedule?.contains { weekDay in
-                    weekDay.numberValue == filterWeekdey
+                let dateCondition = tracker.schedule.contains { weekDay in
+                    weekDay.number == filterWeekdey
                 } == true
                 
                 let textCondition = tracker.name.lowercased().contains(filterText) || filterText.isEmpty
                 
-                return dateCondition && textCondition
+                return (dateCondition || tracker.trackerType == .event) && textCondition
             }
             
             if trackers.isEmpty {
@@ -355,8 +408,9 @@ extension TrackersViewController: TrackersCollectionViewCellDelegate {
 }
 
 extension TrackersViewController: NewTrackerTypeSelectViewControllerDelegate {
-    func saveTracker() {
-        
+    func saveTracker(_ trackerCategory: TrackerCategory) {
+        categories.append(trackerCategory)
+        updateFiltredCategories()
     }
 }
 
