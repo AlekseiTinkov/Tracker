@@ -5,14 +5,6 @@
 //  Created by Алексей Тиньков on 01.08.2023.
 //
 
-//нельзя отметить карточку для будущей даты;
-
-//трекеры, которые были «выполнены» в выбранную дату, хранятся в var completedTrackers: [TrackerRecord]. Когда пользователь нажимает на + в ячейке трекера, добавляется соответствующая запись в completedTrackers. Если пользователь убирает пометку о выполненности в ячейке трекера, элемент удаляется из массива. Чтобы не выполнять линейный поиск по массиву, используйте Set, в котором хранятся id выполненных трекеров
-
-//новые трекеры добавляются в соответствующую категорию в массиве categories. Чтобы их добавить, нужно создать новую категорию с новым списком трекеров, а затем создать новый список категорий и присвоить его в categories. Мы не рекомендуем менять существующий массив, лучше создайте новый — так будет меньше пространства для трудноуловимых ошибок синхронизации данных;
-
-//+в фильтре учесть TrackerType
-
 import UIKit
 
 enum TrackerType {
@@ -108,10 +100,10 @@ var categoriesName: [String] = ["Важное"]
 
 final class TrackersViewController: UIViewController {
     
-    var categories: [TrackerCategory] = []
-    var filtredCategories: [TrackerCategory] = []
-    var completedTrackers: [TrackerRecord] = []
-    var currentDate: Date = Date()
+    private var categories: [TrackerCategory] = []
+    private var filtredCategories: [TrackerCategory] = []
+    private var completedTrackers: Set<TrackerRecord> = []
+    private var currentDate: Date = Date()
     
     private let datePicker = UIDatePicker()
     private let titleLabel = UILabel()
@@ -394,22 +386,41 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 
 extension TrackersViewController: TrackersCollectionViewCellDelegate {
     func changeTrackerComplite(trackerId: UUID, indexPath: IndexPath) {
+        if currentDate > Date() {
+            showDateAlert()
+            return
+        }
         if isTrackerCompletedToday(trackerId) {
-            completedTrackers.removeAll { trackerRecord in
-                trackerRecord.trackerId == trackerId && Calendar.current.isDate(trackerRecord.date, inSameDayAs: currentDate)
-            }
+            guard let indexToRemove = completedTrackers.firstIndex(where: {$0.trackerId == trackerId && Calendar.current.isDate($0.date, inSameDayAs: currentDate)}) else { return }
+            completedTrackers.remove(at: indexToRemove)
         } else {
             let trackerRecord = TrackerRecord(trackerId: trackerId, date: currentDate)
-            completedTrackers.append(trackerRecord)
+            completedTrackers.insert(trackerRecord)
             collectionView.reloadItems(at: [indexPath])
         }
         collectionView.reloadItems(at: [indexPath])
+    }
+    
+    private func showDateAlert() {
+        let alert = UIAlertController(
+            title: nil,
+            message: "Это время еще не пришло...",
+            preferredStyle: .alert
+        )
+        let action = UIAlertAction(title: "OK", style: .cancel)
+        alert.addAction(action)
+        self.present(alert, animated: true)
     }
 }
 
 extension TrackersViewController: NewTrackerTypeSelectViewControllerDelegate {
     func saveTracker(_ trackerCategory: TrackerCategory) {
-        categories.append(trackerCategory)
+        if let indexOfCategorie = categories.firstIndex(where: {$0.title == trackerCategory.title}) {
+            let newCategirie = TrackerCategory(title: trackerCategory.title, trackers: categories[indexOfCategorie].trackers + trackerCategory.trackers)
+            categories[indexOfCategorie] = newCategirie
+        } else {
+            categories.append(trackerCategory)
+        }
         updateFiltredCategories()
     }
 }
