@@ -14,15 +14,15 @@ protocol EditTrackerViewControllerDelegate: AnyObject {
 final class EditTrackerViewController: UIViewController {
     
     weak var delegate: EditTrackerViewControllerDelegate?
-    private var schedule: [WeekDay] = []
+    private var schedule: Set<WeekDay> = []
     
     var trackerType: TrackerType = .event
     
-    let titleLabel = UILabel()
-    let nameField = UITextField()
-    let tableView = UITableView()
-    let cancelButton = UIButton()
-    let saveButton = UIButton()
+    private let titleLabel = UILabel()
+    private let nameField = UITextField()
+    private let tableView = UITableView()
+    private let cancelButton = UIButton()
+    private let saveButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -232,7 +232,7 @@ extension EditTrackerViewController: UITextFieldDelegate {
 }
 
 extension EditTrackerViewController: SchedulerViewControllerDelegate {
-    func saveSchedule(_ schedule: [WeekDay]) {
+    func saveSchedule(_ schedule: Set<WeekDay>) {
         self.schedule = schedule
         tableView.reloadData()
         repaintSaveButton()

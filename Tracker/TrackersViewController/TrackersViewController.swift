@@ -7,95 +7,6 @@
 
 import UIKit
 
-enum TrackerType {
-    case habit
-    case event
-}
-
-enum WeekDay: Int, Comparable, CaseIterable {
-    static func < (lhs: WeekDay, rhs: WeekDay) -> Bool {
-        return (lhs.number == 1 ? 8 : lhs.number) < (rhs.number == 1 ? 8 : rhs.number)
-    }
-    
-    case monday, tuesday, wednesday, thursday, friday, saturday, sunday
-    
-    var number: Int {
-        switch self {
-        case .monday:
-            return 2
-        case .tuesday:
-            return 3
-        case .wednesday:
-            return 4
-        case .thursday:
-            return 5
-        case .friday:
-            return 6
-        case .saturday:
-            return 7
-        case .sunday:
-            return 1
-        }
-    }
-    
-    var name: String {
-        switch self {
-        case .monday:
-            return "Понедельник"
-        case .tuesday:
-            return "Вторник"
-        case .wednesday:
-            return "Среда"
-        case .thursday:
-            return "Четверг"
-        case .friday:
-            return "Пятница"
-        case .saturday:
-            return "Суббота"
-        case .sunday:
-            return "Воскресенье"
-        }
-    }
-    
-    var shortName: String {
-        switch self {
-        case .monday:
-            return "Пн"
-        case .tuesday:
-            return "Вт"
-        case .wednesday:
-            return "Ср"
-        case .thursday:
-            return "Чт"
-        case .friday:
-            return "Пт"
-        case .saturday:
-            return "Сб"
-        case .sunday:
-            return "Вс"
-        }
-    }
-}
-
-struct Tracker {
-    let trackerId = UUID()
-    let trackerType: TrackerType
-    let name: String
-    let color: UIColor
-    let emoji: String
-    let schedule: [WeekDay]
-}
-
-struct TrackerCategory {
-    let title: String
-    let trackers: [Tracker]
-}
-
-struct TrackerRecord: Hashable {
-    let trackerId: UUID
-    let date: Date
-}
-
 var categoriesName: [String] = ["Важное"]
 
 final class TrackersViewController: UIViewController {
@@ -138,7 +49,7 @@ final class TrackersViewController: UIViewController {
                                                                                  color: .orange,
                                                                                  emoji: "😻",
                                                                                  schedule: [WeekDay.sunday, WeekDay.saturday]),
-                                                      Tracker.init(trackerType: .habit, name: "бабушка прислала открытку в вотсапе",
+                                                      Tracker.init(trackerType: .habit, name: "Бабушка прислала открытку в вотсапе",
                                                                                  color: .red,
                                                                                             emoji: "🌺",
                                                                                             schedule: [WeekDay.sunday]),
@@ -205,7 +116,6 @@ final class TrackersViewController: UIViewController {
             datePicker.datePickerMode = .date
             datePicker.locale = Locale(identifier: "ru_RU")
             datePicker.calendar.firstWeekday = 2
-//            datePicker.layer.cornerRadius = 8
 
             datePicker.addTarget(self, action: #selector(changeDatePicker), for: .valueChanged)
             

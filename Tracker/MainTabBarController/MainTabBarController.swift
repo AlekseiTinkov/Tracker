@@ -13,7 +13,6 @@ final class MainTabBarController: UITabBarController {
         super.viewDidLoad()
         let trackersViewController = UINavigationController(rootViewController: TrackersViewController())
         
-        //let trackersViewController = TrackersViewController()
         trackersViewController.tabBarItem = UITabBarItem(
                     title: "Трекеры",
                     image: UIImage(named: "tab_trackers"),

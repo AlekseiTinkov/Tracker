@@ -8,17 +8,17 @@
 import UIKit
 
 protocol SchedulerViewControllerDelegate: AnyObject {
-    func saveSchedule(_ schedule: [WeekDay])
+    func saveSchedule(_ schedule: Set<WeekDay>)
 }
 
 final class SchedulerViewController: UIViewController {
     
     weak var delegate: SchedulerViewControllerDelegate?
-    private var schedule: [WeekDay] = []
+    private var schedule: Set<WeekDay> = []
     
-    let titleLabel = UILabel()
-    let saveButton = UIButton()
-    let tableView = UITableView()
+    private let titleLabel = UILabel()
+    private let saveButton = UIButton()
+    private let tableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,9 +87,8 @@ final class SchedulerViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    func loadSchedule(_ schedule: [WeekDay]) {
+    func loadSchedule(_ schedule: Set<WeekDay>) {
         self.schedule = schedule
-        //tableView.reloadData()
     }
     
 }
@@ -122,7 +121,7 @@ extension SchedulerViewController: UITableViewDelegate, UITableViewDataSource {
     
     @objc private func swichTaped(_ sender: UISwitch) {
         if sender.isOn {
-            schedule.append(WeekDay.allCases[sender.tag])
+            schedule.insert(WeekDay.allCases[sender.tag])
         } else {
             guard let index = schedule.firstIndex(of: WeekDay.allCases[sender.tag]) else { return }
             schedule.remove(at: index)

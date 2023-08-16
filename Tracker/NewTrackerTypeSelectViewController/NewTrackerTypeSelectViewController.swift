@@ -15,11 +15,11 @@ final class NewTrackerTypeSelectViewController: UIViewController {
     
     weak var delegate: NewTrackerTypeSelectViewControllerDelegate?
     
-    let titleLabel = UILabel()
-    let buttonStackViewH = UIStackView()
-    let buttonStackViewV = UIStackView()
-    let habitButton = UIButton()
-    let eventButton = UIButton()
+    private let titleLabel = UILabel()
+    private let buttonStackViewH = UIStackView()
+    private let buttonStackViewV = UIStackView()
+    private let habitButton = UIButton()
+    private let eventButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()

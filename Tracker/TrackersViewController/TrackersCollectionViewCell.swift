@@ -18,11 +18,11 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     private var trackerId: UUID = UUID()
     private var indexPath: IndexPath = IndexPath()
     
-    let colorView = UIView()
-    let nameLabel = UILabel()
-    let emojiLabel = UILabel()
-    let daysCountLabel = UILabel()
-    let button = UIButton()
+    private let colorView = UIView()
+    private let nameLabel = UILabel()
+    private let emojiLabel = UILabel()
+    private let daysCountLabel = UILabel()
+    private let button = UIButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

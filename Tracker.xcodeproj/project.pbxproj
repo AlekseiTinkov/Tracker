@@ -20,6 +20,8 @@
 		71ED93692A7F8F2E006CF418 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ED93682A7F8F2E006CF418 /* UIColor+Extensions.swift */; };
 		71ED936C2A890729006CF418 /* SupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ED936B2A890729006CF418 /* SupplementaryView.swift */; };
 		71ED938F2A8C0BD9006CF418 /* EditTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ED938E2A8C0BD9006CF418 /* EditTrackerViewController.swift */; };
+		71ED93912A8D5BDC006CF418 /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ED93902A8D5BDC006CF418 /* WeekDay.swift */; };
+		71ED93932A8D5C19006CF418 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71ED93922A8D5C19006CF418 /* Models.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		71ED93682A7F8F2E006CF418 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		71ED936B2A890729006CF418 /* SupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
 		71ED938E2A8C0BD9006CF418 /* EditTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTrackerViewController.swift; sourceTree = "<group>"; };
+		71ED93902A8D5BDC006CF418 /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
+		71ED93922A8D5C19006CF418 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,12 +92,15 @@
 			children = (
 				71ED93412A77DF6E006CF418 /* AppDelegate.swift */,
 				71ED93432A77DF6E006CF418 /* SceneDelegate.swift */,
+				71ED93902A8D5BDC006CF418 /* WeekDay.swift */,
+				71ED93922A8D5C19006CF418 /* Models.swift */,
 				71ED93652A78DC50006CF418 /* MainTabBarController */,
 				71ED935F2A78DBAE006CF418 /* StatisticsViewController */,
 				71ED93622A78DBDD006CF418 /* TrackersViewController */,
 				718D069A2A8BBC4300B53FD8 /* NewTrackerTypeSelectViewController */,
 				71ED938D2A8C0B94006CF418 /* EditTrackerViewController */,
 				71152F8C2A8CC0E50065B5E9 /* SchedulerViewController */,
+				71ED936A2A7F8F35006CF418 /* Helpers */,
 				71ED934A2A77DF6E006CF418 /* Assets.xcassets */,
 				71ED934C2A77DF6E006CF418 /* LaunchScreen.storyboard */,
 				71ED934F2A77DF6E006CF418 /* Info.plist */,
@@ -115,7 +122,6 @@
 				71ED93632A78DC00006CF418 /* TrackersViewController.swift */,
 				71ED936B2A890729006CF418 /* SupplementaryView.swift */,
 				71ED93662A78E2AE006CF418 /* TrackersCollectionViewCell.swift */,
-				71ED936A2A7F8F35006CF418 /* Helpers */,
 			);
 			path = TrackersViewController;
 			sourceTree = "<group>";
@@ -215,11 +221,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				71ED93672A78E2AE006CF418 /* TrackersCollectionViewCell.swift in Sources */,
+				71ED93932A8D5C19006CF418 /* Models.swift in Sources */,
 				71ED93422A77DF6E006CF418 /* AppDelegate.swift in Sources */,
 				71ED93562A77DFED006CF418 /* MainTabBarController.swift in Sources */,
 				71ED938F2A8C0BD9006CF418 /* EditTrackerViewController.swift in Sources */,
 				71ED93642A78DC00006CF418 /* TrackersViewController.swift in Sources */,
 				718D069C2A8BBC9200B53FD8 /* NewTrackerTypeSelectViewController.swift in Sources */,
+				71ED93912A8D5BDC006CF418 /* WeekDay.swift in Sources */,
 				71152F8E2A8CC0FD0065B5E9 /* SchedulerViewController.swift in Sources */,
 				71ED93692A7F8F2E006CF418 /* UIColor+Extensions.swift in Sources */,
 				71ED93442A77DF6E006CF418 /* SceneDelegate.swift in Sources */,
