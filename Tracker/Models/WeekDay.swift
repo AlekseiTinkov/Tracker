@@ -5,6 +5,8 @@
 //  Created by Алексей Тиньков on 16.08.2023.
 //
 
+
+// дни недели
 enum WeekDay: Int, Comparable, CaseIterable {
     static func < (lhs: WeekDay, rhs: WeekDay) -> Bool {
         return (lhs.number == 1 ? 8 : lhs.number) < (rhs.number == 1 ? 8 : rhs.number)
@@ -31,6 +33,7 @@ enum WeekDay: Int, Comparable, CaseIterable {
         }
     }
     
+    // полные названия
     var name: String {
         switch self {
         case .monday:
@@ -50,6 +53,7 @@ enum WeekDay: Int, Comparable, CaseIterable {
         }
     }
     
+    // короткие названия
     var shortName: String {
         switch self {
         case .monday:

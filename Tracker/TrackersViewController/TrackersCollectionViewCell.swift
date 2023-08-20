@@ -18,11 +18,43 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     private var trackerId: UUID = UUID()
     private var indexPath: IndexPath = IndexPath()
     
-    private let colorView = UIView()
-    private let nameLabel = UILabel()
-    private let emojiLabel = UILabel()
-    private let daysCountLabel = UILabel()
-    private let button = UIButton()
+    private var colorView: UIView = {
+        let colorView = UIView()
+        colorView.layer.cornerRadius = 16
+        return colorView
+    }()
+    
+    private var nameLabel: UILabel = {
+        let nameLabel = UILabel()
+        nameLabel.textColor = .ypWhite
+        nameLabel.font = UIFont.systemFont(ofSize: 12)
+        nameLabel.numberOfLines = 2
+        return nameLabel
+    }()
+    
+    private var emojiLabel: UILabel = {
+        let emojiLabel = UILabel()
+        emojiLabel.font = UIFont.systemFont(ofSize: 14)
+        emojiLabel.backgroundColor = .init(white: 1, alpha: 0.3)
+        emojiLabel.textAlignment = .center
+        emojiLabel.layer.cornerRadius = 12
+        emojiLabel.clipsToBounds = true
+        return emojiLabel
+    }()
+    
+    private var daysCountLabel: UILabel = {
+        let daysCountLabel = UILabel()
+        daysCountLabel.textColor = .ypBlack
+        daysCountLabel.font = UIFont.systemFont(ofSize: 12)
+        return daysCountLabel
+    }()
+    
+    private lazy var button: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 34 / 2
+        button.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,7 +71,6 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupColorView() {
-        colorView.layer.cornerRadius = 16
         colorView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(colorView)
         NSLayoutConstraint.activate([
@@ -51,9 +82,6 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupNameLabel() {
-        nameLabel.textColor = .ypWhite
-        nameLabel.font = UIFont.systemFont(ofSize: 12)
-        nameLabel.numberOfLines = 2
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(nameLabel)
         NSLayoutConstraint.activate([
@@ -64,11 +92,6 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupEmojiLabel() {
-        emojiLabel.font = UIFont.systemFont(ofSize: 14)
-        emojiLabel.backgroundColor = .init(white: 1, alpha: 0.3)
-        emojiLabel.textAlignment = .center
-        emojiLabel.layer.cornerRadius = 12
-        emojiLabel.clipsToBounds = true
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(emojiLabel)
         NSLayoutConstraint.activate([
@@ -80,8 +103,6 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupButton() {
-        button.layer.cornerRadius = 34 / 2
-        button.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(button)
         NSLayoutConstraint.activate([
@@ -93,8 +114,6 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupDayCountLabel() {
-        daysCountLabel.textColor = .ypBlack
-        daysCountLabel.font = UIFont.systemFont(ofSize: 12)
         daysCountLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(daysCountLabel)
         NSLayoutConstraint.activate([

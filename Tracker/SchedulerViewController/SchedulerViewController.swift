@@ -16,9 +16,39 @@ final class SchedulerViewController: UIViewController {
     weak var delegate: SchedulerViewControllerDelegate?
     private var schedule: Set<WeekDay> = []
     
-    private let titleLabel = UILabel()
-    private let saveButton = UIButton()
-    private let tableView = UITableView()
+    private var titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.font = UIFont.systemFont(ofSize: 16)
+        titleLabel.text = "Расписание"
+        titleLabel.textColor = .ypBlack
+        return titleLabel
+    }()
+    
+    private lazy var saveButton: UIButton = {
+        let saveButton = UIButton()
+        saveButton.setTitle("Готово", for: .normal)
+        saveButton.setTitleColor(.ypWhite, for: .normal)
+        saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        saveButton.backgroundColor = .ypBlack
+        saveButton.layer.cornerRadius = 16
+        saveButton.clipsToBounds = true
+        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        return saveButton
+    }()
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.layer.cornerRadius = 16
+        tableView.clipsToBounds = true
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .ypGray
+        tableView.backgroundColor = .ypWhite
+        tableView.isScrollEnabled = false
+        return tableView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +61,6 @@ final class SchedulerViewController: UIViewController {
     }
     
     private func setupTitleLabel() {
-        titleLabel.font = UIFont.systemFont(ofSize: 16)
-        titleLabel.text = "Расписание"
-        titleLabel.textColor = .ypBlack
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(titleLabel)
         NSLayoutConstraint.activate([
@@ -44,16 +71,6 @@ final class SchedulerViewController: UIViewController {
     }
     
     private func setupTableView() {
-        let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.layer.cornerRadius = 16
-        tableView.clipsToBounds = true
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        tableView.separatorColor = .ypGray
-        tableView.backgroundColor = .ypWhite
-        tableView.isScrollEnabled = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
@@ -65,13 +82,6 @@ final class SchedulerViewController: UIViewController {
     }
     
     private func setupSaveButton() {
-        saveButton.setTitle("Готово", for: .normal)
-        saveButton.setTitleColor(.ypWhite, for: .normal)
-        saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        saveButton.backgroundColor = .ypBlack
-        saveButton.layer.cornerRadius = 16
-        saveButton.clipsToBounds = true
-        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(saveButton)
         NSLayoutConstraint.activate([

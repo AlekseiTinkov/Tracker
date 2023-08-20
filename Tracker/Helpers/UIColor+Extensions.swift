@@ -27,4 +27,4 @@ extension UIColor {
     static var ypColorSelection16: UIColor { UIColor(named: "YP Color selection 16") ?? clear }
     static var ypColorSelection17: UIColor { UIColor(named: "YP Color selection 17") ?? clear }
     static var ypColorSelection18: UIColor { UIColor(named: "YP Color selection 18") ?? clear }
- }
+}

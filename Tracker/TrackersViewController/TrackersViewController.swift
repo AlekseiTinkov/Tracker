@@ -12,20 +12,66 @@ var categoriesName: [String] = ["Важное"]
 final class TrackersViewController: UIViewController {
     
     private var categories: [TrackerCategory] = []
-    //
     private var visibleCategories: [TrackerCategory] = []
-    //Привет! Да вот же visibleCategories.
-    //В задании имя этого свойства стоит как рекомендованное, а мне больше понравилось альтернативное имя из разбора задания 14 спринта от ревьюера Михаила Бабаева.
-    //Фильтры по дате и тексту как работали так и работают.
-    //Рекомендации из гита понятны. Постараюсь учесть перед мерджем текущей ветки. Если есть возможность приведи ссылку на пример красивого документирования моделей
     private var completedTrackers: Set<TrackerRecord> = []
     private var currentDate: Date = Date()
     
-    private let datePicker = UIDatePicker()
-    private let titleLabel = UILabel()
-    private let searchField = UISearchTextField()
-    private let placeholderView = UIStackView()
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private lazy var datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.preferredDatePickerStyle = .compact
+        datePicker.datePickerMode = .date
+        datePicker.locale = Locale(identifier: "ru_RU")
+        datePicker.calendar.firstWeekday = 2
+        datePicker.addTarget(self, action: #selector(changeDatePicker), for: .valueChanged)
+        return datePicker
+    }()
+    
+    private var titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.text = "Трекеры"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 34.0)
+        return titleLabel
+    }()
+    
+    private lazy var searchField: UISearchTextField = {
+        let searchField = UISearchTextField()
+        searchField.placeholder = "Поиск"
+        searchField.delegate = self
+        return searchField
+    }()
+    
+    private var placeholderView: UIStackView = {
+        let placeholderView = UIStackView()
+        
+        let label = UILabel()
+        label.text = "Что будем отслеживать?"
+        label.font = UIFont.boldSystemFont(ofSize: 12.0)
+        label.textAlignment = .center
+        
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "TrackersPlaceholder")?.withRenderingMode(.alwaysOriginal)
+        
+        let placeholderSubView: UIStackView = UIStackView()
+        placeholderSubView.axis = .vertical
+        placeholderSubView.spacing = 8
+        placeholderSubView.alignment = .center
+        placeholderSubView.addArrangedSubview(imageView)
+        placeholderSubView.addArrangedSubview(label)
+        
+        placeholderView.axis = .horizontal
+        placeholderView.alignment = .center
+        placeholderView.addArrangedSubview(placeholderSubView)
+        return placeholderView
+    }()
+    
+    private lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.dataSource = self
+        collectionView.register(TrackersCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.delegate = self
+        return collectionView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,15 +160,9 @@ final class TrackersViewController: UIViewController {
     private func setupNavBar() {
         if let navBar = navigationController?.navigationBar {
             let imageButton = UIImage(named: "button_plus")?.withRenderingMode(.alwaysOriginal)
+            
             let leftItem = UIBarButtonItem(image: imageButton, style: .plain, target: self, action: #selector(addTracker))
             navBar.topItem?.setLeftBarButton(leftItem, animated: false)
-            
-            datePicker.preferredDatePickerStyle = .compact
-            datePicker.datePickerMode = .date
-            datePicker.locale = Locale(identifier: "ru_RU")
-            datePicker.calendar.firstWeekday = 2
-            
-            datePicker.addTarget(self, action: #selector(changeDatePicker), for: .valueChanged)
             
             let rightItem = UIBarButtonItem(customView: datePicker)
             navBar.topItem?.setRightBarButton(rightItem, animated: false)
@@ -130,9 +170,6 @@ final class TrackersViewController: UIViewController {
     }
     
     private func setupTitile() {
-        titleLabel.text = "Трекеры"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 34.0)
-        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(titleLabel)
         NSLayoutConstraint.activate([
@@ -143,7 +180,6 @@ final class TrackersViewController: UIViewController {
     }
     
     private func setupSearchField() {
-        searchField.placeholder = "Поиск"
         self.searchField.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(self.searchField)
         NSLayoutConstraint.activate([
@@ -151,48 +187,20 @@ final class TrackersViewController: UIViewController {
             searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             searchField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
-        searchField.delegate = self
     }
     
     private func setupCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView)
-        
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 10),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
-        
-        collectionView.dataSource = self
-        collectionView.register(TrackersCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
-        
-        collectionView.delegate = self
     }
     
     private func setupPlaceholder() {
-        let label = UILabel()
-        label.text = "Что будем отслеживать?"
-        label.font = UIFont.boldSystemFont(ofSize: 12.0)
-        label.textAlignment = .center
-        
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "TrackersPlaceholder")?.withRenderingMode(.alwaysOriginal)
-        
-        let placeholderSubView: UIStackView = UIStackView()
-        placeholderSubView.axis = .vertical
-        placeholderSubView.spacing = 8
-        placeholderSubView.alignment = .center
-        placeholderSubView.addArrangedSubview(imageView)
-        placeholderSubView.addArrangedSubview(label)
-        
-        placeholderView.axis = .horizontal
-        placeholderView.alignment = .center
-        
-        placeholderView.addArrangedSubview(placeholderSubView)
-        
         placeholderView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(placeholderView)
         NSLayoutConstraint.activate([
@@ -206,9 +214,13 @@ final class TrackersViewController: UIViewController {
 
 extension TrackersViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
         updateVisibleCategories()
         return true
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        updateVisibleCategories()
+        textField.becomeFirstResponder()
     }
 }
 

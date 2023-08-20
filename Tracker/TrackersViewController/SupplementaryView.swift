@@ -9,13 +9,16 @@ import UIKit
 
 final class SupplementaryView: UICollectionReusableView {
     
-    let titleLabel = UILabel()
+    let titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.font =  UIFont.boldSystemFont(ofSize: 19)
+        titleLabel.textColor = .ypBlack
+        return titleLabel
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        titleLabel.font =  UIFont.boldSystemFont(ofSize: 19)
-        titleLabel.textColor = .ypBlack
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(titleLabel)
         NSLayoutConstraint.activate([
