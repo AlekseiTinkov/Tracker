@@ -17,6 +17,9 @@ final class EditTrackerViewController: UIViewController {
     private var schedule: Set<WeekDay> = []
     
     var trackerType: TrackerType = .event
+    var trackerName: String = ""
+    var trackerEmojiIndex: Int?
+    var trackerColorIndex: Int?
     
     private var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -95,6 +98,7 @@ final class EditTrackerViewController: UIViewController {
         collectionView.register(HeadersEmojiAndColorView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.delegate = self
         collectionView.isScrollEnabled = false
+        collectionView.allowsMultipleSelection = true
         return collectionView
     }()
     
@@ -205,15 +209,19 @@ final class EditTrackerViewController: UIViewController {
     
     @objc private func saveButtonTapped() {
         dismiss(animated: true)
-        let name = nameField.text ?? ""
+        guard let trackerColorIndex = self.trackerColorIndex else { return }
+        guard let trackerEmojiIndex = self.trackerEmojiIndex else { return }
+        self.trackerName = nameField.text ?? ""
         delegate?.saveTracker(TrackerCategory(title: categoriesName[0],
-                                              trackers: [.init(trackerType: self.trackerType, name: name, color: .ypColorSelection18, emoji: "🌺", schedule: self.schedule)]))
+                                              trackers: [.init(trackerType: self.trackerType, name: self.trackerName, color: colorsCollection[trackerColorIndex], emoji: emojisCollection[trackerEmojiIndex], schedule: self.schedule)]))
     }
     
     private func repaintSaveButton() {
         let isSchedule = (schedule.count > 0) || (trackerType == .event)
         let isName = !(nameField.text?.isEmpty ?? true)
-        if isSchedule && isName {
+        let isColor = trackerColorIndex != nil
+        let isEmoji = trackerEmojiIndex != nil
+        if isSchedule && isName && isColor && isEmoji {
             saveButton.backgroundColor = .ypBlack
             saveButton.isEnabled = true
         } else {
@@ -323,13 +331,21 @@ extension EditTrackerViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? EmojiAndColorsCollectionViewCell else { return }
-        cell.configure(section: indexPath.section, row: indexPath.row, selected: true)
+        if indexPath.section == 0 {
+            trackerEmojiIndex = indexPath.row
+        } else {
+            trackerColorIndex = indexPath.row
+        }
+        repaintSaveButton()
     }
     
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? EmojiAndColorsCollectionViewCell else { return }
-        cell.configure(section: indexPath.section, row: indexPath.row, selected: false)
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        collectionView.indexPathsForSelectedItems?.filter({ $0.section == indexPath.section }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
+        return true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
+        return false
     }
 }
 
@@ -383,7 +399,7 @@ extension EditTrackerViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! EmojiAndColorsCollectionViewCell
-        cell.configure(section: indexPath.section, row: indexPath.row, selected: false)
+        cell.configure(section: indexPath.section, row: indexPath.row)
         return cell
     }
 

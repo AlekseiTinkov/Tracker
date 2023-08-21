@@ -10,22 +10,6 @@ import UIKit
 final class EmojiAndColorsCollectionViewCell: UICollectionViewCell {
     weak var delegate: EditTrackerViewControllerDelegate?
     
-    private let emoji: [String] = ["🙂", "😻", "🌺", "🐶", "❤️", "😱",
-                                   "😇", "😡", "🥶", "🤔", "🙌", "🍔",
-                                   "🥦", "🏓", "🥇", "🎸", "🏝️", "😪"]
-    
-    private var colors: [UIColor] = {
-        var colors: [UIColor] = []
-        for i in 1...18 {
-            colors.append(UIColor(named: "YP Color selection \(i)") ?? .clear)
-        }
-        return colors
-    }()
-    
-    private var isCompletedToday: Bool = false
-    private var trackerId: UUID = UUID()
-    private var indexPath: IndexPath = IndexPath()
-    
     private var colorView: UIView = {
         let colorView = UIView()
         colorView.layer.cornerRadius = 8
@@ -49,21 +33,6 @@ final class EmojiAndColorsCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    override var isSelected: Bool {
-//        didSet{
-//            if indexPath.section == 0 {
-//                if self.isSelected {
-//                    self.colorView.backgroundColor = .ypLightGray
-//                }
-//                else {
-//                    self.colorView.backgroundColor = .clear
-//                }
-//            } else {
-//
-//            }
-//        }
-//    }
-    
     private func setupColorView() {
         colorView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(colorView)
@@ -86,24 +55,27 @@ final class EmojiAndColorsCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(section: Int, row: Int, selected: Bool) {
+    func configure(section: Int, row: Int) {
         if section == 0 {
             colorView.backgroundColor = .clear
-            emojiLabel.text = emoji[row]
             layer.cornerRadius = 16
-            self.layer.backgroundColor = selected ? UIColor.ypLightGray.cgColor : UIColor.clear.cgColor
+            emojiLabel.text = emojisCollection[row]
         } else {
-            colorView.backgroundColor = colors[row]
-            emojiLabel.text = nil
+            colorView.backgroundColor = colorsCollection[row]
+            layer.borderColor = colorView.backgroundColor?.withAlphaComponent(0.3).cgColor
             layer.cornerRadius = 8
-            self.layer.borderColor = self.colorView.backgroundColor?.withAlphaComponent(0.3).cgColor
-            self.layer.borderWidth = selected ? 3 : 0
+            emojiLabel.text = nil
         }
     }
     
-    func selected(_ selected: Bool) {
-        self.layer.borderColor = self.colorView.backgroundColor?.withAlphaComponent(0.3).cgColor
-        self.layer.borderWidth = selected ? 3 : 0
+    override var isSelected: Bool {
+        didSet {
+            if self.emojiLabel.text != nil {
+                self.layer.backgroundColor = isSelected ? UIColor.ypLightGray.cgColor : UIColor.clear.cgColor
+            } else {
+                self.layer.borderWidth = isSelected ? 3 : 0
+            }
+        }
     }
     
 }
