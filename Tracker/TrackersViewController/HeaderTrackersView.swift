@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SupplementaryView: UICollectionReusableView {
+final class HeaderTrackersView: UICollectionReusableView {
     
     let titleLabel: UILabel = {
         let titleLabel = UILabel()
