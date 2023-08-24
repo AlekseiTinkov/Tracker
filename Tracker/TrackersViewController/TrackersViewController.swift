@@ -91,20 +91,20 @@ final class TrackersViewController: UIViewController {
     
     func setupMoc() {
         categories = [TrackerCategory.init(title: "Домашний уют",
-                                           trackers: [Tracker.init(trackerType: .habit, name: "Поливать растения",
+                                           trackers: [Tracker.init(name: "Поливать растения",
                                                                    color: .green,
                                                                    emoji: "❤️",
                                                                    schedule: [WeekDay.sunday])]),
                       TrackerCategory.init(title: "Радостные мелочи",
-                                           trackers: [Tracker.init(trackerType: .habit, name: "Кошка заслонила камеру на созвоне",
+                                           trackers: [Tracker.init(name: "Кошка заслонила камеру на созвоне",
                                                                    color: .orange,
                                                                    emoji: "😻",
                                                                    schedule: [WeekDay.sunday, WeekDay.saturday]),
-                                                      Tracker.init(trackerType: .habit, name: "Бабушка прислала открытку в вотсапе",
+                                                      Tracker.init(name: "Бабушка прислала открытку в вотсапе",
                                                                    color: .red,
                                                                    emoji: "🌺",
                                                                    schedule: [WeekDay.sunday]),
-                                                      Tracker.init(trackerType: .event, name: "Свидания в вапреле",
+                                                      Tracker.init(name: "Свидания в вапреле",
                                                                    color: .blue,
                                                                    emoji: "❤️",
                                                                    schedule: [])
@@ -136,9 +136,11 @@ final class TrackersViewController: UIViewController {
                     weekDay.number == filterWeekdey
                 } == true
                 
+                let isEvent = ( tracker.schedule.count == 0 )
+                
                 let textCondition = tracker.name.lowercased().contains(filterText) || filterText.isEmpty
                 
-                return (dateCondition || tracker.trackerType == .event) && textCondition
+                return ( dateCondition || isEvent ) && textCondition
             }
             
             if trackers.isEmpty {

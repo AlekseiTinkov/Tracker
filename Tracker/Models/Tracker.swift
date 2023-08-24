@@ -11,8 +11,6 @@ import UIKit
 struct Tracker {
     // идентификатор
     let trackerId = UUID()
-    // тип (привычка / нерегулярное событие
-    let trackerType: TrackerType
     // название
     let name: String
     // цвет
