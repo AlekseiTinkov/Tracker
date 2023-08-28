@@ -11,21 +11,29 @@ final class ScheduleMarshalling {
     static let shared = ScheduleMarshalling()
     
     func scheduleToInt(from schedule: Set<WeekDay>) -> Int16 {
-        
-        return 0
+        var intSchedule: Int16 = 0
+        schedule.forEach { day in
+            setBit(intValue: &intSchedule, bitPosition: day.rawValue)
+        }
+        return intSchedule
     }
 
-    func intToSchedule(from byte: UInt16) -> Set<WeekDay> {
-        let schedule: Set<WeekDay> = []
+    func intToSchedule(from byte: Int16) -> Set<WeekDay> {
+        var schedule: Set<WeekDay> = []
+        for bit in 1...7 {
+            if getBit(intValue: byte, bitPosition: bit) {
+                schedule.insert(WeekDay(rawValue: bit) ?? .monday)
+            }
+        }
         return schedule
     }
     
-    private func setBit(intValue: Int16, bitPosition: Int) -> Int16 {
-        return intValue | (1 << bitPosition)
+    private func setBit(intValue: inout Int16, bitPosition: Int) {
+        intValue |= (1 << bitPosition)
     }
     
-    private func resetBit(intValue: Int16, bitPosition: Int) -> Int16 {
-        return intValue & ~(1 << bitPosition)
+    private func resetBit(intValue: inout Int16, bitPosition: Int) {
+        intValue &= ~(1 << bitPosition)
     }
     
     private func getBit(intValue: Int16, bitPosition: Int) -> Bool {

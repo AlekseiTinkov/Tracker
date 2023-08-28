@@ -14,7 +14,10 @@ final class TrackersViewController: UIViewController {
     private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
     private var completedTrackers: Set<TrackerRecord> = []
+    private let trackerCategoryStore = TrackerCategoryStore()
+    private let trackerRecordStore = TrackerRecordStore()
     private var currentDate: Date = Date()
+    
     
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -22,6 +25,16 @@ final class TrackersViewController: UIViewController {
         datePicker.datePickerMode = .date
         datePicker.locale = Locale(identifier: "ru_RU")
         datePicker.calendar.firstWeekday = 2
+        
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.day, .month, .year], from: Date())
+
+        var dateComponents = DateComponents()
+        dateComponents.year = components.year
+        dateComponents.month = components.month
+        dateComponents.day = components.day
+        datePicker.date = calendar.date(from: dateComponents) ?? Date()
+        
         datePicker.addTarget(self, action: #selector(changeDatePicker), for: .valueChanged)
         return datePicker
     }()
@@ -78,7 +91,9 @@ final class TrackersViewController: UIViewController {
         
         view.backgroundColor = .ypWhite
         
-        setupMoc()
+        MocTrackerCategoryStore.shared.setupTrackers()
+        categories = trackerCategoryStore.categories
+        completedTrackers = trackerRecordStore.records
         
         setupNavBar()
         setupTitile()
@@ -88,30 +103,7 @@ final class TrackersViewController: UIViewController {
         
         updateVisibleCategories()
     }
-    
-    func setupMoc() {
-        categories = [TrackerCategory.init(title: "Домашний уют",
-                                           trackers: [Tracker.init(name: "Поливать растения",
-                                                                   color: .green,
-                                                                   emoji: "❤️",
-                                                                   schedule: [WeekDay.sunday])]),
-                      TrackerCategory.init(title: "Радостные мелочи",
-                                           trackers: [Tracker.init(name: "Кошка заслонила камеру на созвоне",
-                                                                   color: .orange,
-                                                                   emoji: "😻",
-                                                                   schedule: [WeekDay.sunday, WeekDay.saturday]),
-                                                      Tracker.init(name: "Бабушка прислала открытку в вотсапе",
-                                                                   color: .red,
-                                                                   emoji: "🌺",
-                                                                   schedule: [WeekDay.sunday]),
-                                                      Tracker.init(name: "Свидания в вапреле",
-                                                                   color: .blue,
-                                                                   emoji: "❤️",
-                                                                   schedule: [])
-                                           ])
-        ]
-    }
-    
+        
     @objc
     private func addTracker() {
         let newTrackerTypeSelectViewController = NewTrackerTypeSelectViewController()
@@ -320,10 +312,12 @@ extension TrackersViewController: TrackersCollectionViewCellDelegate {
             return
         }
         if isTrackerCompletedToday(trackerId) {
-            guard let indexToRemove = completedTrackers.firstIndex(where: {$0.trackerId == trackerId && Calendar.current.isDate($0.date, inSameDayAs: currentDate)}) else { return }
-            completedTrackers.remove(at: indexToRemove)
+            let trackerRecord = TrackerRecord(trackerId: trackerId, date: currentDate)
+            try? trackerRecordStore.remove(trackerRecord)
+            completedTrackers.remove(trackerRecord)
         } else {
             let trackerRecord = TrackerRecord(trackerId: trackerId, date: currentDate)
+            try? trackerRecordStore.add(trackerRecord)
             completedTrackers.insert(trackerRecord)
             collectionView.reloadItems(at: [indexPath])
         }
@@ -344,6 +338,7 @@ extension TrackersViewController: TrackersCollectionViewCellDelegate {
 
 extension TrackersViewController: NewTrackerTypeSelectViewControllerDelegate {
     func saveTracker(_ trackerCategory: TrackerCategory) {
+        try? trackerCategoryStore.saveTracker(tracker: trackerCategory.trackers[0], to: trackerCategory.title)
         if let indexOfCategorie = categories.firstIndex(where: {$0.title == trackerCategory.title}) {
             let newCategirie = TrackerCategory(title: trackerCategory.title, trackers: categories[indexOfCategorie].trackers + trackerCategory.trackers)
             categories[indexOfCategorie] = newCategirie

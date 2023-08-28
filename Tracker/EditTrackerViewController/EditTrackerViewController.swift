@@ -213,7 +213,7 @@ final class EditTrackerViewController: UIViewController {
         guard let trackerEmojiIndex = self.trackerEmojiIndex else { return }
         self.trackerName = nameField.text ?? ""
         delegate?.saveTracker(TrackerCategory(title: categoriesName[0],
-                                              trackers: [.init(name: self.trackerName, color: colorsCollection[trackerColorIndex], emoji: emojisCollection[trackerEmojiIndex], schedule: self.schedule)]))
+                                              trackers: [Tracker(trackerId: UUID(), name: self.trackerName, color: colorsCollection[trackerColorIndex], emoji: emojisCollection[trackerEmojiIndex], schedule: self.schedule)]))
     }
     
     private func repaintSaveButton() {
