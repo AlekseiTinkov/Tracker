@@ -15,11 +15,11 @@ class MocTrackerCategoryStore {
     
     func setupTrackers() {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
+        
         let checkRequest = TrackerCategoryCoreData.fetchRequest()
         let result = try! context.fetch(checkRequest)
         if result.count > 0 { return }
-
+        
         let trackerCategoryCoreData1 = TrackerCategoryCoreData(context: context)
         trackerCategoryCoreData1.title = "Домашний уют"
         let _ = [Tracker(trackerId: UUID(),
@@ -37,7 +37,7 @@ class MocTrackerCategoryStore {
                 trackerCategoryCoreData1.addToTrackers(trackerCoreData)
                 return trackerCoreData
             }
-
+        
         let trackerCategoryCoreData2 = TrackerCategoryCoreData(context: context)
         trackerCategoryCoreData2.title = "Радостные мелочи"
         let _ = [Tracker(trackerId: UUID(),
@@ -65,8 +65,13 @@ class MocTrackerCategoryStore {
                 trackerCategoryCoreData2.addToTrackers(trackerCoreData)
                 return trackerCoreData
             }
-
-        try! context.save()
+        do {
+            try context.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+        
     }
     
     func fetchTrackersCategory() {
@@ -87,7 +92,7 @@ class MocTrackerCategoryStore {
             print("  - \(String(describing: tracker.name)) \(String(describing: tracker.category?.id))")
         }
     }
-
+    
     func setupAndFetch() {
         print(">>> begin")
         setupTrackers()

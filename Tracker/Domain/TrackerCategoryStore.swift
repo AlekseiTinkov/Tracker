@@ -109,20 +109,11 @@ final class TrackerCategoryStore: NSObject {
             newCategory.title = categoryName
             newCategory.trackers = NSSet(array: [trackerCoreData])
         }
-        do {
-            try context.save()
-        } catch {
-            let nsError = error as NSError
-             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
-        
+        try context.save()   
     }
 }
 
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    }
-    
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .insert:

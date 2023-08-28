@@ -312,9 +312,9 @@ extension TrackersViewController: TrackersCollectionViewCellDelegate {
             return
         }
         if isTrackerCompletedToday(trackerId) {
-            let trackerRecord = TrackerRecord(trackerId: trackerId, date: currentDate)
-            try? trackerRecordStore.remove(trackerRecord)
-            completedTrackers.remove(trackerRecord)
+            guard let indexToRemove = completedTrackers.firstIndex(where: {$0.trackerId == trackerId && Calendar.current.isDate($0.date, inSameDayAs: currentDate)}) else { return }
+            try? trackerRecordStore.remove(completedTrackers[indexToRemove])
+            completedTrackers.remove(at: indexToRemove)
         } else {
             let trackerRecord = TrackerRecord(trackerId: trackerId, date: currentDate)
             try? trackerRecordStore.add(trackerRecord)
@@ -340,10 +340,12 @@ extension TrackersViewController: NewTrackerTypeSelectViewControllerDelegate {
     func saveTracker(_ trackerCategory: TrackerCategory) {
         try? trackerCategoryStore.saveTracker(tracker: trackerCategory.trackers[0], to: trackerCategory.title)
         if let indexOfCategorie = categories.firstIndex(where: {$0.title == trackerCategory.title}) {
-            let newCategirie = TrackerCategory(title: trackerCategory.title, trackers: categories[indexOfCategorie].trackers + trackerCategory.trackers)
+            let trackers = categories[indexOfCategorie].trackers + trackerCategory.trackers
+            let newCategirie = TrackerCategory(title: trackerCategory.title, trackers: trackers.sorted(by: { $0.name < $1.name }))
             categories[indexOfCategorie] = newCategirie
         } else {
             categories.append(trackerCategory)
+            categories.sort(by: { $0.title < $1.title } )
         }
         updateVisibleCategories()
     }

@@ -33,11 +33,10 @@ final class TrackerRecordStore: NSObject {
         var recordsSet: Set<TrackerRecord> = []
         if let objects {
             for i in objects {
-                guard let record = try? makeTrackerRecord(from: i) else { return [] }
+                guard let record = try? convertCoreDataToRecord(from: i) else { return [] }
                 recordsSet.insert(record)
             }
         }
-        
         return recordsSet
     }
     
@@ -46,8 +45,6 @@ final class TrackerRecordStore: NSObject {
         let trackerRecordCoreData = TrackerRecordCoreData(context: context)
         trackerRecordCoreData.trackerId = newRecord.trackerId
         trackerRecordCoreData.date = newRecord.date
-        trackerRecordCoreData.tracker = trackerCoreData
-        
         try context.save()
     }
     
@@ -60,12 +57,11 @@ final class TrackerRecordStore: NSObject {
         try context.save()
     }
     
-    private func makeTrackerRecord(from coreData: TrackerRecordCoreData) throws -> TrackerRecord {
+    private func convertCoreDataToRecord(from coreData: TrackerRecordCoreData) throws -> TrackerRecord {
         guard
             let id = coreData.trackerId,
             let date = coreData.date
         else { throw TrackerRecordStoreError.decodingErrorInvalidTracker }
-
         return TrackerRecord(trackerId: id, date: date)
     }
 }

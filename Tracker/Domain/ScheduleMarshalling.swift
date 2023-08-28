@@ -17,7 +17,7 @@ final class ScheduleMarshalling {
         }
         return intSchedule
     }
-
+    
     func intToSchedule(from byte: Int16) -> Set<WeekDay> {
         var schedule: Set<WeekDay> = []
         for bit in 1...7 {
@@ -30,10 +30,6 @@ final class ScheduleMarshalling {
     
     private func setBit(intValue: inout Int16, bitPosition: Int) {
         intValue |= (1 << bitPosition)
-    }
-    
-    private func resetBit(intValue: inout Int16, bitPosition: Int) {
-        intValue &= ~(1 << bitPosition)
     }
     
     private func getBit(intValue: Int16, bitPosition: Int) -> Bool {
