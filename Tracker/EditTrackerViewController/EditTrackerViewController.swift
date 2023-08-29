@@ -116,7 +116,21 @@ final class EditTrackerViewController: UIViewController {
         setupSaveButton()
         setupScrollViewContentSize()
         
+        setupKeyboardDismiss()
+        
         repaintSaveButton()
+    }
+    
+    private func setupKeyboardDismiss() {
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    private func hideKeyboard() {
+        self.view.endEditing(true)
     }
     
     private func setupScrollView() {

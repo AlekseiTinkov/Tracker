@@ -101,7 +101,21 @@ final class TrackersViewController: UIViewController {
         setupCollectionView()
         setupPlaceholder()
         
+        setupKeyboardDismiss()
+        
         updateVisibleCategories()
+    }
+    
+    private func setupKeyboardDismiss() {
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    private func hideKeyboard() {
+        self.view.endEditing(true)
     }
         
     @objc
