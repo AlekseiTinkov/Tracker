@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		7104ED072A923574003A5D7A /* HeadersEmojiAndColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7104ED062A923574003A5D7A /* HeadersEmojiAndColorView.swift */; };
-		7104ED092A9235A4003A5D7A /* EmojiAndColorsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7104ED082A9235A4003A5D7A /* EmojiAndColorsCollectionViewCell.swift */; };
+		7104ED092A9235A4003A5D7A /* ColorsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7104ED082A9235A4003A5D7A /* ColorsCollectionViewCell.swift */; };
 		7104ED0B2A99E5F1003A5D7A /* MocTrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7104ED0A2A99E5F1003A5D7A /* MocTrackerCategoryStore.swift */; };
+		7104ED132A9E9D3C003A5D7A /* EmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7104ED122A9E9D3C003A5D7A /* EmojiCollectionViewCell.swift */; };
 		71152F8E2A8CC0FD0065B5E9 /* SchedulerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71152F8D2A8CC0FD0065B5E9 /* SchedulerViewController.swift */; };
 		71517E932A93A05E00453EE3 /* EmojisCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71517E922A93A05E00453EE3 /* EmojisCollection.swift */; };
 		71517E952A93A09C00453EE3 /* ColorsCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71517E942A93A09C00453EE3 /* ColorsCollection.swift */; };
@@ -39,8 +40,9 @@
 
 /* Begin PBXFileReference section */
 		7104ED062A923574003A5D7A /* HeadersEmojiAndColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadersEmojiAndColorView.swift; sourceTree = "<group>"; };
-		7104ED082A9235A4003A5D7A /* EmojiAndColorsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiAndColorsCollectionViewCell.swift; sourceTree = "<group>"; };
+		7104ED082A9235A4003A5D7A /* ColorsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsCollectionViewCell.swift; sourceTree = "<group>"; };
 		7104ED0A2A99E5F1003A5D7A /* MocTrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MocTrackerCategoryStore.swift; sourceTree = "<group>"; };
+		7104ED122A9E9D3C003A5D7A /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		71152F8D2A8CC0FD0065B5E9 /* SchedulerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulerViewController.swift; sourceTree = "<group>"; };
 		71517E922A93A05E00453EE3 /* EmojisCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojisCollection.swift; sourceTree = "<group>"; };
 		71517E942A93A09C00453EE3 /* ColorsCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsCollection.swift; sourceTree = "<group>"; };
@@ -208,7 +210,8 @@
 			children = (
 				71ED938E2A8C0BD9006CF418 /* EditTrackerViewController.swift */,
 				7104ED062A923574003A5D7A /* HeadersEmojiAndColorView.swift */,
-				7104ED082A9235A4003A5D7A /* EmojiAndColorsCollectionViewCell.swift */,
+				7104ED122A9E9D3C003A5D7A /* EmojiCollectionViewCell.swift */,
+				7104ED082A9235A4003A5D7A /* ColorsCollectionViewCell.swift */,
 			);
 			path = EditTrackerViewController;
 			sourceTree = "<group>";
@@ -306,8 +309,9 @@
 				71CFC0212A9219C200B97D2F /* Tracker.swift in Sources */,
 				71517EA42A9766A900453EE3 /* TrackerRecordStore.swift in Sources */,
 				71517EA22A97669900453EE3 /* TrackerCategoryStore.swift in Sources */,
-				7104ED092A9235A4003A5D7A /* EmojiAndColorsCollectionViewCell.swift in Sources */,
+				7104ED092A9235A4003A5D7A /* ColorsCollectionViewCell.swift in Sources */,
 				71ED936C2A890729006CF418 /* HeaderTrackersView.swift in Sources */,
+				7104ED132A9E9D3C003A5D7A /* EmojiCollectionViewCell.swift in Sources */,
 				71ED93612A78DBC1006CF418 /* StatisticsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

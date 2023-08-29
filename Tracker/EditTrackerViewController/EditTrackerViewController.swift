@@ -91,14 +91,25 @@ final class EditTrackerViewController: UIViewController {
         return saveButton
     }()
     
-    private lazy var emojiAndColorCollectionView: UICollectionView = {
+    private lazy var emojiCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.dataSource = self
-        collectionView.register(EmojiAndColorsCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(HeadersEmojiAndColorView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "emojiCell")
+        collectionView.register(HeadersEmojiAndColorView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "emojiHeader")
         collectionView.delegate = self
         collectionView.isScrollEnabled = false
-        collectionView.allowsMultipleSelection = true
+//        collectionView.allowsMultipleSelection = true
+        return collectionView
+    }()
+    
+    private lazy var colorCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.dataSource = self
+        collectionView.register(ColorsCollectionViewCell.self, forCellWithReuseIdentifier: "colorCell")
+        collectionView.register(HeadersEmojiAndColorView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "colorHeader")
+        collectionView.delegate = self
+        collectionView.isScrollEnabled = false
+//        collectionView.allowsMultipleSelection = true
         return collectionView
     }()
     
@@ -111,7 +122,8 @@ final class EditTrackerViewController: UIViewController {
         setupTitleLabel()
         setupNameField()
         setupTableView()
-        setupEmojiAndColorCollectionView()
+        setupEmojiCollectionView()
+        setupColorCollectionView()
         setupCancelButton()
         setupSaveButton()
         setupScrollViewContentSize()
@@ -177,14 +189,25 @@ final class EditTrackerViewController: UIViewController {
         ])
     }
     
-    private func setupEmojiAndColorCollectionView() {
-        emojiAndColorCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(emojiAndColorCollectionView)
+    private func setupEmojiCollectionView() {
+        emojiCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(emojiCollectionView)
         NSLayoutConstraint.activate([
-            emojiAndColorCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
-            emojiAndColorCollectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            emojiAndColorCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
-            emojiAndColorCollectionView.heightAnchor.constraint(equalToConstant:  34 + 204 + 34 + 204)
+            emojiCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
+            emojiCollectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            emojiCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
+            emojiCollectionView.heightAnchor.constraint(equalToConstant:  34 + 204)
+        ])
+    }
+    
+    private func setupColorCollectionView() {
+        colorCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(colorCollectionView)
+        NSLayoutConstraint.activate([
+            colorCollectionView.topAnchor.constraint(equalTo: emojiCollectionView.bottomAnchor, constant: 32),
+            colorCollectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            colorCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
+            colorCollectionView.heightAnchor.constraint(equalToConstant:  34 + 204)
         ])
     }
     
@@ -192,7 +215,7 @@ final class EditTrackerViewController: UIViewController {
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(cancelButton)
         NSLayoutConstraint.activate([
-            cancelButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: 16),
+            cancelButton.topAnchor.constraint(equalTo: colorCollectionView.bottomAnchor, constant: 16),
             cancelButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
             cancelButton.heightAnchor.constraint(equalToConstant: 60),
         ])
@@ -202,7 +225,7 @@ final class EditTrackerViewController: UIViewController {
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(saveButton)
         NSLayoutConstraint.activate([
-            saveButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: 16),
+            saveButton.topAnchor.constraint(equalTo: colorCollectionView.bottomAnchor, constant: 16),
             saveButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 8),
             saveButton.heightAnchor.constraint(equalToConstant: 60),
             saveButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
@@ -213,7 +236,7 @@ final class EditTrackerViewController: UIViewController {
     private func setupScrollViewContentSize() {
         NSLayoutConstraint.activate([
             saveButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            emojiAndColorCollectionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16)
+            colorCollectionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16)
         ])
     }
     
@@ -329,41 +352,52 @@ extension EditTrackerViewController: SchedulerViewControllerDelegate {
 }
 
 extension EditTrackerViewController: UICollectionViewDelegate {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
+//    func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        return 2
+//    }
     
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? HeadersEmojiAndColorView else {
-            assertionFailure("Error get view")
-            return .init()
+        var collectionReusableView = UICollectionReusableView()
+        if collectionView == emojiCollectionView {
+            guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "emojiHeader", for: indexPath) as? HeadersEmojiAndColorView else {
+                assertionFailure("Error get view")
+                return .init()
+            }
+            view.titleLabel.text = "Emoji"
+            collectionReusableView = view
         }
-        
-        view.titleLabel.text = indexPath.section == 0 ? "Emoji" : "Цвет"
-        return view
+        if collectionView == colorCollectionView {
+            guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "colorHeader", for: indexPath) as? HeadersEmojiAndColorView else {
+                assertionFailure("Error get view")
+                return .init()
+            }
+            view.titleLabel.text = "Цвет"
+            collectionReusableView = view
+        }
+        return collectionReusableView
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
+        if collectionView == emojiCollectionView {
             trackerEmojiIndex = indexPath.row
-        } else {
+        }
+        if collectionView == colorCollectionView {
             trackerColorIndex = indexPath.row
         }
         repaintSaveButton()
     }
     
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        collectionView.indexPathsForSelectedItems?.filter({ $0.section == indexPath.section }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
-        return true
-    }
+//    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+//        collectionView.indexPathsForSelectedItems?.filter({ $0.section == indexPath.section }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
+//        return true
+//    }
     
-    func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
+//    func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
+//        return false
+//    }
 }
 
 extension EditTrackerViewController: UICollectionViewDelegateFlowLayout {
@@ -415,12 +449,24 @@ extension EditTrackerViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? EmojiAndColorsCollectionViewCell else {
-            assertionFailure("Error get cell")
-            return .init()
+        var collectionViewCell = UICollectionViewCell()
+        if collectionView == emojiCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "emojiCell", for: indexPath) as? EmojiCollectionViewCell else {
+                assertionFailure("Error get cell")
+                return .init()
+            }
+            cell.configure(with: emojisCollection[indexPath.row])
+            collectionViewCell = cell
         }
-        cell.configure(section: indexPath.section, row: indexPath.row)
-        return cell
+        if collectionView == colorCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as? ColorsCollectionViewCell else {
+                assertionFailure("Error get cell")
+                return .init()
+            }
+            cell.configure(with: colorsCollection[indexPath.row])
+            collectionViewCell = cell
+        }
+        return collectionViewCell
     }
 
 }
