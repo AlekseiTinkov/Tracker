@@ -25,7 +25,10 @@ final class TrackerStore: NSObject {
     private var movedIndexes: Set<TrackerStoreMove>?
     
     convenience override init() {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            fatalError("Get context error")
+        }
+        let context = appDelegate.persistentContainer.viewContext
         self.init(context: context)
     }
     

@@ -323,7 +323,10 @@ extension EditTrackerViewController: UICollectionViewDelegate {
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
         
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! HeadersEmojiAndColorView
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? HeadersEmojiAndColorView else {
+            assertionFailure("Error get view")
+            return .init()
+        }
         
         view.titleLabel.text = indexPath.section == 0 ? "Emoji" : "Цвет"
         return view
@@ -398,7 +401,10 @@ extension EditTrackerViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! EmojiAndColorsCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? EmojiAndColorsCollectionViewCell else {
+            assertionFailure("Error get cell")
+            return .init()
+        }
         cell.configure(section: indexPath.section, row: indexPath.row)
         return cell
     }

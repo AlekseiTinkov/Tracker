@@ -11,14 +11,23 @@ import CoreData
 class MocTrackerCategoryStore {
     static let shared = MocTrackerCategoryStore()
     
-    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    private var context: NSManagedObjectContext
+    
+    init() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            fatalError("Get context error")
+        }
+        self.context = appDelegate.persistentContainer.viewContext
+    }
     
     func setupTrackers() {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
         let checkRequest = TrackerCategoryCoreData.fetchRequest()
-        let result = try! context.fetch(checkRequest)
-        if result.count > 0 { return }
+        do {
+            let result = try context.fetch(checkRequest)
+            if result.count > 0 { return }
+        } catch {
+            print("Error fetching: \(error)")
+        }
         
         let trackerCategoryCoreData1 = TrackerCategoryCoreData(context: context)
         trackerCategoryCoreData1.title = "Домашний уют"
@@ -76,20 +85,27 @@ class MocTrackerCategoryStore {
     
     func fetchTrackersCategory() {
         let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
-        let trackersCategory = try! context.fetch(request)
-        trackersCategory.forEach { category in
-            print("> \(String(describing: category.title)) \(category.id)")
-            fetchTrackers(id: category)
+        do {
+            let trackersCategory = try context.fetch(request)
+            trackersCategory.forEach { category in
+                print("> \(String(describing: category.title)) \(category.id)")
+                fetchTrackers(id: category)
+            }
+        } catch {
+            print("Error fetching: \(error)")
         }
-        
     }
     
     func fetchTrackers(id: TrackerCategoryCoreData) {
         let request = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
         request.predicate = NSPredicate(format: "category == %@", id)
-        let trackers = try! context.fetch(request)
-        trackers.forEach { tracker in
-            print("  - \(String(describing: tracker.name)) \(String(describing: tracker.category?.id))")
+        do {
+            let trackers = try context.fetch(request)
+            trackers.forEach { tracker in
+                print("  - \(String(describing: tracker.name)) \(String(describing: tracker.category?.id))")
+            }
+        } catch {
+            print("Error fetching: \(error)")
         }
     }
     
