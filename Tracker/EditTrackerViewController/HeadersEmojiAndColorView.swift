@@ -23,7 +23,7 @@ final class HeadersEmojiAndColorView: UICollectionReusableView {
         addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }

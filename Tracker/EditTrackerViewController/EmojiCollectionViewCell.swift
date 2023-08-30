@@ -13,6 +13,7 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
     private var emojiLabel: UILabel = {
         let emojiLabel = UILabel()
         emojiLabel.font = UIFont.boldSystemFont(ofSize: 32)
+        emojiLabel.textAlignment = .center
         return emojiLabel
     }()
     
@@ -27,19 +28,18 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupEmojiLabel() {
+        layer.cornerRadius = 16
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(emojiLabel)
         NSLayoutConstraint.activate([
-            emojiLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
-            emojiLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 6),
-            emojiLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -6),
-            emojiLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)
+            emojiLabel.heightAnchor.constraint(equalToConstant: 40),
+            emojiLabel.widthAnchor.constraint(equalToConstant: 40),
+            emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
     
     func configure(with emoji: String) {
-        //colorView.backgroundColor = .clear
-        layer.cornerRadius = 16
         emojiLabel.text = emoji
     }
     

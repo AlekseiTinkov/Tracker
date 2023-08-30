@@ -98,7 +98,6 @@ final class EditTrackerViewController: UIViewController {
         collectionView.register(HeadersEmojiAndColorView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "emojiHeader")
         collectionView.delegate = self
         collectionView.isScrollEnabled = false
-//        collectionView.allowsMultipleSelection = true
         return collectionView
     }()
     
@@ -109,7 +108,6 @@ final class EditTrackerViewController: UIViewController {
         collectionView.register(HeadersEmojiAndColorView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "colorHeader")
         collectionView.delegate = self
         collectionView.isScrollEnabled = false
-//        collectionView.allowsMultipleSelection = true
         return collectionView
     }()
     
@@ -189,14 +187,22 @@ final class EditTrackerViewController: UIViewController {
         ])
     }
     
+    struct const {
+        static let collectionTitleHeight = 18.0
+        static let collectionHeight = 204.0
+        static let collectionSideMargins = 16.0
+        static let emojiCollectionTopMargin = 32.0
+        static let colorCollectionTopMargin = 16.0
+    }
+    
     private func setupEmojiCollectionView() {
         emojiCollectionView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(emojiCollectionView)
         NSLayoutConstraint.activate([
-            emojiCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
+            emojiCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: const.emojiCollectionTopMargin),
             emojiCollectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            emojiCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
-            emojiCollectionView.heightAnchor.constraint(equalToConstant:  34 + 204)
+            emojiCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * const.collectionSideMargins),
+            emojiCollectionView.heightAnchor.constraint(equalToConstant:  const.collectionTitleHeight + const.collectionHeight)
         ])
     }
     
@@ -204,10 +210,10 @@ final class EditTrackerViewController: UIViewController {
         colorCollectionView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(colorCollectionView)
         NSLayoutConstraint.activate([
-            colorCollectionView.topAnchor.constraint(equalTo: emojiCollectionView.bottomAnchor, constant: 32),
+            colorCollectionView.topAnchor.constraint(equalTo: emojiCollectionView.bottomAnchor, constant: const.colorCollectionTopMargin),
             colorCollectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            colorCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
-            colorCollectionView.heightAnchor.constraint(equalToConstant:  34 + 204)
+            colorCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * const.collectionSideMargins),
+            colorCollectionView.heightAnchor.constraint(equalToConstant:  const.collectionTitleHeight + const.collectionHeight)
         ])
     }
     
@@ -326,7 +332,6 @@ extension EditTrackerViewController: UITableViewDelegate {
     }
 }
 
-
 extension EditTrackerViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         repaintSaveButton()
@@ -352,9 +357,6 @@ extension EditTrackerViewController: SchedulerViewControllerDelegate {
 }
 
 extension EditTrackerViewController: UICollectionViewDelegate {
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return 2
-//    }
     
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
@@ -389,15 +391,6 @@ extension EditTrackerViewController: UICollectionViewDelegate {
         }
         repaintSaveButton()
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-//        collectionView.indexPathsForSelectedItems?.filter({ $0.section == indexPath.section }).forEach({ collectionView.deselectItem(at: $0, animated: false) })
-//        return true
-//    }
-    
-//    func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
-//        return false
-//    }
 }
 
 extension EditTrackerViewController: UICollectionViewDelegateFlowLayout {
@@ -405,7 +398,10 @@ extension EditTrackerViewController: UICollectionViewDelegateFlowLayout {
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let width = (collectionView.frame.width - 5 * 5 - 2 * 18) / 6
+            let cellMargins = 5.0
+            let cellCols = Double(6)
+            let sideMargins = 18.0
+            let width = (collectionView.frame.width - cellMargins * (cellCols - 1) - 2 * sideMargins) / cellCols
             return CGSize(width: width, height: 52)
         }
     

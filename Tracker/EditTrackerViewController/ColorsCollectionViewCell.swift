@@ -27,20 +27,20 @@ final class ColorsCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupColorView() {
+        layer.cornerRadius = 8
         colorView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(colorView)
         NSLayoutConstraint.activate([
-            colorView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
-            colorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 6),
-            colorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -6),
-            colorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)
+            colorView.heightAnchor.constraint(equalToConstant: 40),
+            colorView.widthAnchor.constraint(equalToConstant: 40),
+            colorView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            colorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
     
     func configure(with color: UIColor) {
         colorView.backgroundColor = color
         layer.borderColor = colorView.backgroundColor?.withAlphaComponent(0.3).cgColor
-        layer.cornerRadius = 8
     }
     
     override var isSelected: Bool {

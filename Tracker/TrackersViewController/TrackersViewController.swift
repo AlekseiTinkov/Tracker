@@ -288,7 +288,10 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let width = (collectionView.frame.width - 9 - 2 * 16) / 2
+            let cellCols = Double(2)
+            let cellMargins = 16.0
+            let sideMargins = 16.0
+            let width = (collectionView.frame.width - cellMargins - 2 * sideMargins) / cellCols
             return CGSize(width: width, height: 148)
         }
     
