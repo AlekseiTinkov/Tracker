@@ -1,13 +1,13 @@
 //
-//  SupplementaryView.swift
+//  HeadersView.swift
 //  Tracker
 //
-//  Created by Алексей Тиньков on 13.08.2023.
+//  Created by Алексей Тиньков on 20.08.2023.
 //
 
 import UIKit
 
-final class SupplementaryView: UICollectionReusableView {
+final class HeadersEmojiAndColorView: UICollectionReusableView {
     
     let titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -23,7 +23,7 @@ final class SupplementaryView: UICollectionReusableView {
         addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
@@ -32,4 +32,3 @@ final class SupplementaryView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
