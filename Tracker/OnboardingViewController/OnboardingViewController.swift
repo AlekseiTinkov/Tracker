@@ -23,7 +23,6 @@ final class OnboardingViewController: UIPageViewController {
         button.setTitle("Вот это технологии!", for: .normal)
         button.titleLabel?.textColor = .ypWhite.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        //button.tintColor = .ypWhite.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
         button.backgroundColor = .ypBlack.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
