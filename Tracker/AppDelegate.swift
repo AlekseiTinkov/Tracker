@@ -18,7 +18,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         window = UIWindow()
-        window?.rootViewController = MainTabBarController()
+        window?.rootViewController = OnboardingViewController()
+        //window?.rootViewController = MainTabBarController()
         window?.makeKeyAndVisible()
         return true
     }
