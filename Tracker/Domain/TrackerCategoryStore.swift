@@ -19,6 +19,10 @@ enum TrackerCategoryStoreError: Error {
     case decodingErrorInvalidTrackers
 }
 
+protocol TrackerCategoryStoreDelegate: AnyObject {
+    func storeDidUpdate(_ store: TrackerCategoryStore)
+}
+
 final class TrackerCategoryStore: NSObject {
     private let context: NSManagedObjectContext
     private var insertedIndexes: IndexSet?
@@ -26,6 +30,8 @@ final class TrackerCategoryStore: NSObject {
     private var updatedIndexes: IndexSet?
     private var movedIndexes: Set<TrackerCategoryStoreMove>?
     private let trackerStore = TrackerStore()
+    
+    weak var delegate: TrackerCategoryStoreDelegate?
     
     convenience override init() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
@@ -134,5 +140,11 @@ extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
         @unknown default:
             fatalError()
         }
+    }
+}
+
+extension TrackerCategoryStore {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        delegate?.storeDidUpdate(self)
     }
 }

@@ -62,7 +62,7 @@ final class TrackersViewController: UIViewController {
         label.textAlignment = .center
         
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "TrackersPlaceholder")?.withRenderingMode(.alwaysOriginal)
+        imageView.image = UIImage(named: "placeholder")?.withRenderingMode(.alwaysOriginal)
         
         let placeholderSubView: UIStackView = UIStackView()
         placeholderSubView.axis = .vertical

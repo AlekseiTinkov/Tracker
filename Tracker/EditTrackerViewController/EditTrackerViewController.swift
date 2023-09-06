@@ -319,6 +319,8 @@ extension EditTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
+            let categoryViewController = CategoryViewController()
+            present(categoryViewController, animated: true)
             break
         case 1:
             let schedulerViewController = SchedulerViewController()
