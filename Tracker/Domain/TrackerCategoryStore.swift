@@ -120,6 +120,14 @@ final class TrackerCategoryStore: NSObject {
         }
         try context.save()   
     }
+    
+    func deleteCategory(_ category: TrackerCategory) throws {
+        if let category = try fetchCategory(with: category.title) {
+            context.delete(category)
+        }
+        
+        try context.save()
+    }
 }
 
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {

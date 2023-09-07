@@ -94,6 +94,12 @@ final class CategoryViewController: UIViewController {
             self.reloadPlaceholder()
         }
         
+        categoryViewModel.$categories.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+            self.reloadPlaceholder()
+        }
+        
     }
     
     @objc private func addCategoryButtonTapped() {
@@ -197,13 +203,15 @@ extension CategoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let category = categoryViewModel.categories[indexPath.row]
+        
         return UIContextMenuConfiguration(actionProvider:  { _ in
             UIMenu(children: [
                 UIAction(title: "Редактировать") { [weak self] _ in
                     print("+++")
                 },
                 UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
-                    print("---")
+                    self?.categoryViewModel.deleteCategory(category: category)
                 }
             ])
         })

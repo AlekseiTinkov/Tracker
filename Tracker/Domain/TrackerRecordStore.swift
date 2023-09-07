@@ -44,7 +44,6 @@ final class TrackerRecordStore: NSObject {
     }
     
     func add(_ newRecord: TrackerRecord) throws {
-        let trackerCoreData = try trackerStore.fetchTracker(with: newRecord.trackerId)
         let trackerRecordCoreData = TrackerRecordCoreData(context: context)
         trackerRecordCoreData.trackerId = newRecord.trackerId
         trackerRecordCoreData.date = newRecord.date

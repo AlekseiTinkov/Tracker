@@ -37,6 +37,15 @@ final class CategoryViewModel {
         selectedCategoryTitle = title
     }
     
+    func deleteCategory(category: TrackerCategory) {
+        do {
+            try categoryStore.deleteCategory(category)
+            categories = categoryStore.categories
+        } catch {
+            assertionFailure()
+        }
+    }
+    
 }
 
 extension CategoryViewModel: TrackerCategoryStoreDelegate {
