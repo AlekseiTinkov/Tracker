@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol CategoryViewControllerDelegate: AnyObject {
+    func didSelectCategory(_ title: String?)
+}
+
 final class CategoryViewController: UIViewController {
+    
+    weak var delegate: CategoryViewControllerDelegate?
     
     private var categoryViewModel: CategoryViewModel!
     private var selectedRow: Int?
@@ -80,10 +86,18 @@ final class CategoryViewController: UIViewController {
         categoryViewModel = CategoryViewModel()
         
         reloadPlaceholder()
+        
+        categoryViewModel.$selectedCategoryTitle.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.delegate?.didSelectCategory(self.categoryViewModel.selectedCategoryTitle)
+            self.tableView.reloadData()
+            self.reloadPlaceholder()
+        }
+        
     }
     
     @objc private func addCategoryButtonTapped() {
-
+        
     }
     
     private func reloadPlaceholder() {
@@ -175,7 +189,11 @@ extension CategoryViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedRow =  indexPath.row
-        tableView.reloadData()
+        categoryViewModel.selectCategory(categoryViewModel.categories[indexPath.row].title)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self = self else { return }
+            self.dismiss(animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {

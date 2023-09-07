@@ -7,8 +7,6 @@
 
 import UIKit
 
-var categoriesName: [String] = ["Важное"]
-
 final class TrackersViewController: UIViewController {
     
     private var categories: [TrackerCategory] = []

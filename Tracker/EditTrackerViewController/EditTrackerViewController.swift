@@ -16,6 +16,8 @@ final class EditTrackerViewController: UIViewController {
     weak var delegate: EditTrackerViewControllerDelegate?
     private var schedule: Set<WeekDay> = []
     
+    var categoryTitle: String?
+    
     var trackerType: TrackerType = .event
     var trackerName: String = ""
     var trackerEmojiIndex: Int?
@@ -254,8 +256,9 @@ final class EditTrackerViewController: UIViewController {
         dismiss(animated: true)
         guard let trackerColorIndex = self.trackerColorIndex else { return }
         guard let trackerEmojiIndex = self.trackerEmojiIndex else { return }
+        guard let categoryTitle else { return }
         self.trackerName = nameField.text ?? ""
-        delegate?.saveTracker(TrackerCategory(title: categoriesName[0],
+        delegate?.saveTracker(TrackerCategory(title: categoryTitle,
                                               trackers: [Tracker(trackerId: UUID(), name: self.trackerName, color: colorsCollection[trackerColorIndex], emoji: emojisCollection[trackerEmojiIndex], schedule: self.schedule)]))
     }
     
@@ -264,7 +267,8 @@ final class EditTrackerViewController: UIViewController {
         let isName = !(nameField.text?.isEmpty ?? true)
         let isColor = trackerColorIndex != nil
         let isEmoji = trackerEmojiIndex != nil
-        if isSchedule && isName && isColor && isEmoji {
+        let isCategoryTitle = categoryTitle != nil
+        if isSchedule && isName && isColor && isEmoji && isCategoryTitle {
             saveButton.backgroundColor = .ypBlack
             saveButton.isEnabled = true
         } else {
@@ -294,7 +298,7 @@ extension EditTrackerViewController: UITableViewDataSource {
         switch indexPath.row {
         case 0:
             cell.textLabel?.text = "Категория"
-            cell.detailTextLabel?.text = categoriesName[0]
+            cell.detailTextLabel?.text = categoryTitle
         case 1:
             cell.textLabel?.text = "Расписание"
             cell.detailTextLabel?.text = getScheduleString()
@@ -320,6 +324,7 @@ extension EditTrackerViewController: UITableViewDelegate {
         switch indexPath.row {
         case 0:
             let categoryViewController = CategoryViewController()
+            categoryViewController.delegate = self
             present(categoryViewController, animated: true)
             break
         case 1:
@@ -466,7 +471,14 @@ extension EditTrackerViewController: UICollectionViewDataSource {
         }
         return collectionViewCell
     }
+}
 
+extension EditTrackerViewController: CategoryViewControllerDelegate {
+    func didSelectCategory(_ title: String?) {
+        categoryTitle = title
+        repaintSaveButton()
+        tableView.reloadData()
+    }
 }
 
 

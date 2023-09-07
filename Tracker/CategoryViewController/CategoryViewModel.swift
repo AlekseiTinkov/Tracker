@@ -13,22 +13,30 @@ final class CategoryViewModel {
     @Observable
     private(set) var categories: [TrackerCategory] = []
     
+    @Observable
+    private(set) var selectedCategoryTitle: String?
+    
     private var categoryStore: TrackerCategoryStore
     
     
     convenience init() {
-        let trackerCategoryStore = try! TrackerCategoryStore(
-            context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        )
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            fatalError("Get context error")
+        }
+        let trackerCategoryStore = TrackerCategoryStore(context: appDelegate.persistentContainer.viewContext)
         self.init(trackerCategoryStore: trackerCategoryStore)
     }
-
+    
     init(trackerCategoryStore: TrackerCategoryStore) {
         self.categoryStore = trackerCategoryStore
         trackerCategoryStore.delegate = self
         categories = categoryStore.categories
     }
-
+    
+    func selectCategory(_ title: String) {
+        selectedCategoryTitle = title
+    }
+    
 }
 
 extension CategoryViewModel: TrackerCategoryStoreDelegate {
