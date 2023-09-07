@@ -47,9 +47,8 @@ final class EditTrackerViewController: UIViewController {
         let insertView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         nameField.leftView = insertView
         nameField.leftViewMode = .always
-        nameField.rightView = insertView
-        nameField.rightViewMode = .always
         nameField.clipsToBounds = true
+        nameField.clearButtonMode = .whileEditing
         return nameField
     }()
     

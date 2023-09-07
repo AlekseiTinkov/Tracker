@@ -103,7 +103,9 @@ final class CategoryViewController: UIViewController {
     }
     
     @objc private func addCategoryButtonTapped() {
-        
+        let editCategoryViewController = EditCategoryViewController()
+        editCategoryViewController.delegate = self
+        present(editCategoryViewController, animated: true)
     }
     
     private func reloadPlaceholder() {
@@ -175,6 +177,7 @@ extension CategoryViewController: UITableViewDataSource {
         
         cell.layer.masksToBounds = true
         cell.layer.cornerRadius = 16
+        cell.layer.maskedCorners = []
         if indexPath.row == 0 && categoryViewModel.categories.count == 1 {
             cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         } else if indexPath.row == 0 {
@@ -208,7 +211,10 @@ extension CategoryViewController: UITableViewDelegate {
         return UIContextMenuConfiguration(actionProvider:  { _ in
             UIMenu(children: [
                 UIAction(title: "Редактировать") { [weak self] _ in
-                    print("+++")
+                    let editCategoryViewController = EditCategoryViewController()
+                    editCategoryViewController.delegate = self
+                    editCategoryViewController.oldCategoryTitle = category.title
+                    self?.present(editCategoryViewController, animated: true)
                 },
                 UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
                     self?.categoryViewModel.deleteCategory(category: category)
@@ -216,5 +222,17 @@ extension CategoryViewController: UITableViewDelegate {
             ])
         })
     }
+}
+
+extension CategoryViewController: EditCategoryViewControllerDelegate {
+    func addCategory(title: String) {
+        categoryViewModel.addCategory(title: title)
+    }
+    
+    func renameCategory(oldTitle: String, newTitle: String) {
+        categoryViewModel.renameCategory(oldTitle: oldTitle, newTitle: newTitle)
+    }
+    
+    
 }
 

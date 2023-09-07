@@ -25,6 +25,7 @@
 		715668412AA7CC11009E1F3F /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715668402AA7CC11009E1F3F /* CategoryViewController.swift */; };
 		715668432AA7D9F8009E1F3F /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715668422AA7D9F8009E1F3F /* CategoryViewModel.swift */; };
 		715668452AA7DC6F009E1F3F /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715668442AA7DC6F009E1F3F /* Observable.swift */; };
+		715668472AAA4F59009E1F3F /* EditCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715668462AAA4F59009E1F3F /* EditCategoryViewController.swift */; };
 		718D069C2A8BBC9200B53FD8 /* NewTrackerTypeSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718D069B2A8BBC9200B53FD8 /* NewTrackerTypeSelectViewController.swift */; };
 		71CFC01F2A92199B00B97D2F /* TrackerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CFC01E2A92199B00B97D2F /* TrackerType.swift */; };
 		71CFC0212A9219C200B97D2F /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CFC0202A9219C200B97D2F /* Tracker.swift */; };
@@ -62,6 +63,7 @@
 		715668402AA7CC11009E1F3F /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		715668422AA7D9F8009E1F3F /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		715668442AA7DC6F009E1F3F /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		715668462AAA4F59009E1F3F /* EditCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryViewController.swift; sourceTree = "<group>"; };
 		718D069B2A8BBC9200B53FD8 /* NewTrackerTypeSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerTypeSelectViewController.swift; sourceTree = "<group>"; };
 		71CFC01E2A92199B00B97D2F /* TrackerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerType.swift; sourceTree = "<group>"; };
 		71CFC0202A9219C200B97D2F /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 			children = (
 				715668402AA7CC11009E1F3F /* CategoryViewController.swift */,
 				715668422AA7D9F8009E1F3F /* CategoryViewModel.swift */,
+				715668462AAA4F59009E1F3F /* EditCategoryViewController.swift */,
 			);
 			path = CategoryViewController;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				7104ED0B2A99E5F1003A5D7A /* MocTrackerCategoryStore.swift in Sources */,
 				71ED93672A78E2AE006CF418 /* TrackersCollectionViewCell.swift in Sources */,
 				71ED93422A77DF6E006CF418 /* AppDelegate.swift in Sources */,
+				715668472AAA4F59009E1F3F /* EditCategoryViewController.swift in Sources */,
 				71517EA02A97668500453EE3 /* TrackerStore.swift in Sources */,
 				71ED93562A77DFED006CF418 /* MainTabBarController.swift in Sources */,
 				715668452AA7DC6F009E1F3F /* Observable.swift in Sources */,
