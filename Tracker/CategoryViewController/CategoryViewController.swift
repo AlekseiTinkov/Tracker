@@ -10,6 +10,7 @@ import UIKit
 final class CategoryViewController: UIViewController {
     
     private var categoryViewModel: CategoryViewModel!
+    private var selectedRow: Int?
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -59,15 +60,11 @@ final class CategoryViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        //tableView.delegate = self
+        tableView.delegate = self
         tableView.dataSource = self
-        tableView.layer.cornerRadius = 16
-        tableView.clipsToBounds = true
+        tableView.backgroundColor = .ypWhite
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.separatorColor = .ypGray
-        tableView.backgroundColor = .ypWhite
-        tableView.alwaysBounceVertical = false
-        tableView.bounces = false
         return tableView
     }()
     
@@ -142,18 +139,56 @@ extension CategoryViewController: UITableViewDataSource {
         return categoryViewModel.categories.count
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.backgroundColor = .ypBackground
-        cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        75
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else { return UITableViewCell() }
+        cell.backgroundColor = .ypBackground
         cell.textLabel?.text = categoryViewModel.categories[indexPath.row].title
+        cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        
+        if indexPath.row == categoryViewModel.categories.count - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: .greatestFiniteMagnitude)
+        }
+        
+        cell.layer.masksToBounds = true
+        cell.layer.cornerRadius = 16
+        if indexPath.row == 0 && categoryViewModel.categories.count == 1 {
+            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        } else if indexPath.row == 0 {
+            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        } else if indexPath.row == categoryViewModel.categories.count - 1 {
+            cell.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        }
+        
+        cell.selectionStyle = .none
+        cell.accessoryType = selectedRow == indexPath.row ? .checkmark : .none
+        
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
+}
+
+extension CategoryViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedRow =  indexPath.row
+        tableView.reloadData()
+    }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(actionProvider:  { _ in
+            UIMenu(children: [
+                UIAction(title: "Редактировать") { [weak self] _ in
+                    print("+++")
+                },
+                UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                    print("---")
+                }
+            ])
+        })
     }
 }
+
