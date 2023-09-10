@@ -26,7 +26,7 @@ final class TrackersViewController: UIViewController {
         
         let calendar = Calendar.current
         let components = calendar.dateComponents([.day, .month, .year], from: Date())
-
+        
         var dateComponents = DateComponents()
         dateComponents.year = components.year
         dateComponents.month = components.month
@@ -115,7 +115,7 @@ final class TrackersViewController: UIViewController {
     private func hideKeyboard() {
         self.view.endEditing(true)
     }
-        
+    
     @objc
     private func addTracker() {
         let newTrackerTypeSelectViewController = NewTrackerTypeSelectViewController()
@@ -358,6 +358,11 @@ extension TrackersViewController: TrackersCollectionViewCellDelegate {
 }
 
 extension TrackersViewController: NewTrackerTypeSelectViewControllerDelegate {
+    func reloadCategory() {
+        categories = trackerCategoryStore.categories
+        updateVisibleCategories()
+    }
+    
     func saveTracker(_ trackerCategory: TrackerCategory) {
         try? trackerCategoryStore.saveTracker(tracker: trackerCategory.trackers[0], to: trackerCategory.title)
         if let indexOfCategorie = categories.firstIndex(where: {$0.title == trackerCategory.title}) {

@@ -9,6 +9,7 @@ import UIKit
 
 protocol EditTrackerViewControllerDelegate: AnyObject {
     func saveTracker(_ trackerCategory: TrackerCategory)
+    func reloadCategory()
 }
 
 final class EditTrackerViewController: UIViewController {
@@ -473,6 +474,10 @@ extension EditTrackerViewController: UICollectionViewDataSource {
 }
 
 extension EditTrackerViewController: CategoryViewControllerDelegate {
+    func reloadCategory() {
+        delegate?.reloadCategory()
+    }
+    
     func didSelectCategory(_ title: String?) {
         categoryTitle = title
         repaintSaveButton()

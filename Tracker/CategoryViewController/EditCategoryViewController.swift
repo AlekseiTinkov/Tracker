@@ -58,6 +58,16 @@ final class EditCategoryViewController: UIViewController {
         return saveButton
     }()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .ypWhite
+        setupTitleLabel()
+        setupNameField()
+        setupSaveButton()
+        setupKeyboardDismiss()
+    }
+    
     private func setupKeyboardDismiss() {
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(hideKeyboard))
@@ -68,15 +78,6 @@ final class EditCategoryViewController: UIViewController {
     @objc
     private func hideKeyboard() {
         self.view.endEditing(true)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = .ypWhite
-        setupTitleLabel()
-        setupNameField()
-        setupSaveButton()
     }
     
     private func setupTitleLabel() {
@@ -112,10 +113,6 @@ final class EditCategoryViewController: UIViewController {
     
     @objc private func saveButtonTapped() {
         guard let newTitle = nameField.text else { return }
-//        if ??? {
-//            showSaveAlert()
-//            return
-//        }
         if oldCategoryTitle == nil {
             delegate?.addCategory(title: newTitle)
         } else {
@@ -124,6 +121,7 @@ final class EditCategoryViewController: UIViewController {
         }
         dismiss(animated: true)
     }
+    
     
     private func showSaveAlert() {
         let alert = UIAlertController(
@@ -146,7 +144,7 @@ final class EditCategoryViewController: UIViewController {
             saveButton.isEnabled = false
         }
     }
-
+    
 }
 
 extension EditCategoryViewController: UITextFieldDelegate {

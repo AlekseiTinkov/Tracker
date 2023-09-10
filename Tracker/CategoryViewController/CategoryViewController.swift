@@ -9,6 +9,7 @@ import UIKit
 
 protocol CategoryViewControllerDelegate: AnyObject {
     func didSelectCategory(_ title: String?)
+    func reloadCategory()
 }
 
 final class CategoryViewController: UIViewController {
@@ -82,6 +83,7 @@ final class CategoryViewController: UIViewController {
         setupAddCategoryButton()
         setupTableView()
         setupPlaceholder()
+        setupKeyboardDismiss()
         
         categoryViewModel = CategoryViewModel()
         
@@ -96,6 +98,7 @@ final class CategoryViewController: UIViewController {
         
         categoryViewModel.$categories.bind { [weak self] _ in
             guard let self = self else { return }
+            self.delegate?.reloadCategory()
             self.tableView.reloadData()
             self.reloadPlaceholder()
         }
@@ -106,6 +109,18 @@ final class CategoryViewController: UIViewController {
         let editCategoryViewController = EditCategoryViewController()
         editCategoryViewController.delegate = self
         present(editCategoryViewController, animated: true)
+    }
+    
+    private func setupKeyboardDismiss() {
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    private func hideKeyboard() {
+        self.view.endEditing(true)
     }
     
     private func reloadPlaceholder() {
@@ -172,7 +187,9 @@ extension CategoryViewController: UITableViewDataSource {
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         
         if indexPath.row == categoryViewModel.categories.count - 1 {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: .greatestFiniteMagnitude)
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: UIScreen.main.bounds.width)
+        } else {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         }
         
         cell.layer.masksToBounds = true
@@ -217,7 +234,7 @@ extension CategoryViewController: UITableViewDelegate {
                     self?.present(editCategoryViewController, animated: true)
                 },
                 UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
-                    self?.categoryViewModel.deleteCategory(category: category)
+                    self?.categoryViewModel.deleteCategory(title: category.title)
                 }
             ])
         })

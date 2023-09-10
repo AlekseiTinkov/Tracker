@@ -37,31 +37,16 @@ final class CategoryViewModel {
         selectedCategoryTitle = title
     }
     
-    func deleteCategory(category: TrackerCategory) {
-        do {
-            try categoryStore.deleteCategory(category)
-            //categories = categoryStore.categories
-        } catch {
-            assertionFailure()
-        }
+    func deleteCategory(title: String) {
+        try? categoryStore.deleteCategory(title: title)
     }
     
     func addCategory(title: String) {
-        do {
-            try categoryStore.addCategory(title)
-            //categories = categoryStore.categories
-        } catch {
-            assertionFailure()
-        }
+        try? categoryStore.addCategory(title: title)
     }
     
     func renameCategory(oldTitle: String, newTitle: String) {
-        do {
-            try categoryStore.renameCategory(oldTitle: oldTitle, newTitle: newTitle)
-            //categories = categoryStore.categories
-        } catch {
-            assertionFailure()
-        }
+        try? categoryStore.renameCategory(oldTitle: oldTitle, newTitle: newTitle)
     }
     
 }
@@ -69,6 +54,5 @@ final class CategoryViewModel {
 extension CategoryViewModel: TrackerCategoryStoreDelegate {
     func storeDidUpdate(_ store: TrackerCategoryStore) {
         categories = categoryStore.categories
-        print(">>> \(categoryStore.categories)")
     }
 }

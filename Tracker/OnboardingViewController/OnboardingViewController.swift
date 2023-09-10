@@ -39,6 +39,7 @@ final class OnboardingViewController: UIPageViewController {
     @objc private func startButtonTapped() {
         let mainTabBarController = MainTabBarController()
         mainTabBarController.modalPresentationStyle = .fullScreen
+        mainTabBarController.modalTransitionStyle = .flipHorizontal
         present(mainTabBarController, animated: true)
     }
     
