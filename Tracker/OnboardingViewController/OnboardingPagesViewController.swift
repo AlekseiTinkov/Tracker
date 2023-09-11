@@ -7,23 +7,15 @@
 
 import UIKit
 
-let onboardingPagesTitle = ["Отслеживайте только\nто, что хотите",
-                           "Даже если это\nне литры воды и йога"]
-
 final class OnboardingPagesViewController: UIViewController {
-    
-    private (set) var pageIndex: Int
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        let image = UIImage(named: "onboarding_\(pageIndex)")
-        imageView.image = image
         return imageView
     }()
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.text = onboardingPagesTitle[pageIndex]
         label.font = UIFont.boldSystemFont(ofSize: 32)
         label.textColor = .black
         label.numberOfLines = 2
@@ -31,9 +23,22 @@ final class OnboardingPagesViewController: UIViewController {
         return label
     }()
     
-    init(with pageIndex: Int) {
-        self.pageIndex = pageIndex
+    private lazy var startButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Вот это технологии!", for: .normal)
+        button.titleLabel?.textColor = .ypWhite.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        button.backgroundColor = .ypBlack.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    init(title: String, imageName: String) {
         super.init(nibName: nil, bundle: nil)
+        self.label.text = title
+        let image = UIImage(named: imageName)
+        self.imageView.image = image
     }
     
     required init?(coder: NSCoder) {
@@ -45,6 +50,14 @@ final class OnboardingPagesViewController: UIViewController {
         
         setupImageView()
         setupLabel()
+        setupStartButton()
+    }
+    
+    @objc private func startButtonTapped() {
+        let mainTabBarController = MainTabBarController()
+        mainTabBarController.modalPresentationStyle = .fullScreen
+        mainTabBarController.modalTransitionStyle = .flipHorizontal
+        present(mainTabBarController, animated: true)
     }
     
     private func setupImageView() {
@@ -65,6 +78,17 @@ final class OnboardingPagesViewController: UIViewController {
             label.topAnchor.constraint(equalTo: view.centerYAnchor, constant: 26),
             label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+        ])
+    }
+    
+    private func setupStartButton() {
+        startButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(startButton)
+        NSLayoutConstraint.activate([
+            startButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            startButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            startButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            startButton.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
 }

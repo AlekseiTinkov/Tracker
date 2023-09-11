@@ -5,7 +5,6 @@
 //  Created by Алексей Тиньков on 24.08.2023.
 //
 
-import UIKit
 import CoreData
 
 
@@ -34,14 +33,6 @@ final class TrackerCategoryStore: NSObject {
     private var updatedIndexes: IndexSet?
     private var movedIndexes: Set<TrackerCategoryStoreMove>?
     private let trackerStore = TrackerStore()
-    
-    convenience override init() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            fatalError("Get context error")
-        }
-        let context = appDelegate.persistentContainer.viewContext
-        self.init(context: context)
-    }
     
     init(context: NSManagedObjectContext) {
         self.context = context

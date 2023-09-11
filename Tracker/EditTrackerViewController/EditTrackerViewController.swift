@@ -14,6 +14,8 @@ protocol EditTrackerViewControllerDelegate: AnyObject {
 
 final class EditTrackerViewController: UIViewController {
     
+    private let trackerCategoryStore: TrackerCategoryStore
+    
     weak var delegate: EditTrackerViewControllerDelegate?
     private var schedule: Set<WeekDay> = []
     
@@ -23,6 +25,8 @@ final class EditTrackerViewController: UIViewController {
     var trackerName: String = ""
     var trackerEmojiIndex: Int?
     var trackerColorIndex: Int?
+    
+    let cellIdentifier = "cell"
     
     private var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -55,7 +59,7 @@ final class EditTrackerViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = .ypBackground
@@ -112,6 +116,15 @@ final class EditTrackerViewController: UIViewController {
         collectionView.isScrollEnabled = false
         return collectionView
     }()
+    
+    init(trackerCategoryStore: TrackerCategoryStore) {
+        self.trackerCategoryStore = trackerCategoryStore
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -288,7 +301,7 @@ extension EditTrackerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
@@ -323,7 +336,8 @@ extension EditTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            let categoryViewController = CategoryViewController()
+            let categoryViewModel = CategoryViewModel(trackerCategoryStore: trackerCategoryStore)
+            let categoryViewController = CategoryViewController(categoryViewModel: categoryViewModel)
             categoryViewController.delegate = self
             present(categoryViewController, animated: true)
             break

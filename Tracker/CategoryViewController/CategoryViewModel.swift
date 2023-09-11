@@ -5,8 +5,7 @@
 //  Created by Алексей Тиньков on 06.09.2023.
 //
 
-import UIKit
-
+import Foundation
 
 final class CategoryViewModel {
     
@@ -17,15 +16,6 @@ final class CategoryViewModel {
     private(set) var selectedCategoryTitle: String?
     
     private var categoryStore: TrackerCategoryStore
-    
-    
-    convenience init() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            fatalError("Get context error")
-        }
-        let trackerCategoryStore = TrackerCategoryStore(context: appDelegate.persistentContainer.viewContext)
-        self.init(trackerCategoryStore: trackerCategoryStore)
-    }
     
     init(trackerCategoryStore: TrackerCategoryStore) {
         self.categoryStore = trackerCategoryStore

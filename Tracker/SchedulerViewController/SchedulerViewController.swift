@@ -16,6 +16,8 @@ final class SchedulerViewController: UIViewController {
     weak var delegate: SchedulerViewControllerDelegate?
     private var schedule: Set<WeekDay> = []
     
+    let cellIdentifier = "cell"
+    
     private var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = UIFont.systemFont(ofSize: 16)
@@ -38,7 +40,7 @@ final class SchedulerViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.layer.cornerRadius = 16
@@ -115,7 +117,7 @@ extension SchedulerViewController: UITableViewDelegate, UITableViewDataSource {
         swicher.isOn = schedule.firstIndex(of: WeekDay.allCases[indexPath.row]) != nil
         swicher.addTarget(self, action: #selector(swichTaped), for: .valueChanged)
         
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
         cell.selectionStyle = .none
         cell.backgroundColor = .ypBackground
         cell.textLabel?.text = WeekDay.allCases[indexPath.row].name

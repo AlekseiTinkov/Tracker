@@ -16,8 +16,10 @@ final class CategoryViewController: UIViewController {
     
     weak var delegate: CategoryViewControllerDelegate?
     
-    private var categoryViewModel: CategoryViewModel!
+    private var categoryViewModel: CategoryViewModel
     private var selectedRow: Int?
+    
+    let cellIdentifier = "cell"
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -66,12 +68,12 @@ final class CategoryViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .ypWhite
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.separatorColor = .ypGray
+        tableView.register(CategoryCell.self, forCellReuseIdentifier: cellIdentifier)
         return tableView
     }()
     
@@ -84,8 +86,6 @@ final class CategoryViewController: UIViewController {
         setupTableView()
         setupPlaceholder()
         setupKeyboardDismiss()
-        
-        categoryViewModel = CategoryViewModel()
         
         reloadPlaceholder()
         
@@ -103,6 +103,15 @@ final class CategoryViewController: UIViewController {
             self.reloadPlaceholder()
         }
         
+    }
+    
+    init(categoryViewModel: CategoryViewModel) {
+        self.categoryViewModel = categoryViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     @objc private func addCategoryButtonTapped() {
@@ -181,10 +190,13 @@ extension CategoryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else { return UITableViewCell() }
-        cell.backgroundColor = .ypBackground
-        cell.textLabel?.text = categoryViewModel.categories[indexPath.row].title
-        cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CategoryCell else {
+            assertionFailure("Error get cell")
+            return .init()
+        }
+        cell.configure(title: categoryViewModel.categories[indexPath.row].title,
+                       check: categoryViewModel.selectedCategoryTitle == categoryViewModel.categories[indexPath.row].title
+        )
         
         if indexPath.row == categoryViewModel.categories.count - 1 {
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: UIScreen.main.bounds.width)
@@ -202,9 +214,6 @@ extension CategoryViewController: UITableViewDataSource {
         } else if indexPath.row == categoryViewModel.categories.count - 1 {
             cell.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         }
-        
-        cell.selectionStyle = .none
-        cell.accessoryType = selectedRow == indexPath.row ? .checkmark : .none
         
         return cell
     }

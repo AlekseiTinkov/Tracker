@@ -15,6 +15,7 @@ protocol NewTrackerTypeSelectViewControllerDelegate: AnyObject {
 final class NewTrackerTypeSelectViewController: UIViewController {
     
     weak var delegate: NewTrackerTypeSelectViewControllerDelegate?
+    private let trackerCategoryStore: TrackerCategoryStore
     
     private var titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -60,6 +61,15 @@ final class NewTrackerTypeSelectViewController: UIViewController {
         eventButton.addTarget(self, action: #selector(eventButtonTapped), for: .touchUpInside)
         return eventButton
     }()
+    
+    init(trackerCategoryStore: TrackerCategoryStore) {
+        self.trackerCategoryStore = trackerCategoryStore
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,14 +121,14 @@ final class NewTrackerTypeSelectViewController: UIViewController {
     }
     
     @objc private func habitButtonTapped() {
-        let editTrackerViewController = EditTrackerViewController()
+        let editTrackerViewController = EditTrackerViewController(trackerCategoryStore: trackerCategoryStore)
         editTrackerViewController.delegate = self
         editTrackerViewController.trackerType = .habit
         present(editTrackerViewController, animated: true)
     }
     
     @objc private func eventButtonTapped() {
-        let editTrackerViewController = EditTrackerViewController()
+        let editTrackerViewController = EditTrackerViewController(trackerCategoryStore: trackerCategoryStore)
         editTrackerViewController.delegate = self
         editTrackerViewController.trackerType = .event
         present(editTrackerViewController, animated: true)

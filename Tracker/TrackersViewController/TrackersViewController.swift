@@ -12,10 +12,12 @@ final class TrackersViewController: UIViewController {
     private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
     private var completedTrackers: Set<TrackerRecord> = []
-    private let trackerCategoryStore = TrackerCategoryStore()
+    private let trackerCategoryStore: TrackerCategoryStore
     private let trackerRecordStore = TrackerRecordStore()
     private var currentDate: Date = Date()
     
+    let cellIdentifier = "cell"
+    let headerIdentifier = "header"
     
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -78,11 +80,24 @@ final class TrackersViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.dataSource = self
-        collectionView.register(TrackersCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(HeaderTrackersView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(TrackersCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        collectionView.register(HeaderTrackersView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         collectionView.delegate = self
         return collectionView
     }()
+    
+    init() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            fatalError("Get context error")
+        }
+        let context = appDelegate.persistentContainer.viewContext
+        trackerCategoryStore = TrackerCategoryStore(context: context)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,7 +133,7 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func addTracker() {
-        let newTrackerTypeSelectViewController = NewTrackerTypeSelectViewController()
+        let newTrackerTypeSelectViewController = NewTrackerTypeSelectViewController(trackerCategoryStore: trackerCategoryStore)
         newTrackerTypeSelectViewController.delegate = self
         present(newTrackerTypeSelectViewController, animated: true)
     }
@@ -237,7 +252,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TrackersCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? TrackersCollectionViewCell else {
             assertionFailure("Error get cell")
             return .init()
         }
@@ -267,7 +282,7 @@ extension TrackersViewController: UICollectionViewDelegate {
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
         
-        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? HeaderTrackersView else {
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as? HeaderTrackersView else {
             assertionFailure("Error get view")
             return .init()
         }
