@@ -74,6 +74,10 @@ class MocTrackerCategoryStore {
                 trackerCategoryCoreData2.addToTrackers(trackerCoreData)
                 return trackerCoreData
             }
+        
+                let trackerCategoryCoreData3 = TrackerCategoryCoreData(context: context)
+                trackerCategoryCoreData3.title = "Пустая категория"
+        
         do {
             try context.save()
         } catch {

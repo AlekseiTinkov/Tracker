@@ -13,12 +13,19 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
+    let secondLaunchKey = "secondLaunch"
+    
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         window = UIWindow()
-        window?.rootViewController = MainTabBarController()
+        if !UserDefaults.standard.bool(forKey: secondLaunchKey) {
+            UserDefaults.standard.set(true, forKey: secondLaunchKey)
+            window?.rootViewController = OnboardingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        } else {
+            window?.rootViewController = MainTabBarController()
+        }
         window?.makeKeyAndVisible()
         return true
     }

@@ -9,17 +9,24 @@ import UIKit
 
 protocol EditTrackerViewControllerDelegate: AnyObject {
     func saveTracker(_ trackerCategory: TrackerCategory)
+    func reloadCategory()
 }
 
 final class EditTrackerViewController: UIViewController {
     
+    private let trackerCategoryStore: TrackerCategoryStore
+    
     weak var delegate: EditTrackerViewControllerDelegate?
     private var schedule: Set<WeekDay> = []
+    
+    var categoryTitle: String?
     
     var trackerType: TrackerType = .event
     var trackerName: String = ""
     var trackerEmojiIndex: Int?
     var trackerColorIndex: Int?
+    
+    let cellIdentifier = "cell"
     
     private var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -45,15 +52,14 @@ final class EditTrackerViewController: UIViewController {
         let insertView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         nameField.leftView = insertView
         nameField.leftViewMode = .always
-        nameField.rightView = insertView
-        nameField.rightViewMode = .always
         nameField.clipsToBounds = true
+        nameField.clearButtonMode = .whileEditing
         return nameField
     }()
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = .ypBackground
@@ -110,6 +116,15 @@ final class EditTrackerViewController: UIViewController {
         collectionView.isScrollEnabled = false
         return collectionView
     }()
+    
+    init(trackerCategoryStore: TrackerCategoryStore) {
+        self.trackerCategoryStore = trackerCategoryStore
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -254,8 +269,9 @@ final class EditTrackerViewController: UIViewController {
         dismiss(animated: true)
         guard let trackerColorIndex = self.trackerColorIndex else { return }
         guard let trackerEmojiIndex = self.trackerEmojiIndex else { return }
+        guard let categoryTitle else { return }
         self.trackerName = nameField.text ?? ""
-        delegate?.saveTracker(TrackerCategory(title: categoriesName[0],
+        delegate?.saveTracker(TrackerCategory(title: categoryTitle,
                                               trackers: [Tracker(trackerId: UUID(), name: self.trackerName, color: colorsCollection[trackerColorIndex], emoji: emojisCollection[trackerEmojiIndex], schedule: self.schedule)]))
     }
     
@@ -264,7 +280,8 @@ final class EditTrackerViewController: UIViewController {
         let isName = !(nameField.text?.isEmpty ?? true)
         let isColor = trackerColorIndex != nil
         let isEmoji = trackerEmojiIndex != nil
-        if isSchedule && isName && isColor && isEmoji {
+        let isCategoryTitle = categoryTitle != nil
+        if isSchedule && isName && isColor && isEmoji && isCategoryTitle {
             saveButton.backgroundColor = .ypBlack
             saveButton.isEnabled = true
         } else {
@@ -284,7 +301,7 @@ extension EditTrackerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
@@ -294,7 +311,7 @@ extension EditTrackerViewController: UITableViewDataSource {
         switch indexPath.row {
         case 0:
             cell.textLabel?.text = "Категория"
-            cell.detailTextLabel?.text = categoriesName[0]
+            cell.detailTextLabel?.text = categoryTitle
         case 1:
             cell.textLabel?.text = "Расписание"
             cell.detailTextLabel?.text = getScheduleString()
@@ -319,6 +336,10 @@ extension EditTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
+            let categoryViewModel = CategoryViewModel(trackerCategoryStore: trackerCategoryStore)
+            let categoryViewController = CategoryViewController(categoryViewModel: categoryViewModel)
+            categoryViewController.delegate = self
+            present(categoryViewController, animated: true)
             break
         case 1:
             let schedulerViewController = SchedulerViewController()
@@ -464,7 +485,18 @@ extension EditTrackerViewController: UICollectionViewDataSource {
         }
         return collectionViewCell
     }
+}
 
+extension EditTrackerViewController: CategoryViewControllerDelegate {
+    func reloadCategory() {
+        delegate?.reloadCategory()
+    }
+    
+    func didSelectCategory(_ title: String?) {
+        categoryTitle = title
+        repaintSaveButton()
+        tableView.reloadData()
+    }
 }
 
 

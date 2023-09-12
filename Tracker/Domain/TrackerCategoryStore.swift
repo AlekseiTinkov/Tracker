@@ -5,8 +5,12 @@
 //  Created by Алексей Тиньков on 24.08.2023.
 //
 
-import UIKit
 import CoreData
+
+
+protocol TrackerCategoryStoreDelegate: AnyObject {
+    func storeDidUpdate(_ store: TrackerCategoryStore)
+}
 
 struct TrackerCategoryStoreMove: Hashable {
     let oldIndex: Int
@@ -20,20 +24,15 @@ enum TrackerCategoryStoreError: Error {
 }
 
 final class TrackerCategoryStore: NSObject {
+    
+    weak var delegate: TrackerCategoryStoreDelegate?
+    
     private let context: NSManagedObjectContext
     private var insertedIndexes: IndexSet?
     private var deletedIndexes: IndexSet?
     private var updatedIndexes: IndexSet?
     private var movedIndexes: Set<TrackerCategoryStoreMove>?
     private let trackerStore = TrackerStore()
-    
-    convenience override init() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            fatalError("Get context error")
-        }
-        let context = appDelegate.persistentContainer.viewContext
-        self.init(context: context)
-    }
     
     init(context: NSManagedObjectContext) {
         self.context = context
@@ -112,7 +111,32 @@ final class TrackerCategoryStore: NSObject {
             newCategory.title = categoryName
             newCategory.trackers = NSSet(array: [trackerCoreData])
         }
-        try context.save()   
+        try context.save()
+    }
+    
+    func deleteCategory(title: String) throws {
+        if let category = try fetchCategory(with: title) {
+            context.delete(category)
+            try context.save()
+        }
+    }
+    
+    func addCategory(title: String) throws {
+        if (try fetchCategory(with: title)) != nil { return }
+        let trackerCategory = TrackerCategory(title: title, trackers: [])
+        let trackerCategoryCoreData = TrackerCategoryCoreData(context: context)
+        trackerCategoryCoreData.title = trackerCategory.title
+        trackerCategoryCoreData.trackers = NSSet(array: trackerCategory.trackers)
+        try context.save()
+    }
+    
+    func renameCategory(oldTitle: String, newTitle: String) throws {
+        guard let oldCategoryCoreData = try? fetchCategory(with: oldTitle) else { return }
+        try addCategory(title: newTitle)
+        guard let newCategoryCoreData = try? fetchCategory(with: newTitle) else { return }
+        newCategoryCoreData.trackers = oldCategoryCoreData.trackers
+        try context.save()
+        try deleteCategory(title: oldTitle)
     }
 }
 
@@ -135,4 +159,9 @@ extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
             fatalError()
         }
     }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        delegate?.storeDidUpdate(self)
+    }
+    
 }

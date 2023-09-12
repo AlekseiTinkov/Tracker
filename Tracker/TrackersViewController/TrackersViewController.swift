@@ -7,17 +7,17 @@
 
 import UIKit
 
-var categoriesName: [String] = ["Важное"]
-
 final class TrackersViewController: UIViewController {
     
     private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
     private var completedTrackers: Set<TrackerRecord> = []
-    private let trackerCategoryStore = TrackerCategoryStore()
+    private let trackerCategoryStore: TrackerCategoryStore
     private let trackerRecordStore = TrackerRecordStore()
     private var currentDate: Date = Date()
     
+    let cellIdentifier = "cell"
+    let headerIdentifier = "header"
     
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -28,7 +28,7 @@ final class TrackersViewController: UIViewController {
         
         let calendar = Calendar.current
         let components = calendar.dateComponents([.day, .month, .year], from: Date())
-
+        
         var dateComponents = DateComponents()
         dateComponents.year = components.year
         dateComponents.month = components.month
@@ -62,7 +62,7 @@ final class TrackersViewController: UIViewController {
         label.textAlignment = .center
         
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "TrackersPlaceholder")?.withRenderingMode(.alwaysOriginal)
+        imageView.image = UIImage(named: "placeholder")?.withRenderingMode(.alwaysOriginal)
         
         let placeholderSubView: UIStackView = UIStackView()
         placeholderSubView.axis = .vertical
@@ -80,11 +80,24 @@ final class TrackersViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.dataSource = self
-        collectionView.register(TrackersCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(HeaderTrackersView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(TrackersCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        collectionView.register(HeaderTrackersView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         collectionView.delegate = self
         return collectionView
     }()
+    
+    init() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            fatalError("Get context error")
+        }
+        let context = appDelegate.persistentContainer.viewContext
+        trackerCategoryStore = TrackerCategoryStore(context: context)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,10 +130,10 @@ final class TrackersViewController: UIViewController {
     private func hideKeyboard() {
         self.view.endEditing(true)
     }
-        
+    
     @objc
     private func addTracker() {
-        let newTrackerTypeSelectViewController = NewTrackerTypeSelectViewController()
+        let newTrackerTypeSelectViewController = NewTrackerTypeSelectViewController(trackerCategoryStore: trackerCategoryStore)
         newTrackerTypeSelectViewController.delegate = self
         present(newTrackerTypeSelectViewController, animated: true)
     }
@@ -239,7 +252,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TrackersCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? TrackersCollectionViewCell else {
             assertionFailure("Error get cell")
             return .init()
         }
@@ -269,7 +282,7 @@ extension TrackersViewController: UICollectionViewDelegate {
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
         
-        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? HeaderTrackersView else {
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as? HeaderTrackersView else {
             assertionFailure("Error get view")
             return .init()
         }
@@ -360,6 +373,11 @@ extension TrackersViewController: TrackersCollectionViewCellDelegate {
 }
 
 extension TrackersViewController: NewTrackerTypeSelectViewControllerDelegate {
+    func reloadCategory() {
+        categories = trackerCategoryStore.categories
+        updateVisibleCategories()
+    }
+    
     func saveTracker(_ trackerCategory: TrackerCategory) {
         try? trackerCategoryStore.saveTracker(tracker: trackerCategory.trackers[0], to: trackerCategory.title)
         if let indexOfCategorie = categories.firstIndex(where: {$0.title == trackerCategory.title}) {
