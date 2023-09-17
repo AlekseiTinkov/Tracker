@@ -5,6 +5,7 @@
 //  Created by Алексей Тиньков on 16.08.2023.
 //
 
+import Foundation
 
 // дни недели
 enum WeekDay: Int, Comparable, CaseIterable {
@@ -37,19 +38,19 @@ enum WeekDay: Int, Comparable, CaseIterable {
     var name: String {
         switch self {
         case .monday:
-            return "Понедельник"
+            return NSLocalizedString("WeekDay.monday", comment: "")
         case .tuesday:
-            return "Вторник"
+            return NSLocalizedString("WeekDay.tuesday", comment: "")
         case .wednesday:
-            return "Среда"
+            return NSLocalizedString("WeekDay.wednesday", comment: "")
         case .thursday:
-            return "Четверг"
+            return NSLocalizedString("WeekDay.thursday", comment: "")
         case .friday:
-            return "Пятница"
+            return NSLocalizedString("WeekDay.friday", comment: "")
         case .saturday:
-            return "Суббота"
+            return NSLocalizedString("WeekDay.saturday", comment: "")
         case .sunday:
-            return "Воскресенье"
+            return NSLocalizedString("WeekDay.sunday", comment: "")
         }
     }
     
@@ -57,19 +58,19 @@ enum WeekDay: Int, Comparable, CaseIterable {
     var shortName: String {
         switch self {
         case .monday:
-            return "Пн"
+            return NSLocalizedString("WeekDay.mo", comment: "")
         case .tuesday:
-            return "Вт"
+            return NSLocalizedString("WeekDay.tu", comment: "")
         case .wednesday:
-            return "Ср"
+            return NSLocalizedString("WeekDay.we", comment: "")
         case .thursday:
-            return "Чт"
+            return NSLocalizedString("WeekDay.th", comment: "")
         case .friday:
-            return "Пт"
+            return NSLocalizedString("WeekDay.fr", comment: "")
         case .saturday:
-            return "Сб"
+            return NSLocalizedString("WeekDay.sa", comment: "")
         case .sunday:
-            return "Вс"
+            return NSLocalizedString("WeekDay.su", comment: "")
         }
     }
 }

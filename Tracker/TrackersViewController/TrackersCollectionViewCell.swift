@@ -131,27 +131,8 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         button.backgroundColor = tracker.color.withAlphaComponent(isCompletedToday ? 0.3 : 1.0)
         button.setImage(UIImage(named: isCompletedToday ? "cell_done" : "cell_plus"), for: .normal)
         emojiLabel.text = tracker.emoji
-        daysCountLabel.text = "\(completedDays) \(getDaysText(completedDays))"
-    }
-    
-    private func getDaysText(_ daysCount: Int) -> String {
-        var text: String
-        switch daysCount % 10 {
-        case 0:
-            text = "дней"
-        case 1:
-            text = "день"
-        case 2,3,4:
-            text = "дня"
-        default:
-            text = "дней"
-        }
-        
-        if (11...14).contains(daysCount % 100) {
-            text = "дней"
-        }
-        
-        return text
+        daysCountLabel.text = String.localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "Number of remaining tasks"), completedDays)
     }
     
     @objc private func plusButtonTapped() {

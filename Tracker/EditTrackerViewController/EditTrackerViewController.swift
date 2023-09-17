@@ -38,14 +38,14 @@ final class EditTrackerViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.font = UIFont.systemFont(ofSize: 16)
         titleLabel.textColor = .ypBlack
-        titleLabel.text = self.trackerType == .event ? "Новое нерегулярное событие" : "Новая привычка"
+        titleLabel.text = self.trackerType == .event ? NSLocalizedString("EditTrackerViewController.titleLabel.newEvent", comment: "") : NSLocalizedString("EditTrackerViewController.titleLabel.newHabit", comment: "")
         return titleLabel
     }()
     
     private lazy var nameField: UITextField = {
         let nameField = UITextField()
         nameField.delegate = self
-        nameField.placeholder = "Введите название трекера"
+        nameField.placeholder = NSLocalizedString("EditTrackerViewController.nameField", comment: "")
         nameField.font = UIFont.systemFont(ofSize: 17)
         nameField.backgroundColor = .ypBackground
         nameField.layer.cornerRadius = 16
@@ -73,7 +73,7 @@ final class EditTrackerViewController: UIViewController {
     
     private lazy var cancelButton: UIButton = {
         let cancelButton = UIButton()
-        cancelButton.setTitle("Отменить", for: .normal)
+        cancelButton.setTitle(NSLocalizedString("EditTrackerViewController.cancelButton", comment: ""), for: .normal)
         cancelButton.setTitleColor(.ypRed, for: .normal)
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         cancelButton.backgroundColor = .ypWhite
@@ -87,7 +87,7 @@ final class EditTrackerViewController: UIViewController {
     
     private lazy var saveButton: UIButton = {
         let saveButton = UIButton()
-        saveButton.setTitle("Создать", for: .normal)
+        saveButton.setTitle(NSLocalizedString("EditTrackerViewController.saveButton", comment: ""), for: .normal)
         saveButton.setTitleColor(.ypWhite, for: .normal)
         saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         saveButton.backgroundColor = .ypGray
@@ -310,10 +310,10 @@ extension EditTrackerViewController: UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            cell.textLabel?.text = "Категория"
+            cell.textLabel?.text = NSLocalizedString("EditTrackerViewController.tableView.category", comment: "")
             cell.detailTextLabel?.text = categoryTitle
         case 1:
-            cell.textLabel?.text = "Расписание"
+            cell.textLabel?.text = NSLocalizedString("EditTrackerViewController.tableView.schedule", comment: "")
             cell.detailTextLabel?.text = getScheduleString()
         default:
             break
@@ -322,7 +322,7 @@ extension EditTrackerViewController: UITableViewDataSource {
     }
     
     private func getScheduleString() -> String {
-        if schedule.count == WeekDay.allCases.count { return "Каждый день" }
+        if schedule.count == WeekDay.allCases.count { return NSLocalizedString("EditTrackerViewController.tableView.schedule.everyDay", comment: "") }
         var string = ""
         schedule.sorted().forEach { day in
             if !string.isEmpty {string.append(", ")}
@@ -388,7 +388,7 @@ extension EditTrackerViewController: UICollectionViewDelegate {
                 assertionFailure("Error get view")
                 return .init()
             }
-            view.titleLabel.text = "Emoji"
+            view.titleLabel.text = NSLocalizedString("EditTrackerViewController.collectionView.titleLabel.emoji", comment: "")
             collectionReusableView = view
         }
         if collectionView == colorCollectionView {
@@ -396,7 +396,7 @@ extension EditTrackerViewController: UICollectionViewDelegate {
                 assertionFailure("Error get view")
                 return .init()
             }
-            view.titleLabel.text = "Цвет"
+            view.titleLabel.text = NSLocalizedString("EditTrackerViewController.collectionView.titleLabel.color", comment: "")
             collectionReusableView = view
         }
         return collectionReusableView

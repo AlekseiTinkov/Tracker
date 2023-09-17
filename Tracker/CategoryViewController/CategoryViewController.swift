@@ -25,13 +25,13 @@ final class CategoryViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .ypBlack
-        label.text = "Категория"
+        label.text = NSLocalizedString("CategoryViewController.titleLabel", comment: "")
         return label
     }()
     
     private lazy var addCategoryButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitle(NSLocalizedString("CategoryViewController.addCategoryButton", comment: ""), for: .normal)
         button.setTitleColor(.ypWhite, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.backgroundColor = .ypBlack
@@ -45,7 +45,7 @@ final class CategoryViewController: UIViewController {
         let placeholderView = UIStackView()
         
         let label = UILabel()
-        label.text = "Привычки и события\nможно объединить по смыслу"
+        label.text = NSLocalizedString("CategoryViewController.placeholderLabel", comment: "")
         label.font = UIFont.boldSystemFont(ofSize: 12.0)
         label.textAlignment = .center
         label.numberOfLines = 2
@@ -236,13 +236,13 @@ extension CategoryViewController: UITableViewDelegate {
         
         return UIContextMenuConfiguration(actionProvider:  { _ in
             UIMenu(children: [
-                UIAction(title: "Редактировать") { [weak self] _ in
+                UIAction(title: NSLocalizedString("CategoryViewController.tableView.actionEdit", comment: "")) { [weak self] _ in
                     let editCategoryViewController = EditCategoryViewController()
                     editCategoryViewController.delegate = self
                     editCategoryViewController.oldCategoryTitle = category.title
                     self?.present(editCategoryViewController, animated: true)
                 },
-                UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                UIAction(title: NSLocalizedString("CategoryViewController.tableView.actionDelete", comment: ""), attributes: .destructive) { [weak self] _ in
                     self?.categoryViewModel.deleteCategory(title: category.title)
                 }
             ])

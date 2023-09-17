@@ -1,0 +1,74 @@
+/*
+  Localizable.strings
+  Tracker
+
+  Created by Алексей Тиньков on 14.09.2023.
+  
+*/
+
+
+"WeekDay.monday" = "Понедельник";
+"WeekDay.tuesday" = "Вторник";
+"WeekDay.wednesday" = "Среда";
+"WeekDay.thursday" = "Четверг";
+"WeekDay.friday" = "Пятница";
+"WeekDay.saturday" = "Суббота";
+"WeekDay.sunday" = "Воскресенье";
+
+"WeekDay.mo" = "Пн";
+"WeekDay.tu" = "Вт";
+"WeekDay.we" = "Ср";
+"WeekDay.th" = "Чт";
+"WeekDay.fr" = "Пт";
+"WeekDay.sa" = "Сб";
+"WeekDay.su" = "Вс";
+
+"MainTabBarController.trackers" = "Трекеры";
+"MainTabBarController.statistics" = "Статистика";
+
+"OnboardingViewController.page0.title" = "Отслеживайте только\nто, что хотите";
+"OnboardingViewController.page1.title" = "Даже если это\nне литры воды и йога";
+
+"OnboardingPagesViewController.startButton.title" = "Вот это технологии!";
+
+"TrackersViewController.titleLabel" = "Трекеры";
+"TrackersViewController.searchField" = "Поиск";
+"TrackersViewController.placeholderLabel" = "Что будем отслеживать?";
+"TrackersViewController.dateAlert.message" = "Это время еще не пришло...";
+"TrackersViewController.dateAlert.button" = "Это время еще не пришло...";
+
+"NewTrackerTypeSelectViewController.titleLabel" = "Создание трекера";
+"NewTrackerTypeSelectViewController.habitButton" = "Привычка";
+"NewTrackerTypeSelectViewController.eventButton" = "Нерегулярное событие";
+
+"EditTrackerViewController.titleLabel.newEvent" = "Новое нерегулярное событие";
+"EditTrackerViewController.titleLabel.newHabit" = "Новая привычка";
+"EditTrackerViewController.nameField" = "Введите название трекера";
+"EditTrackerViewController.cancelButton" = "Отменить";
+"EditTrackerViewController.saveButton" = "Создать";
+"EditTrackerViewController.tableView.category" = "Категория";
+"EditTrackerViewController.tableView.schedule" = "Расписание";
+"EditTrackerViewController.tableView.schedule.everyDay" = "Каждый день";
+"EditTrackerViewController.collectionView.titleLabel.emoji" = "Emoji";
+"EditTrackerViewController.collectionView.titleLabel.color" = "Цвет";
+
+"SchedulerViewController.titleLabel" = "Расписание";
+"SchedulerViewController.saveButton" = "Готово";
+
+"CategoryViewController.titleLabel" = "Категория";
+"CategoryViewController.addCategoryButton" = "Добавить категорию";
+"CategoryViewController.placeholderLabel" = "Привычки и события\nможно объединить по смыслу";
+"CategoryViewController.tableView.actionEdit" = "Редактировать";
+"CategoryViewController.tableView.actionDelete" = "Удалить";
+
+"EditCategoryViewController.titleLabel.new" = "Новая категория";
+"EditCategoryViewController.titleLabel.edit" = "Редактирование категории";
+"EditCategoryViewController.nameField" = "Введите название категории";
+"EditCategoryViewController.saveButton" = "Готово";
+"EditCategoryViewController.saveAlert.message" = "Такая категория уже существует";
+"EditCategoryViewController.saveAlert.button" = "OK";
+
+
+
+
+

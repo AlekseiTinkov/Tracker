@@ -41,14 +41,14 @@ final class TrackersViewController: UIViewController {
     
     private var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = "Трекеры"
+        titleLabel.text = NSLocalizedString("TrackersViewController.titleLabel", comment: "")
         titleLabel.font = UIFont.boldSystemFont(ofSize: 34.0)
         return titleLabel
     }()
     
     private lazy var searchField: UISearchTextField = {
         let searchField = UISearchTextField()
-        searchField.placeholder = "Поиск"
+        searchField.placeholder = NSLocalizedString("TrackersViewController.searchField", comment: "")
         searchField.delegate = self
         return searchField
     }()
@@ -57,7 +57,7 @@ final class TrackersViewController: UIViewController {
         let placeholderView = UIStackView()
         
         let label = UILabel()
-        label.text = "Что будем отслеживать?"
+        label.text = NSLocalizedString("TrackersViewController.placeholderLabel", comment: "")
         label.font = UIFont.boldSystemFont(ofSize: 12.0)
         label.textAlignment = .center
         
@@ -363,10 +363,10 @@ extension TrackersViewController: TrackersCollectionViewCellDelegate {
     private func showDateAlert() {
         let alert = UIAlertController(
             title: nil,
-            message: "Это время еще не пришло...",
+            message: NSLocalizedString("TrackersViewController.dateAlert.message", comment: ""),
             preferredStyle: .alert
         )
-        let action = UIAlertAction(title: "OK", style: .cancel)
+        let action = UIAlertAction(title: NSLocalizedString("TrackersViewController.dateAlert.button", comment: ""), style: .cancel)
         alert.addAction(action)
         self.present(alert, animated: true)
     }

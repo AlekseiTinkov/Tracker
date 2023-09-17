@@ -21,7 +21,7 @@ final class NewTrackerTypeSelectViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.font = UIFont.systemFont(ofSize: 16)
         titleLabel.textColor = .ypBlack
-        titleLabel.text = "Создание трекера"
+        titleLabel.text = NSLocalizedString("NewTrackerTypeSelectViewController.titleLabel", comment: "")
         return titleLabel
     }()
     
@@ -40,7 +40,7 @@ final class NewTrackerTypeSelectViewController: UIViewController {
     
     private lazy var habitButton: UIButton = {
         let habitButton = UIButton()
-        habitButton.setTitle("Привычка", for: .normal)
+        habitButton.setTitle(NSLocalizedString("NewTrackerTypeSelectViewController.habitButton", comment: ""), for: .normal)
         habitButton.setTitleColor(.ypWhite, for: .normal)
         habitButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         habitButton.backgroundColor = .ypBlack
@@ -52,7 +52,7 @@ final class NewTrackerTypeSelectViewController: UIViewController {
     
     private lazy var eventButton: UIButton = {
         let eventButton = UIButton()
-        eventButton.setTitle("Нерегулярное событие", for: .normal)
+        eventButton.setTitle(NSLocalizedString("NewTrackerTypeSelectViewController.eventButton", comment: ""), for: .normal)
         eventButton.setTitleColor(.ypWhite, for: .normal)
         eventButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         eventButton.backgroundColor = .ypBlack
