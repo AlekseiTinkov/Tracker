@@ -1,0 +1,74 @@
+/*
+  Localizable.strings
+  Tracker
+
+  Created by Алексей Тиньков on 14.09.2023.
+  
+*/
+
+
+"WeekDay.monday" = "Monday";
+"WeekDay.tuesday" = "Tuesday";
+"WeekDay.wednesday" = "Wednesday";
+"WeekDay.thursday" = "Thursday";
+"WeekDay.friday" = "Friday";
+"WeekDay.saturday" = "Saturday";
+"WeekDay.sunday" = "Sunday";
+
+"WeekDay.mo" = "Mo";
+"WeekDay.tu" = "Tu";
+"WeekDay.we" = "We";
+"WeekDay.th" = "Th";
+"WeekDay.fr" = "Fr";
+"WeekDay.sa" = "Sa";
+"WeekDay.su" = "Su";
+
+"MainTabBarController.trackers" = "Trackers";
+"MainTabBarController.statistics" = "Statistics";
+
+"OnboardingViewController.page0.title" = "Track only\nwhat you want";
+"OnboardingViewController.page1.title" = "Even if it\nnot liters of water and yoga";
+
+"OnboardingPagesViewController.startButton.title" = "This is technology!";
+
+"TrackersViewController.titleLabel" = "Trackers";
+"TrackersViewController.searchField" = "Search";
+"TrackersViewController.placeholderLabel" = "What will we track?";
+"TrackersViewController.dateAlert.message" = "Это время еще не пришло...";
+"TrackersViewController.dateAlert.button" = "OK";
+
+"NewTrackerTypeSelectViewController.titleLabel" = "Creating a tracker";
+"NewTrackerTypeSelectViewController.habitButton" = "Habit";
+"NewTrackerTypeSelectViewController.eventButton" = "Irregular event";
+
+"EditTrackerViewController.titleLabel.newEvent" = "New irregular event";
+"EditTrackerViewController.titleLabel.newHabit" = "New habit";
+"EditTrackerViewController.nameField" = "Enter tracker name";
+"EditTrackerViewController.cancelButton" = "Cancel";
+"EditTrackerViewController.saveButton" = "Create";
+"EditTrackerViewController.tableView.category" = "Category";
+"EditTrackerViewController.tableView.schedule" = "Schedule";
+"EditTrackerViewController.tableView.schedule.everyDay" = "Every day";
+"EditTrackerViewController.collectionView.titleLabel.emoji" = "Emoji";
+"EditTrackerViewController.collectionView.titleLabel.color" = "Color";
+
+"SchedulerViewController.titleLabel" = "Schedule";
+"SchedulerViewController.saveButton" = "Ready";
+
+"CategoryViewController.titleLabel" = "Category";
+"CategoryViewController.addCategoryButton" = "Add category";
+"CategoryViewController.placeholderLabel" = "Habits and events\ncan be combined by meaning";
+"CategoryViewController.tableView.actionEdit" = "Edit";
+"CategoryViewController.tableView.actionDelete" = "Delete";
+
+"EditCategoryViewController.titleLabel.new" = "New category";
+"EditCategoryViewController.titleLabel.edit" = "Editing a category";
+"EditCategoryViewController.nameField" = "Enter category name";
+"EditCategoryViewController.saveButton" = "Ready";
+"EditCategoryViewController.saveAlert.message" = "This category already exists";
+"EditCategoryViewController.saveAlert.button" = "OK";
+
+
+
+
+

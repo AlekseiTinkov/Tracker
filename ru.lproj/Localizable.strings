@@ -35,7 +35,7 @@
 "TrackersViewController.searchField" = "Поиск";
 "TrackersViewController.placeholderLabel" = "Что будем отслеживать?";
 "TrackersViewController.dateAlert.message" = "Это время еще не пришло...";
-"TrackersViewController.dateAlert.button" = "Это время еще не пришло...";
+"TrackersViewController.dateAlert.button" = "OK";
 
 "NewTrackerTypeSelectViewController.titleLabel" = "Создание трекера";
 "NewTrackerTypeSelectViewController.habitButton" = "Привычка";
