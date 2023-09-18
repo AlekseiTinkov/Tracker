@@ -83,6 +83,7 @@ final class TrackersViewController: UIViewController {
         collectionView.register(TrackersCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
         collectionView.register(HeaderTrackersView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         collectionView.delegate = self
+        collectionView.backgroundColor = .ypWhite
         return collectionView
     }()
     
@@ -180,9 +181,10 @@ final class TrackersViewController: UIViewController {
     
     private func setupNavBar() {
         if let navBar = navigationController?.navigationBar {
-            let imageButton = UIImage(named: "button_plus")?.withRenderingMode(.alwaysOriginal)
+            let imageButton = UIImage(named: "button_plus")?.withRenderingMode(.alwaysTemplate)
             
             let leftItem = UIBarButtonItem(image: imageButton, style: .plain, target: self, action: #selector(addTracker))
+            leftItem.tintColor = .ypBlack
             navBar.topItem?.setLeftBarButton(leftItem, animated: false)
             
             let rightItem = UIBarButtonItem(customView: datePicker)

@@ -88,7 +88,7 @@ final class EditTrackerViewController: UIViewController {
     private lazy var saveButton: UIButton = {
         let saveButton = UIButton()
         saveButton.setTitle(NSLocalizedString("EditTrackerViewController.saveButton", comment: ""), for: .normal)
-        saveButton.setTitleColor(.ypWhite, for: .normal)
+        saveButton.setTitleColor(.white, for: .normal)
         saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         saveButton.backgroundColor = .ypGray
         saveButton.layer.cornerRadius = 16
