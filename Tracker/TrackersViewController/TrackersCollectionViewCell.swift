@@ -42,6 +42,13 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         return emojiLabel
     }()
     
+    private let pinImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "pin")
+        imageView.tintColor = .white
+        return imageView
+    }()
+    
     private var daysCountLabel: UILabel = {
         let daysCountLabel = UILabel()
         daysCountLabel.textColor = .ypBlack
@@ -62,6 +69,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         setupColorView()
         setupNameLabel()
         setupEmojiLabel()
+        setupPinImage()
         setupButton()
         setupDayCountLabel()
     }
@@ -102,6 +110,17 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         ])
     }
     
+    private func setupPinImage() {
+        pinImage.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(pinImage)
+        NSLayoutConstraint.activate([
+            pinImage.topAnchor.constraint(equalTo: colorView.topAnchor, constant: 18),
+            pinImage.trailingAnchor.constraint(equalTo: colorView.trailingAnchor, constant: -12),
+            pinImage.heightAnchor.constraint(equalToConstant: 12),
+            pinImage.widthAnchor.constraint(equalToConstant: 8)
+        ])
+    }
+    
     private func setupButton() {
         button.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(button)
@@ -131,6 +150,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         button.backgroundColor = tracker.color.withAlphaComponent(isCompletedToday ? 0.3 : 1.0)
         button.setImage(UIImage(named: isCompletedToday ? "cell_done" : "cell_plus"), for: .normal)
         emojiLabel.text = tracker.emoji
+        pinImage.isHidden = !tracker.isPinned
         daysCountLabel.text = String.localizedStringWithFormat(
             NSLocalizedString("numberOfDays", comment: "Number of remaining tasks"), completedDays)
     }

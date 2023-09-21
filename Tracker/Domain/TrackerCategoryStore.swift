@@ -84,7 +84,8 @@ final class TrackerCategoryStore: NSObject {
                        name: name,
                        color: UIColorMarshalling.shared.color(from: color),
                        emoji: emoji,
-                       schedule: ScheduleMarshalling.shared.intToSchedule(from: tracker.schedule)
+                       schedule: ScheduleMarshalling.shared.intToSchedule(from: tracker.schedule),
+                       isPinned: tracker.isPinned
         )
     }
     

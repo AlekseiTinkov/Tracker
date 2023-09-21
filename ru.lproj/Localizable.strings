@@ -43,6 +43,8 @@
 
 "EditTrackerViewController.titleLabel.newEvent" = "Новое нерегулярное событие";
 "EditTrackerViewController.titleLabel.newHabit" = "Новая привычка";
+"EditTrackerViewController.titleLabel.editEvent" = "Редактирование нерегулярного события";
+"EditTrackerViewController.titleLabel.editHabit" = "Редактирование привычки";
 "EditTrackerViewController.nameField" = "Введите название трекера";
 "EditTrackerViewController.cancelButton" = "Отменить";
 "EditTrackerViewController.saveButton" = "Создать";
@@ -68,7 +70,15 @@
 "EditCategoryViewController.saveAlert.message" = "Такая категория уже существует";
 "EditCategoryViewController.saveAlert.button" = "OK";
 
+"TrackersViewController.collectionView.actionPin" = "Закрепить";
+"TrackersViewController.collectionView.actionUnPin" = "Открепить";
+"TrackersViewController.collectionView.actionEdit" = "Редактировать";
+"TrackersViewController.collectionView.actionDelete" = "Удалить";
 
+"TrackersViewController.collectionView.pinnedCategory" = "Закрепленные";
 
+"TrackersViewController.collectionView.deleteAlert" = "Уверены, что хотите удалить трекер?";
+"TrackersViewController.collectionView.buttonCancel" = "Отменить";
+"TrackersViewController.collectionView.buttonDelete" = "Удалить";
 
 

@@ -8,7 +8,6 @@
 import UIKit
 
 final class ColorsCollectionViewCell: UICollectionViewCell {
-    weak var delegate: EditTrackerViewControllerDelegate?
     
     private var colorView: UIView = {
         let colorView = UIView()

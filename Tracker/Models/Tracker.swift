@@ -19,5 +19,7 @@ struct Tracker {
     let emoji: String
     // расписание
     let schedule: Set<WeekDay>
+    // закрепление
+    let isPinned: Bool
 }
 

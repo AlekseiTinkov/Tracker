@@ -22,6 +22,8 @@ final class EditTrackerViewController: UIViewController {
     var categoryTitle: String?
     
     var trackerType: TrackerType = .event
+    var editingTracker: Tracker?
+    
     var trackerName: String = ""
     var trackerEmojiIndex: Int?
     var trackerColorIndex: Int?
@@ -38,7 +40,29 @@ final class EditTrackerViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.font = UIFont.systemFont(ofSize: 16)
         titleLabel.textColor = .ypBlack
-        titleLabel.text = self.trackerType == .event ? NSLocalizedString("EditTrackerViewController.titleLabel.newEvent", comment: "") : NSLocalizedString("EditTrackerViewController.titleLabel.newHabit", comment: "")
+        
+        if self.editingTracker == nil {
+            if self.trackerType == .event {
+                titleLabel.text = NSLocalizedString("EditTrackerViewController.titleLabel.newEvent", comment: "")
+            } else {
+                titleLabel.text = NSLocalizedString("EditTrackerViewController.titleLabel.newHabit", comment: "")
+            }
+        } else {
+            if self.trackerType == .event {
+                titleLabel.text = NSLocalizedString("EditTrackerViewController.titleLabel.editEvent", comment: "")
+            } else {
+                titleLabel.text = NSLocalizedString("EditTrackerViewController.titleLabel.editHabit", comment: "")
+            }
+        }
+        
+        return titleLabel
+    }()
+    
+    private lazy var completedDaysCountLabel: UILabel = {
+        let completedDaysCountLabel = UILabel()
+        titleLabel.font = UIFont.systemFont(ofSize: 32)
+        titleLabel.textColor = .ypBlack
+        titleLabel.text = "12 days"
         return titleLabel
     }()
     
@@ -143,7 +167,24 @@ final class EditTrackerViewController: UIViewController {
         
         setupKeyboardDismiss()
         
+        setEditTracker()
+        
         repaintSaveButton()
+    }
+    
+    private func setEditTracker() {
+        guard let editingTracker else { return }
+        trackerEmojiIndex = emojisCollection.firstIndex(of: editingTracker.emoji)
+        trackerColorIndex = colorsCollection.firstIndex(where: { UIColorMarshalling().hexString(from: $0) == UIColorMarshalling().hexString(from: editingTracker.color) })
+        
+        guard let trackerEmojiIndex,
+              let trackerColorIndex else { return }
+        
+        self.nameField.text = editingTracker.name
+        self.schedule = editingTracker.schedule
+        //self.categoryTitle =
+        emojiCollectionView.selectItem(at: IndexPath(item: trackerEmojiIndex, section: 0), animated: false, scrollPosition: .top)
+        colorCollectionView.selectItem(at: IndexPath(item: trackerColorIndex, section: 0), animated: false, scrollPosition: .top)
     }
     
     private func setupKeyboardDismiss() {
@@ -272,7 +313,7 @@ final class EditTrackerViewController: UIViewController {
         guard let categoryTitle else { return }
         self.trackerName = nameField.text ?? ""
         delegate?.saveTracker(TrackerCategory(title: categoryTitle,
-                                              trackers: [Tracker(trackerId: UUID(), name: self.trackerName, color: colorsCollection[trackerColorIndex], emoji: emojisCollection[trackerEmojiIndex], schedule: self.schedule)]))
+                                              trackers: [Tracker(trackerId: UUID(), name: self.trackerName, color: colorsCollection[trackerColorIndex], emoji: emojisCollection[trackerEmojiIndex], schedule: self.schedule, isPinned: false)]))
     }
     
     private func repaintSaveButton() {

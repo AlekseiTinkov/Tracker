@@ -8,7 +8,6 @@
 import UIKit
 
 final class EmojiCollectionViewCell: UICollectionViewCell {
-    weak var delegate: EditTrackerViewControllerDelegate?
     
     private var emojiLabel: UILabel = {
         let emojiLabel = UILabel()

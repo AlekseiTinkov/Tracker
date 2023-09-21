@@ -35,7 +35,8 @@ class MocTrackerCategoryStore {
                          name: "Поливать растения",
                          color: .ypColorSelection5,
                          emoji: "❤️",
-                         schedule: [WeekDay.sunday])]
+                         schedule: [WeekDay.sunday],
+                         isPinned: false)]
             .map { tracker in
                 let trackerCoreData = TrackerCoreData(context: context)
                 trackerCoreData.trackerId = tracker.trackerId
@@ -43,6 +44,7 @@ class MocTrackerCategoryStore {
                 trackerCoreData.color = UIColorMarshalling.shared.hexString(from: tracker.color)
                 trackerCoreData.emoji = tracker.emoji
                 trackerCoreData.schedule = ScheduleMarshalling.shared.scheduleToInt(from: tracker.schedule)
+                trackerCoreData.isPinned = tracker.isPinned
                 trackerCategoryCoreData1.addToTrackers(trackerCoreData)
                 return trackerCoreData
             }
@@ -53,17 +55,20 @@ class MocTrackerCategoryStore {
                          name: "Кошка заслонила камеру на созвоне",
                          color: .ypColorSelection2,
                          emoji: "😻",
-                         schedule: [WeekDay.sunday, WeekDay.saturday]),
+                         schedule: [WeekDay.sunday, WeekDay.saturday],
+                         isPinned: false),
                  Tracker(trackerId: UUID(),
                          name: "Бабушка прислала открытку в вотсапе",
                          color: .ypColorSelection1,
                          emoji: "🌺",
-                         schedule: [WeekDay.sunday]),
+                         schedule: [WeekDay.sunday],
+                         isPinned: false),
                  Tracker(trackerId: UUID(),
-                         name: "Свидания в вапреле",
+                         name: "Свидания в апреле",
                          color: .ypColorSelection3,
                          emoji: "❤️",
-                         schedule: [])]
+                         schedule: [],
+                         isPinned: false)]
             .map { tracker in
                 let trackerCoreData = TrackerCoreData(context: context)
                 trackerCoreData.trackerId = tracker.trackerId
@@ -71,6 +76,7 @@ class MocTrackerCategoryStore {
                 trackerCoreData.color = UIColorMarshalling.shared.hexString(from: tracker.color)
                 trackerCoreData.emoji = tracker.emoji
                 trackerCoreData.schedule = ScheduleMarshalling.shared.scheduleToInt(from: tracker.schedule)
+                trackerCoreData.isPinned = tracker.isPinned
                 trackerCategoryCoreData2.addToTrackers(trackerCoreData)
                 return trackerCoreData
             }

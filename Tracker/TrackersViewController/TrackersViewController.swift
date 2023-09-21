@@ -13,6 +13,7 @@ final class TrackersViewController: UIViewController {
     private var visibleCategories: [TrackerCategory] = []
     private var completedTrackers: Set<TrackerRecord> = []
     private let trackerCategoryStore: TrackerCategoryStore
+    private let trackerStore = TrackerStore()
     private let trackerRecordStore = TrackerRecordStore()
     private var currentDate: Date = Date()
     
@@ -160,7 +161,7 @@ final class TrackersViewController: UIViewController {
                 
                 let textCondition = tracker.name.lowercased().contains(filterText) || filterText.isEmpty
                 
-                return ( dateCondition || isEvent ) && textCondition
+                return ( dateCondition || isEvent ) && textCondition && !tracker.isPinned
             }
             
             if trackers.isEmpty {
@@ -171,8 +172,49 @@ final class TrackersViewController: UIViewController {
                                    trackers: trackers)
         }
         
+        let pinnedTrackers = categories.map{ $0.trackers }.joined().filter { tracker in
+            tracker.isPinned
+        }
+        if !pinnedTrackers.isEmpty {
+            visibleCategories.insert(TrackerCategory(title: NSLocalizedString("TrackersViewController.collectionView.pinnedCategory", comment: ""), trackers: pinnedTrackers), at: 0)
+        }
+        
         collectionView.reloadData()
         reloadPlaceholder()
+    }
+    
+    private func togglePin(tracker: Tracker) {
+        try? trackerStore.togglePin(tracker: tracker)
+        categories = trackerCategoryStore.categories
+        updateVisibleCategories()
+    }
+    
+    private func deleteTracker(tracker: Tracker) {
+        let alert = UIAlertController(title: nil,
+                                      message: NSLocalizedString("TrackersViewController.collectionView.deleteAlert", comment: ""),
+                                      preferredStyle: .actionSheet
+        )
+        let cancelAction = UIAlertAction(title: NSLocalizedString("TrackersViewController.collectionView.buttonCancel", comment: ""), style: .cancel)
+        let deleteAction = UIAlertAction(title: NSLocalizedString("TrackersViewController.collectionView.buttonDelete", comment: ""), style: .destructive) { [weak self] _ in
+            guard let self else { return }
+            try? self.trackerStore.deleteTracker(tracker: tracker)
+            categories = trackerCategoryStore.categories
+            updateVisibleCategories()
+        }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(deleteAction)
+        
+        present(alert, animated: true)
+    }
+    
+    private func editTracker(tracker: Tracker) {
+        let editTrackerViewController = EditTrackerViewController(trackerCategoryStore: trackerCategoryStore)
+        editTrackerViewController.editingTracker = tracker
+        editTrackerViewController.trackerType = tracker.schedule.isEmpty ? .event : .habit
+        editTrackerViewController.delegate = self
+        editTrackerViewController.modalPresentationStyle = .pageSheet
+        present(editTrackerViewController, animated: true)
     }
     
     private func reloadPlaceholder() {
@@ -296,6 +338,26 @@ extension TrackersViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
     }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        if indexPaths.isEmpty { return nil }
+        let tracker = visibleCategories[indexPaths[0].section].trackers[indexPaths[0].row]
+        let pinnedTitle = tracker.isPinned ? NSLocalizedString("TrackersViewController.collectionView.actionUnPin", comment: "") : NSLocalizedString("TrackersViewController.collectionView.actionPin", comment: "")
+        
+        return UIContextMenuConfiguration(actionProvider:  { _ in
+            UIMenu(children: [
+                UIAction(title: pinnedTitle) { [weak self] _ in
+                    self?.togglePin(tracker: tracker)
+                },
+                UIAction(title: NSLocalizedString("TrackersViewController.collectionView.actionEdit", comment: "")) { [weak self] _ in
+                    self?.editTracker(tracker: tracker)
+                },
+                UIAction(title: NSLocalizedString("TrackersViewController.collectionView.actionDelete", comment: ""), attributes: .destructive) { [weak self] _ in
+                    self?.deleteTracker(tracker: tracker)
+                }
+            ])
+        })
+    }
 }
 
 extension TrackersViewController: UICollectionViewDelegateFlowLayout {
@@ -374,7 +436,7 @@ extension TrackersViewController: TrackersCollectionViewCellDelegate {
     }
 }
 
-extension TrackersViewController: NewTrackerTypeSelectViewControllerDelegate {
+extension TrackersViewController: NewTrackerTypeSelectViewControllerDelegate, EditTrackerViewControllerDelegate {
     func reloadCategory() {
         categories = trackerCategoryStore.categories
         updateVisibleCategories()

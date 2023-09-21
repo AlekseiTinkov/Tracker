@@ -43,6 +43,8 @@
 
 "EditTrackerViewController.titleLabel.newEvent" = "New irregular event";
 "EditTrackerViewController.titleLabel.newHabit" = "New habit";
+"EditTrackerViewController.titleLabel.editEvent" = "Editing an irregular event";
+"EditTrackerViewController.titleLabel.editHabit" = "Editing a Habit";
 "EditTrackerViewController.nameField" = "Enter tracker name";
 "EditTrackerViewController.cancelButton" = "Cancel";
 "EditTrackerViewController.saveButton" = "Create";
@@ -68,7 +70,14 @@
 "EditCategoryViewController.saveAlert.message" = "This category already exists";
 "EditCategoryViewController.saveAlert.button" = "OK";
 
+"TrackersViewController.collectionView.actionPin" = "Pin";
+"TrackersViewController.collectionView.actionUnPin" = "Unpin";
+"TrackersViewController.collectionView.actionEdit" = "Edit";
+"TrackersViewController.collectionView.actionDelete" = "Delete";
 
+"TrackersViewController.collectionView.pinnedCategory" = "Pinned";
 
-
+"TrackersViewController.collectionView.deleteAlert" = "Are you sure you want to delete the tracker?";
+"TrackersViewController.collectionView.buttonCancel" = "Cancel";
+"TrackersViewController.collectionView.buttonDelete" = "Delete";
 
