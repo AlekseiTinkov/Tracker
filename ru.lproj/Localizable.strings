@@ -47,7 +47,8 @@
 "EditTrackerViewController.titleLabel.editHabit" = "Редактирование привычки";
 "EditTrackerViewController.nameField" = "Введите название трекера";
 "EditTrackerViewController.cancelButton" = "Отменить";
-"EditTrackerViewController.saveButton" = "Создать";
+"EditTrackerViewController.createButton" = "Создать";
+"EditTrackerViewController.saveButton" = "Сохранить";
 "EditTrackerViewController.tableView.category" = "Категория";
 "EditTrackerViewController.tableView.schedule" = "Расписание";
 "EditTrackerViewController.tableView.schedule.everyDay" = "Каждый день";

@@ -17,7 +17,6 @@ final class CategoryViewController: UIViewController {
     weak var delegate: CategoryViewControllerDelegate?
     
     private var categoryViewModel: CategoryViewModel
-    private var selectedRow: Int?
     
     let cellIdentifier = "cell"
     
@@ -223,7 +222,6 @@ extension CategoryViewController: UITableViewDataSource {
 extension CategoryViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedRow =  indexPath.row
         categoryViewModel.selectCategory(categoryViewModel.categories[indexPath.row].title)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let self = self else { return }

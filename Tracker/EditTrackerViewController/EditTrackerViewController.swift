@@ -20,7 +20,7 @@ final class EditTrackerViewController: UIViewController {
     private var schedule: Set<WeekDay> = []
     
     var categoryTitle: String?
-    
+    var completedDays: Int?
     var trackerType: TrackerType = .event
     var editingTracker: Tracker?
     
@@ -60,10 +60,10 @@ final class EditTrackerViewController: UIViewController {
     
     private lazy var completedDaysCountLabel: UILabel = {
         let completedDaysCountLabel = UILabel()
-        titleLabel.font = UIFont.systemFont(ofSize: 32)
-        titleLabel.textColor = .ypBlack
-        titleLabel.text = "12 days"
-        return titleLabel
+        completedDaysCountLabel.font = UIFont.systemFont(ofSize: 32)
+        completedDaysCountLabel.textColor = .ypBlack
+        completedDaysCountLabel.text = "12 days"
+        return completedDaysCountLabel
     }()
     
     private lazy var nameField: UITextField = {
@@ -111,7 +111,6 @@ final class EditTrackerViewController: UIViewController {
     
     private lazy var saveButton: UIButton = {
         let saveButton = UIButton()
-        saveButton.setTitle(NSLocalizedString("EditTrackerViewController.saveButton", comment: ""), for: .normal)
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         saveButton.backgroundColor = .ypGray
@@ -157,6 +156,7 @@ final class EditTrackerViewController: UIViewController {
         
         setupScrollView()
         setupTitleLabel()
+        setupCompletedDaysCountLabel()
         setupNameField()
         setupTableView()
         setupEmojiCollectionView()
@@ -175,14 +175,13 @@ final class EditTrackerViewController: UIViewController {
     private func setEditTracker() {
         guard let editingTracker else { return }
         trackerEmojiIndex = emojisCollection.firstIndex(of: editingTracker.emoji)
-        trackerColorIndex = colorsCollection.firstIndex(where: { UIColorMarshalling().hexString(from: $0) == UIColorMarshalling().hexString(from: editingTracker.color) })
+        trackerColorIndex = colorsCollection.firstIndex(where: { $0.cgColor.components == editingTracker.color.cgColor.components })
         
         guard let trackerEmojiIndex,
               let trackerColorIndex else { return }
         
         self.nameField.text = editingTracker.name
         self.schedule = editingTracker.schedule
-        //self.categoryTitle =
         emojiCollectionView.selectItem(at: IndexPath(item: trackerEmojiIndex, section: 0), animated: false, scrollPosition: .top)
         colorCollectionView.selectItem(at: IndexPath(item: trackerColorIndex, section: 0), animated: false, scrollPosition: .top)
     }
@@ -220,15 +219,29 @@ final class EditTrackerViewController: UIViewController {
         ])
     }
     
+    private func setupCompletedDaysCountLabel() {
+        guard let completedDays else { return }
+        completedDaysCountLabel.text = String.localizedStringWithFormat(NSLocalizedString("numberOfDays", comment: ""), completedDays)
+        completedDaysCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(completedDaysCountLabel)
+        NSLayoutConstraint.activate([
+            completedDaysCountLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
+            completedDaysCountLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            completedDaysCountLabel.heightAnchor.constraint(equalToConstant: 38)
+        ])
+    }
+    
     private func setupNameField() {
         nameField.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(nameField)
+        let anchorTo = completedDays == nil ? titleLabel : completedDaysCountLabel
         NSLayoutConstraint.activate([
-            nameField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
+            nameField.topAnchor.constraint(equalTo: anchorTo.bottomAnchor, constant: 24),
             nameField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             nameField.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
             nameField.heightAnchor.constraint(equalToConstant: 75)
         ])
+            
     }
     
     private func setupTableView() {
@@ -284,6 +297,8 @@ final class EditTrackerViewController: UIViewController {
     }
     
     private func setupSaveButton() {
+        let buttonTitleLocalizedKey = editingTracker == nil ? "EditTrackerViewController.createButton" : "EditTrackerViewController.saveButton"
+        saveButton.setTitle(NSLocalizedString(buttonTitleLocalizedKey, comment: ""), for: .normal)
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(saveButton)
         NSLayoutConstraint.activate([
@@ -312,8 +327,22 @@ final class EditTrackerViewController: UIViewController {
         guard let trackerEmojiIndex = self.trackerEmojiIndex else { return }
         guard let categoryTitle else { return }
         self.trackerName = nameField.text ?? ""
+        guard let editingTracker else {
+            delegate?.saveTracker(TrackerCategory(title: categoryTitle,
+                                                  trackers: [Tracker(trackerId: UUID(), 
+                                                                     name: self.trackerName,
+                                                                     color: colorsCollection[trackerColorIndex],
+                                                                     emoji: emojisCollection[trackerEmojiIndex],
+                                                                     schedule: self.schedule,
+                                                                     isPinned: false)]))
+            return
+        }
         delegate?.saveTracker(TrackerCategory(title: categoryTitle,
-                                              trackers: [Tracker(trackerId: UUID(), name: self.trackerName, color: colorsCollection[trackerColorIndex], emoji: emojisCollection[trackerEmojiIndex], schedule: self.schedule, isPinned: false)]))
+                                              trackers: [Tracker(trackerId: editingTracker.trackerId,
+                                                                 name: self.trackerName,color: colorsCollection[trackerColorIndex],
+                                                                 emoji: emojisCollection[trackerEmojiIndex],
+                                                                 schedule: self.schedule,
+                                                                 isPinned: editingTracker.isPinned)]))
     }
     
     private func repaintSaveButton() {
@@ -381,6 +410,8 @@ extension EditTrackerViewController: UITableViewDelegate {
             let categoryViewController = CategoryViewController(categoryViewModel: categoryViewModel)
             categoryViewController.delegate = self
             present(categoryViewController, animated: true)
+            guard let categoryTitle else { return }
+            categoryViewModel.selectCategory(categoryTitle)
             break
         case 1:
             let schedulerViewController = SchedulerViewController()

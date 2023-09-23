@@ -152,7 +152,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         emojiLabel.text = tracker.emoji
         pinImage.isHidden = !tracker.isPinned
         daysCountLabel.text = String.localizedStringWithFormat(
-            NSLocalizedString("numberOfDays", comment: "Number of remaining tasks"), completedDays)
+            NSLocalizedString("numberOfDays", comment: ""), completedDays)
     }
     
     @objc private func plusButtonTapped() {

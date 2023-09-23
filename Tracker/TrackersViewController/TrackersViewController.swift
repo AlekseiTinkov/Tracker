@@ -209,9 +209,14 @@ final class TrackersViewController: UIViewController {
     }
     
     private func editTracker(tracker: Tracker) {
+        let categoryTitle = categories.first(where: { $0.trackers.contains(where: { $0.trackerId == tracker.trackerId})
+        })?.title
+        let completedDays = completedTrackers.filter { $0.trackerId == tracker.trackerId }.count
         let editTrackerViewController = EditTrackerViewController(trackerCategoryStore: trackerCategoryStore)
         editTrackerViewController.editingTracker = tracker
         editTrackerViewController.trackerType = tracker.schedule.isEmpty ? .event : .habit
+        editTrackerViewController.categoryTitle = categoryTitle
+        editTrackerViewController.completedDays = completedDays
         editTrackerViewController.delegate = self
         editTrackerViewController.modalPresentationStyle = .pageSheet
         present(editTrackerViewController, animated: true)
@@ -443,15 +448,9 @@ extension TrackersViewController: NewTrackerTypeSelectViewControllerDelegate, Ed
     }
     
     func saveTracker(_ trackerCategory: TrackerCategory) {
+        try? trackerStore.deleteTracker(tracker: trackerCategory.trackers[0])
         try? trackerCategoryStore.saveTracker(tracker: trackerCategory.trackers[0], to: trackerCategory.title)
-        if let indexOfCategorie = categories.firstIndex(where: {$0.title == trackerCategory.title}) {
-            let trackers = categories[indexOfCategorie].trackers + trackerCategory.trackers
-            let newCategirie = TrackerCategory(title: trackerCategory.title, trackers: trackers.sorted(by: { $0.name < $1.name }))
-            categories[indexOfCategorie] = newCategirie
-        } else {
-            categories.append(trackerCategory)
-            categories.sort(by: { $0.title < $1.title } )
-        }
+        categories = trackerCategoryStore.categories
         updateVisibleCategories()
     }
 }

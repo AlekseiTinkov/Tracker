@@ -47,7 +47,8 @@
 "EditTrackerViewController.titleLabel.editHabit" = "Editing a Habit";
 "EditTrackerViewController.nameField" = "Enter tracker name";
 "EditTrackerViewController.cancelButton" = "Cancel";
-"EditTrackerViewController.saveButton" = "Create";
+"EditTrackerViewController.createButton" = "Create";
+"EditTrackerViewController.saveButton" = "Save";
 "EditTrackerViewController.tableView.category" = "Category";
 "EditTrackerViewController.tableView.schedule" = "Schedule";
 "EditTrackerViewController.tableView.schedule.everyDay" = "Every day";
