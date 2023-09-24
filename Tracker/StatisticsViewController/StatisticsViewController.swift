@@ -11,10 +11,7 @@ final class StatisticsViewController: UIViewController {
     
     let cellIdentifier = "cell"
     
-    let titles = [NSLocalizedString("StatisticsViewController.title0", comment: ""),
-                  NSLocalizedString("StatisticsViewController.title1", comment: ""),
-                  NSLocalizedString("StatisticsViewController.title2", comment: ""),
-                  NSLocalizedString("StatisticsViewController.title3", comment: "")]
+    private var statisticsViewModel: StatisticsViewModel
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -60,6 +57,15 @@ final class StatisticsViewController: UIViewController {
         return tableView
     }()
     
+    init(statisticsViewModel: StatisticsViewModel) {
+        self.statisticsViewModel = statisticsViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,9 +75,25 @@ final class StatisticsViewController: UIViewController {
         setupPlaceholderView()
         setupTableView()
         
-        placeholderView.isHidden = true
+        self.placeholderView.isHidden = false
+        self.tableView.isHidden = !self.placeholderView.isHidden
+        
+        statisticsViewModel.$statsticsValues.bind(action: {[weak self] newValue in
+            guard let self else { return }
+            self.placeholderView.isHidden = newValue.contains(where: { $0 > 0 })
+            self.tableView.isHidden = !self.placeholderView.isHidden
+            tableView.reloadData()
+        })
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        DispatchQueue.main.async { [weak self] in
+        //DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            guard let self = self else { return }
+            statisticsViewModel.getStatistics()
+        }
+    }
     
     private func setupTitleLabel() {
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -109,7 +131,7 @@ extension StatisticsViewController: UITableViewDataSource {
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        titles.count
+        statisticsViewModel.statisticTitles.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -118,7 +140,7 @@ extension StatisticsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? StatisticViewControllerCell else { return UITableViewCell() }
-        cell.config(title: titles[indexPath.row], value: "valueLabel")
+        cell.config(title: statisticsViewModel.statisticTitles[indexPath.row], value: statisticsViewModel.statsticsValues[indexPath.row].description)
         return cell
     }
     

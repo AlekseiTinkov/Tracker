@@ -24,6 +24,7 @@
 		71517EA22A97669900453EE3 /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71517EA12A97669900453EE3 /* TrackerCategoryStore.swift */; };
 		71517EA42A9766A900453EE3 /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71517EA32A9766A900453EE3 /* TrackerRecordStore.swift */; };
 		7155A66B2ABF267200BA8BD8 /* StatisticsViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7155A66A2ABF267200BA8BD8 /* StatisticsViewControllerCell.swift */; };
+		7155A66E2AC07D4600BA8BD8 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7155A66D2AC07D4600BA8BD8 /* StatisticsViewModel.swift */; };
 		7156683C2AA4FA18009E1F3F /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7156683B2AA4FA18009E1F3F /* OnboardingViewController.swift */; };
 		7156683E2AA67ED6009E1F3F /* OnboardingPagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7156683D2AA67ED6009E1F3F /* OnboardingPagesViewController.swift */; };
 		715668412AA7CC11009E1F3F /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715668402AA7CC11009E1F3F /* CategoryViewController.swift */; };
@@ -70,6 +71,7 @@
 		71517EA32A9766A900453EE3 /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
 		7155A66A2ABF267200BA8BD8 /* StatisticsViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewControllerCell.swift; sourceTree = "<group>"; };
 		7155A66C2AC033C200BA8BD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7155A66D2AC07D4600BA8BD8 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		7156683B2AA4FA18009E1F3F /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		7156683D2AA67ED6009E1F3F /* OnboardingPagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPagesViewController.swift; sourceTree = "<group>"; };
 		715668402AA7CC11009E1F3F /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				71ED93602A78DBC1006CF418 /* StatisticsViewController.swift */,
+				7155A66D2AC07D4600BA8BD8 /* StatisticsViewModel.swift */,
 				7155A66A2ABF267200BA8BD8 /* StatisticsViewControllerCell.swift */,
 			);
 			path = StatisticsViewController;
@@ -430,6 +433,7 @@
 				71ED936C2A890729006CF418 /* HeaderTrackersView.swift in Sources */,
 				7104ED132A9E9D3C003A5D7A /* EmojiCollectionViewCell.swift in Sources */,
 				71ED93612A78DBC1006CF418 /* StatisticsViewController.swift in Sources */,
+				7155A66E2AC07D4600BA8BD8 /* StatisticsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,8 +13,8 @@ final class TrackersViewController: UIViewController {
     private var visibleCategories: [TrackerCategory] = []
     private var completedTrackers: Set<TrackerRecord> = []
     private let trackerCategoryStore: TrackerCategoryStore
-    private let trackerStore = TrackerStore()
-    private let trackerRecordStore = TrackerRecordStore()
+    private let trackerStore: TrackerStore
+    private let trackerRecordStore: TrackerRecordStore
     private var currentDate: Date = Date()
     
     let cellIdentifier = "cell"
@@ -88,12 +88,10 @@ final class TrackersViewController: UIViewController {
         return collectionView
     }()
     
-    init() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            fatalError("Get context error")
-        }
-        let context = appDelegate.persistentContainer.viewContext
-        trackerCategoryStore = TrackerCategoryStore(context: context)
+    init(trackerStore : TrackerStore, trackerCategoryStore: TrackerCategoryStore, trackerRecordStore: TrackerRecordStore) {
+        self.trackerStore = trackerStore
+        self.trackerCategoryStore = trackerCategoryStore
+        self.trackerRecordStore =  trackerRecordStore
         super.init(nibName: nil, bundle: nil)
     }
     

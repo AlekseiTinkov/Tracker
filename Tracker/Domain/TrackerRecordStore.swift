@@ -10,6 +10,7 @@ import CoreData
 
 enum TrackerRecordStoreError: Error {
     case decodingErrorInvalidTracker
+    case getTrackerCoreDataError
 }
 
 final class TrackerRecordStore: NSObject {
@@ -65,5 +66,20 @@ final class TrackerRecordStore: NSObject {
             let date = coreData.date
         else { throw TrackerRecordStoreError.decodingErrorInvalidTracker }
         return TrackerRecord(trackerId: id, date: date)
+    }
+    
+    func getCompletedTrackersCount() throws -> Int {
+        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        let recordsCoreData = try context.fetch(request)
+        let trackers = try recordsCoreData.compactMap( { try getTrackerCoreData(id: $0.trackerId) } )
+        return trackers.count
+    }
+    
+    private func getTrackerCoreData(id: UUID?) throws -> TrackerCoreData {
+        guard
+            let id,
+            let tracker = try? trackerStore.fetchTracker(trackerId: id)
+        else { throw TrackerRecordStoreError.getTrackerCoreDataError}
+        return tracker
     }
 }
