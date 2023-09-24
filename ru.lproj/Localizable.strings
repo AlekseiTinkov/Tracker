@@ -82,4 +82,11 @@
 "TrackersViewController.collectionView.buttonCancel" = "Отменить";
 "TrackersViewController.collectionView.buttonDelete" = "Удалить";
 
+"StatisticsViewController.titleLabel" = "Статистика";
 
+"StatisticsViewController.placeholderLabel" = "Анализировать пока нечего";
+
+"StatisticsViewController.title0" = "Лучший период";
+"StatisticsViewController.title1" = "Идеальные дни";
+"StatisticsViewController.title2" = "Трекеров завершено";
+"StatisticsViewController.title3" = "Среднее значение";

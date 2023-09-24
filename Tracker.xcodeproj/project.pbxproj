@@ -23,6 +23,7 @@
 		71517EA02A97668500453EE3 /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71517E9F2A97668500453EE3 /* TrackerStore.swift */; };
 		71517EA22A97669900453EE3 /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71517EA12A97669900453EE3 /* TrackerCategoryStore.swift */; };
 		71517EA42A9766A900453EE3 /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71517EA32A9766A900453EE3 /* TrackerRecordStore.swift */; };
+		7155A66B2ABF267200BA8BD8 /* StatisticsViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7155A66A2ABF267200BA8BD8 /* StatisticsViewControllerCell.swift */; };
 		7156683C2AA4FA18009E1F3F /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7156683B2AA4FA18009E1F3F /* OnboardingViewController.swift */; };
 		7156683E2AA67ED6009E1F3F /* OnboardingPagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7156683D2AA67ED6009E1F3F /* OnboardingPagesViewController.swift */; };
 		715668412AA7CC11009E1F3F /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715668402AA7CC11009E1F3F /* CategoryViewController.swift */; };
@@ -55,7 +56,6 @@
 		7104ED0A2A99E5F1003A5D7A /* MocTrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MocTrackerCategoryStore.swift; sourceTree = "<group>"; };
 		7104ED122A9E9D3C003A5D7A /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		71152F8D2A8CC0FD0065B5E9 /* SchedulerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulerViewController.swift; sourceTree = "<group>"; };
-		7139DE502AB74CAA0025619A /* ru */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ru; path = ru.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7139DE772AB8E6F70025619A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7139DE7A2AB8E7030025619A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		7139DE7C2AB8E72B0025619A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -68,6 +68,8 @@
 		71517E9F2A97668500453EE3 /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
 		71517EA12A97669900453EE3 /* TrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStore.swift; sourceTree = "<group>"; };
 		71517EA32A9766A900453EE3 /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
+		7155A66A2ABF267200BA8BD8 /* StatisticsViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewControllerCell.swift; sourceTree = "<group>"; };
+		7155A66C2AC033C200BA8BD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7156683B2AA4FA18009E1F3F /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		7156683D2AA67ED6009E1F3F /* OnboardingPagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPagesViewController.swift; sourceTree = "<group>"; };
 		715668402AA7CC11009E1F3F /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				71ED93602A78DBC1006CF418 /* StatisticsViewController.swift */,
+				7155A66A2ABF267200BA8BD8 /* StatisticsViewControllerCell.swift */,
 			);
 			path = StatisticsViewController;
 			sourceTree = "<group>";
@@ -322,7 +325,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					71ED933D2A77DF6E006CF418 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -336,6 +339,7 @@
 			knownRegions = (
 				ru,
 				en,
+				Base,
 			);
 			mainGroup = 71ED93352A77DF6E006CF418;
 			productRefGroup = 71ED933F2A77DF6E006CF418 /* Products */;
@@ -410,6 +414,7 @@
 				7156683C2AA4FA18009E1F3F /* OnboardingViewController.swift in Sources */,
 				718D069C2A8BBC9200B53FD8 /* NewTrackerTypeSelectViewController.swift in Sources */,
 				7104ED072A923574003A5D7A /* HeadersEmojiAndColorView.swift in Sources */,
+				7155A66B2ABF267200BA8BD8 /* StatisticsViewControllerCell.swift in Sources */,
 				71ED93912A8D5BDC006CF418 /* WeekDay.swift in Sources */,
 				71152F8E2A8CC0FD0065B5E9 /* SchedulerViewController.swift in Sources */,
 				71517E9C2A97566E00453EE3 /* UIColorMarshalling.swift in Sources */,
@@ -452,7 +457,7 @@
 		71ED934C2A77DF6E006CF418 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				7139DE502AB74CAA0025619A /* ru */,
+				7155A66C2AC033C200BA8BD8 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -497,6 +502,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -558,6 +564,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

@@ -82,3 +82,11 @@
 "TrackersViewController.collectionView.buttonCancel" = "Cancel";
 "TrackersViewController.collectionView.buttonDelete" = "Delete";
 
+"StatisticsViewController.titleLabel" = "Statistics";
+
+"StatisticsViewController.placeholderLabel" = "There is nothing to analyze yet";
+
+"StatisticsViewController.title0" = "Best period";
+"StatisticsViewController.title1" = "Ideal days";
+"StatisticsViewController.title2" = "Trackers completed";
+"StatisticsViewController.title3" = "Average value";
