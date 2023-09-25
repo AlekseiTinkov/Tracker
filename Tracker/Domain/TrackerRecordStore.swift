@@ -71,8 +71,9 @@ final class TrackerRecordStore: NSObject {
     func getCompletedTrackersCount() throws -> Int {
         let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
         let recordsCoreData = try context.fetch(request)
-        let trackers = try recordsCoreData.compactMap( { try getTrackerCoreData(id: $0.trackerId) } )
-        return trackers.count
+//        let trackers = try recordsCoreData.compactMap( { try getTrackerCoreData(id: $0.trackerId) } )
+//        return trackers.count
+        return recordsCoreData.count
     }
     
     private func getTrackerCoreData(id: UUID?) throws -> TrackerCoreData {

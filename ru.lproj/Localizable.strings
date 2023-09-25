@@ -33,7 +33,8 @@
 
 "TrackersViewController.titleLabel" = "Трекеры";
 "TrackersViewController.searchField" = "Поиск";
-"TrackersViewController.placeholderLabel" = "Что будем отслеживать?";
+"TrackersViewController.placeholder.empty" = "Что будем отслеживать?";
+"TrackersViewController.placeholder.notFound" = "Ничего не найдено";
 "TrackersViewController.dateAlert.message" = "Это время еще не пришло...";
 "TrackersViewController.dateAlert.button" = "OK";
 
@@ -78,6 +79,8 @@
 
 "TrackersViewController.collectionView.pinnedCategory" = "Закрепленные";
 
+"TrackersViewController.filtersButton" = "Фильтры";
+
 "TrackersViewController.collectionView.deleteAlert" = "Уверены, что хотите удалить трекер?";
 "TrackersViewController.collectionView.buttonCancel" = "Отменить";
 "TrackersViewController.collectionView.buttonDelete" = "Удалить";
@@ -90,3 +93,9 @@
 "StatisticsViewController.title1" = "Идеальные дни";
 "StatisticsViewController.title2" = "Трекеров завершено";
 "StatisticsViewController.title3" = "Среднее значение";
+
+"FiltersViewController.title" = "Фильтры";
+"FiltersViewController.filters.allTrackers" = "Все трекеры";
+"FiltersViewController.filters.trackersForToday" = "Трекеры на сегодня";
+"FiltersViewController.filters.completed" = "Завершенные";
+"FiltersViewController.filters.notCompleted" = "Не завершенные";
