@@ -145,6 +145,8 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         self.indexPath = indexPath
         self.isCompletedToday = isCompletedToday
         self.trackerId = tracker.trackerId
+        self.backgroundColor = .clear
+        self.layer.cornerRadius = 16
         nameLabel.text = tracker.name
         colorView.backgroundColor = tracker.color
         button.backgroundColor = tracker.color.withAlphaComponent(isCompletedToday ? 0.3 : 1.0)

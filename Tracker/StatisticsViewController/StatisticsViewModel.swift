@@ -10,9 +10,9 @@ import Foundation
 final class StatisticsViewModel {
     
     let statisticTitles = [NSLocalizedString("StatisticsViewController.title0", comment: ""),
-                  NSLocalizedString("StatisticsViewController.title1", comment: ""),
-                  NSLocalizedString("StatisticsViewController.title2", comment: ""),
-                  NSLocalizedString("StatisticsViewController.title3", comment: "")]
+                           NSLocalizedString("StatisticsViewController.title1", comment: ""),
+                           NSLocalizedString("StatisticsViewController.title2", comment: ""),
+                           NSLocalizedString("StatisticsViewController.title3", comment: "")]
     
     private var trackerRecordStore: TrackerRecordStore
     
@@ -26,17 +26,17 @@ final class StatisticsViewModel {
     
     func getStatistics() {
         // Лучший период
-        statsticsValues[0] = 0
+        let bestPeriod = 0
         
         // Идеальные дни
-        statsticsValues[1] = 0
+        let idealDays = 0
         
         // Трекеров завершено
-        let completedTrackersCount = try? trackerRecordStore.getCompletedTrackersCount()
-        self.statsticsValues[2] = completedTrackersCount ?? 0
+        let trackersCompleted = (try? trackerRecordStore.getCompletedTrackersCount()) ?? 0
         
         // Среднее значение
-        statsticsValues[3] = 0
-    
+        let averageValue = 0
+        
+        statsticsValues = [bestPeriod, idealDays, trackersCompleted, averageValue]
     }
 }

@@ -265,8 +265,8 @@ final class TrackersViewController: UIViewController {
             guard let self else { return }
             try? self.trackerStore.deleteTracker(tracker: tracker)
             try? self.trackerRecordStore.deleteRecords(with: tracker.trackerId)
-            categories = trackerCategoryStore.categories
-            updateVisibleCategories()
+            self.categories = self.trackerCategoryStore.categories
+            self.updateVisibleCategories()
         }
         
         alert.addAction(cancelAction)
