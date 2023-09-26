@@ -28,6 +28,7 @@
 		7155A6712AC221C400BA8BD8 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7155A6702AC221C400BA8BD8 /* FiltersViewController.swift */; };
 		7155A6732AC228A100BA8BD8 /* FiltersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7155A6722AC228A100BA8BD8 /* FiltersCell.swift */; };
 		7155A6752AC22D0700BA8BD8 /* Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7155A6742AC22D0700BA8BD8 /* Filters.swift */; };
+		7155A6772AC35BEA00BA8BD8 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7155A6762AC35BEA00BA8BD8 /* AnalyticsService.swift */; };
 		7156683C2AA4FA18009E1F3F /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7156683B2AA4FA18009E1F3F /* OnboardingViewController.swift */; };
 		7156683E2AA67ED6009E1F3F /* OnboardingPagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7156683D2AA67ED6009E1F3F /* OnboardingPagesViewController.swift */; };
 		715668412AA7CC11009E1F3F /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715668402AA7CC11009E1F3F /* CategoryViewController.swift */; };
@@ -78,6 +79,7 @@
 		7155A6702AC221C400BA8BD8 /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		7155A6722AC228A100BA8BD8 /* FiltersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersCell.swift; sourceTree = "<group>"; };
 		7155A6742AC22D0700BA8BD8 /* Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filters.swift; sourceTree = "<group>"; };
+		7155A6762AC35BEA00BA8BD8 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		7156683B2AA4FA18009E1F3F /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		7156683D2AA67ED6009E1F3F /* OnboardingPagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPagesViewController.swift; sourceTree = "<group>"; };
 		715668402AA7CC11009E1F3F /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				71ED93632A78DC00006CF418 /* TrackersViewController.swift */,
+				7155A6762AC35BEA00BA8BD8 /* AnalyticsService.swift */,
 				71ED936B2A890729006CF418 /* HeaderTrackersView.swift */,
 				71ED93662A78E2AE006CF418 /* TrackersCollectionViewCell.swift */,
 			);
@@ -441,6 +444,7 @@
 				71ED93912A8D5BDC006CF418 /* WeekDay.swift in Sources */,
 				71152F8E2A8CC0FD0065B5E9 /* SchedulerViewController.swift in Sources */,
 				71517E9C2A97566E00453EE3 /* UIColorMarshalling.swift in Sources */,
+				7155A6772AC35BEA00BA8BD8 /* AnalyticsService.swift in Sources */,
 				715668492AAFBB49009E1F3F /* CategoryCell.swift in Sources */,
 				71CFC0232A9219FC00B97D2F /* TrackerCategory.swift in Sources */,
 				71517E9E2A9756F700453EE3 /* ScheduleMarshalling.swift in Sources */,

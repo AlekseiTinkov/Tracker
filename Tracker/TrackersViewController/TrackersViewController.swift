@@ -22,6 +22,8 @@ final class TrackersViewController: UIViewController {
     let cellIdentifier = "cell"
     let headerIdentifier = "header"
     
+    private let analyticsService = AnalyticsService()
+    
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.preferredDatePickerStyle = .compact
@@ -158,6 +160,16 @@ final class TrackersViewController: UIViewController {
         updateVisibleCategories()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        analyticsService.report(event: .open, screen: .main)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: .close, screen: .main)
+    }
+    
     private func setupKeyboardDismiss() {
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(hideKeyboard))
@@ -172,6 +184,7 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func addTracker() {
+        analyticsService.report(event: .click, screen: .main, item: .addTrack)
         let newTrackerTypeSelectViewController = NewTrackerTypeSelectViewController(trackerCategoryStore: trackerCategoryStore)
         newTrackerTypeSelectViewController.delegate = self
         present(newTrackerTypeSelectViewController, animated: true)
@@ -186,6 +199,7 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func filtersButtonTapped() {
+        analyticsService.report(event: .click, screen: .main, item: .filter)
         let filtersViewController = FiltersViewController(selectedFilter: selectedFilter)
         filtersViewController.delegate = self
         present(filtersViewController, animated: true)
@@ -250,6 +264,7 @@ final class TrackersViewController: UIViewController {
         let deleteAction = UIAlertAction(title: NSLocalizedString("TrackersViewController.collectionView.buttonDelete", comment: ""), style: .destructive) { [weak self] _ in
             guard let self else { return }
             try? self.trackerStore.deleteTracker(tracker: tracker)
+            try? self.trackerRecordStore.deleteRecords(with: tracker.trackerId)
             categories = trackerCategoryStore.categories
             updateVisibleCategories()
         }
@@ -438,9 +453,11 @@ extension TrackersViewController: UICollectionViewDelegate {
                     self?.togglePin(tracker: tracker)
                 },
                 UIAction(title: NSLocalizedString("TrackersViewController.collectionView.actionEdit", comment: "")) { [weak self] _ in
+                    self?.analyticsService.report(event: .click, screen: .main, item: .edit)
                     self?.editTracker(tracker: tracker)
                 },
                 UIAction(title: NSLocalizedString("TrackersViewController.collectionView.actionDelete", comment: ""), attributes: .destructive) { [weak self] _ in
+                    self?.analyticsService.report(event: .click, screen: .main, item: .delete)
                     self?.deleteTracker(tracker: tracker)
                 }
             ])
@@ -495,6 +512,7 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 
 extension TrackersViewController: TrackersCollectionViewCellDelegate {
     func changeTrackerComplite(trackerId: UUID, indexPath: IndexPath) {
+        analyticsService.report(event: .click, screen: .main, item: .track)
         if currentDate > Date() {
             showDateAlert()
             return

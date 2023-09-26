@@ -60,6 +60,16 @@ final class TrackerRecordStore: NSObject {
         try context.save()
     }
     
+    func deleteRecords(with id: UUID) throws {
+        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        request.predicate = NSPredicate(format: "%K == %@",#keyPath(TrackerRecordCoreData.trackerId), id.uuidString)
+        let records = try context.fetch(request)
+        for record in records {
+            context.delete(record)
+        }
+        try context.save()
+    }
+    
     private func convertCoreDataToRecord(from coreData: TrackerRecordCoreData) throws -> TrackerRecord {
         guard
             let id = coreData.trackerId,
