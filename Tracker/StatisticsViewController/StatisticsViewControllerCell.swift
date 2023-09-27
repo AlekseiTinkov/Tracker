@@ -67,7 +67,7 @@ final class StatisticViewControllerCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+        self.backgroundColor = .clear
         gradientView.layer.insertSublayer(gradientLayer , at: 0)
     }
     

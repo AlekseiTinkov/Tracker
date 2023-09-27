@@ -127,7 +127,7 @@ final class StatisticsViewController: UIViewController {
     }
 }
 
-extension StatisticsViewController: UITableViewDataSource {
+extension StatisticsViewController: UITableViewDataSource, UITableViewDelegate {
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -146,11 +146,6 @@ extension StatisticsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.layoutIfNeeded()
-    }
-}
-
-extension StatisticsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
 }
 
