@@ -9,8 +9,8 @@ import UIKit
 
 final class OnboardingViewController: UIPageViewController {
     
-    lazy var pages: [UIViewController] = [OnboardingPagesViewController(title: "Отслеживайте только\nто, что хотите", imageName: "onboarding_0"),
-                                          OnboardingPagesViewController(title: "Даже если это\nне литры воды и йога", imageName: "onboarding_1")
+    lazy var pages: [UIViewController] = [OnboardingPagesViewController(title: NSLocalizedString("OnboardingViewController.page0.title", comment: ""), imageName: "onboarding_0"),
+                                          OnboardingPagesViewController(title: NSLocalizedString("OnboardingViewController.page1.title", comment: ""), imageName: "onboarding_1")
     ]
     
     private lazy var pageControl: UIPageControl = {

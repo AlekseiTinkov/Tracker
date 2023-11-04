@@ -10,6 +10,7 @@ import CoreData
 
 enum TrackerRecordStoreError: Error {
     case decodingErrorInvalidTracker
+    case getTrackerCoreDataError
 }
 
 final class TrackerRecordStore: NSObject {
@@ -59,11 +60,37 @@ final class TrackerRecordStore: NSObject {
         try context.save()
     }
     
+    func deleteRecords(with id: UUID) throws {
+        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        request.predicate = NSPredicate(format: "%K == %@",#keyPath(TrackerRecordCoreData.trackerId), id.uuidString)
+        let records = try context.fetch(request)
+        for record in records {
+            context.delete(record)
+        }
+        try context.save()
+    }
+    
     private func convertCoreDataToRecord(from coreData: TrackerRecordCoreData) throws -> TrackerRecord {
         guard
             let id = coreData.trackerId,
             let date = coreData.date
         else { throw TrackerRecordStoreError.decodingErrorInvalidTracker }
         return TrackerRecord(trackerId: id, date: date)
+    }
+    
+    func getCompletedTrackersCount() throws -> Int {
+        let request = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        let recordsCoreData = try context.fetch(request)
+//        let trackers = try recordsCoreData.compactMap( { try getTrackerCoreData(id: $0.trackerId) } )
+//        return trackers.count
+        return recordsCoreData.count
+    }
+    
+    private func getTrackerCoreData(id: UUID?) throws -> TrackerCoreData {
+        guard
+            let id,
+            let tracker = try? trackerStore.fetchTracker(trackerId: id)
+        else { throw TrackerRecordStoreError.getTrackerCoreDataError}
+        return tracker
     }
 }

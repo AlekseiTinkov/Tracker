@@ -15,6 +15,8 @@ struct TrackerStoreMove: Hashable {
 
 enum TrackerStoreError: Error {
     case decodingErrorInvalidTracker
+    case pinedError
+    case deleteError
 }
 
 final class TrackerStore: NSObject {
@@ -40,7 +42,13 @@ final class TrackerStore: NSObject {
     private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
         let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
         fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \TrackerCoreData.name, ascending: true)]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        let fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: context,
+            sectionNameKeyPath: "category",
+            cacheName: nil
+        )
         fetchedResultsController.delegate = self
         try? fetchedResultsController.performFetch()
         
@@ -54,12 +62,13 @@ final class TrackerStore: NSObject {
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.color = UIColorMarshalling.shared.hexString(from: tracker.color)
         trackerCoreData.schedule = ScheduleMarshalling.shared.scheduleToInt(from: tracker.schedule)
+        trackerCoreData.isPinned = tracker.isPinned
         return trackerCoreData
     }
     
-    func fetchTracker(with id: UUID) throws -> TrackerCoreData? {
+    func fetchTracker(trackerId: UUID) throws -> TrackerCoreData? {
         let request = fetchedResultsController.fetchRequest
-        request.predicate = NSPredicate(format: "%K == %@", "trackerId", id.uuidString)
+        request.predicate = NSPredicate(format: "%K == %@", "trackerId", trackerId.uuidString)
         
         do {
             let record = try context.fetch(request).first
@@ -67,6 +76,18 @@ final class TrackerStore: NSObject {
         } catch {
             throw TrackerStoreError.decodingErrorInvalidTracker
         }
+    }
+    
+    func togglePin(tracker: Tracker) throws {
+        guard let tracker = try fetchTracker(trackerId: tracker.trackerId) else { throw TrackerStoreError.pinedError }
+        tracker.isPinned.toggle()
+        try context.save()
+    }
+    
+    func deleteTracker(tracker: Tracker) throws {
+        guard let tracker = try fetchTracker(trackerId: tracker.trackerId) else { throw TrackerStoreError.deleteError }
+        context.delete(tracker)
+        try context.save()
     }
 }
 

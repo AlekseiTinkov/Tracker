@@ -10,7 +10,8 @@ import UIKit
 var colorsCollection: [UIColor] = {
     var colors: [UIColor] = []
     for i in 1...18 {
-        colors.append(UIColor(named: "YP Color selection \(i)") ?? .clear)
+        let color = UIColor(named: "YP Color selection \(i)") ?? .clear
+        colors.append(UIColor(cgColor: color.cgColor))
     }
     return colors
 }()

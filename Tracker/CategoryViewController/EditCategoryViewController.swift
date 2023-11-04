@@ -25,14 +25,14 @@ final class EditCategoryViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .ypBlack
-        label.text = oldCategoryTitle == nil ? "Новая категория" : "Редактирование категории"
+        label.text = oldCategoryTitle == nil ? NSLocalizedString("EditCategoryViewController.titleLabel.new", comment: "") : NSLocalizedString("EditCategoryViewController.titleLabel.edit", comment: "")
         return label
     }()
     
     private lazy var nameField: UITextField = {
         let nameField = UITextField()
         nameField.delegate = self
-        nameField.placeholder = "Введите название категории"
+        nameField.placeholder = NSLocalizedString("EditCategoryViewController.nameField", comment: "")
         nameField.font = UIFont.systemFont(ofSize: 17)
         nameField.text = oldCategoryTitle
         nameField.backgroundColor = .ypBackground
@@ -47,7 +47,7 @@ final class EditCategoryViewController: UIViewController {
     
     private lazy var saveButton: UIButton = {
         let saveButton = UIButton()
-        saveButton.setTitle("Готово", for: .normal)
+        saveButton.setTitle(NSLocalizedString("EditCategoryViewController.saveButton", comment: ""), for: .normal)
         saveButton.setTitleColor(.ypWhite, for: .normal)
         saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         saveButton.backgroundColor = .ypGray
@@ -126,10 +126,10 @@ final class EditCategoryViewController: UIViewController {
     private func showSaveAlert() {
         let alert = UIAlertController(
             title: nil,
-            message: "Такая категория уже существует",
+            message: NSLocalizedString("EditCategoryViewController.saveAlert.message", comment: ""),
             preferredStyle: .alert
         )
-        let action = UIAlertAction(title: "OK", style: .cancel)
+        let action = UIAlertAction(title: NSLocalizedString("EditCategoryViewController.saveAlert.button", comment: ""), style: .cancel)
         alert.addAction(action)
         self.present(alert, animated: true)
     }

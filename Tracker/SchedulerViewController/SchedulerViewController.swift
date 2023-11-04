@@ -21,14 +21,14 @@ final class SchedulerViewController: UIViewController {
     private var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = UIFont.systemFont(ofSize: 16)
-        titleLabel.text = "Расписание"
+        titleLabel.text = NSLocalizedString("SchedulerViewController.titleLabel", comment: "")
         titleLabel.textColor = .ypBlack
         return titleLabel
     }()
     
     private lazy var saveButton: UIButton = {
         let saveButton = UIButton()
-        saveButton.setTitle("Готово", for: .normal)
+        saveButton.setTitle(NSLocalizedString("SchedulerViewController.saveButton", comment: ""), for: .normal)
         saveButton.setTitleColor(.ypWhite, for: .normal)
         saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         saveButton.backgroundColor = .ypBlack

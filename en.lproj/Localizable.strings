@@ -1,0 +1,101 @@
+/*
+  Localizable.strings
+  Tracker
+
+  Created by Алексей Тиньков on 14.09.2023.
+  
+*/
+
+
+"WeekDay.monday" = "Monday";
+"WeekDay.tuesday" = "Tuesday";
+"WeekDay.wednesday" = "Wednesday";
+"WeekDay.thursday" = "Thursday";
+"WeekDay.friday" = "Friday";
+"WeekDay.saturday" = "Saturday";
+"WeekDay.sunday" = "Sunday";
+
+"WeekDay.mo" = "Mo";
+"WeekDay.tu" = "Tu";
+"WeekDay.we" = "We";
+"WeekDay.th" = "Th";
+"WeekDay.fr" = "Fr";
+"WeekDay.sa" = "Sa";
+"WeekDay.su" = "Su";
+
+"MainTabBarController.trackers" = "Trackers";
+"MainTabBarController.statistics" = "Statistics";
+
+"OnboardingViewController.page0.title" = "Track only\nwhat you want";
+"OnboardingViewController.page1.title" = "Even if it\nnot liters of water and yoga";
+
+"OnboardingPagesViewController.startButton.title" = "This is technology!";
+
+"TrackersViewController.titleLabel" = "Trackers";
+"TrackersViewController.searchField" = "Search";
+"TrackersViewController.placeholder.empty" = "What will we track?";
+"TrackersViewController.placeholder.notFound" = "Nothing found";
+"TrackersViewController.dateAlert.message" = "Это время еще не пришло...";
+"TrackersViewController.dateAlert.button" = "OK";
+
+"NewTrackerTypeSelectViewController.titleLabel" = "Creating a tracker";
+"NewTrackerTypeSelectViewController.habitButton" = "Habit";
+"NewTrackerTypeSelectViewController.eventButton" = "Irregular event";
+
+"EditTrackerViewController.titleLabel.newEvent" = "New irregular event";
+"EditTrackerViewController.titleLabel.newHabit" = "New habit";
+"EditTrackerViewController.titleLabel.editEvent" = "Editing an irregular event";
+"EditTrackerViewController.titleLabel.editHabit" = "Editing a Habit";
+"EditTrackerViewController.nameField" = "Enter tracker name";
+"EditTrackerViewController.cancelButton" = "Cancel";
+"EditTrackerViewController.createButton" = "Create";
+"EditTrackerViewController.saveButton" = "Save";
+"EditTrackerViewController.tableView.category" = "Category";
+"EditTrackerViewController.tableView.schedule" = "Schedule";
+"EditTrackerViewController.tableView.schedule.everyDay" = "Every day";
+"EditTrackerViewController.collectionView.titleLabel.emoji" = "Emoji";
+"EditTrackerViewController.collectionView.titleLabel.color" = "Color";
+
+"SchedulerViewController.titleLabel" = "Schedule";
+"SchedulerViewController.saveButton" = "Ready";
+
+"CategoryViewController.titleLabel" = "Category";
+"CategoryViewController.addCategoryButton" = "Add category";
+"CategoryViewController.placeholderLabel" = "Habits and events\ncan be combined by meaning";
+"CategoryViewController.tableView.actionEdit" = "Edit";
+"CategoryViewController.tableView.actionDelete" = "Delete";
+
+"EditCategoryViewController.titleLabel.new" = "New category";
+"EditCategoryViewController.titleLabel.edit" = "Editing a category";
+"EditCategoryViewController.nameField" = "Enter category name";
+"EditCategoryViewController.saveButton" = "Ready";
+"EditCategoryViewController.saveAlert.message" = "This category already exists";
+"EditCategoryViewController.saveAlert.button" = "OK";
+
+"TrackersViewController.collectionView.actionPin" = "Pin";
+"TrackersViewController.collectionView.actionUnPin" = "Unpin";
+"TrackersViewController.collectionView.actionEdit" = "Edit";
+"TrackersViewController.collectionView.actionDelete" = "Delete";
+
+"TrackersViewController.collectionView.pinnedCategory" = "Pinned";
+
+"TrackersViewController.filtersButton" = "Filers";
+
+"TrackersViewController.collectionView.deleteAlert" = "Are you sure you want to delete the tracker?";
+"TrackersViewController.collectionView.buttonCancel" = "Cancel";
+"TrackersViewController.collectionView.buttonDelete" = "Delete";
+
+"StatisticsViewController.titleLabel" = "Statistics";
+
+"StatisticsViewController.placeholderLabel" = "There is nothing to analyze yet";
+
+"StatisticsViewController.title0" = "Best period";
+"StatisticsViewController.title1" = "Ideal days";
+"StatisticsViewController.title2" = "Trackers completed";
+"StatisticsViewController.title3" = "Average value";
+
+"FiltersViewController.title" = "Filters";
+"FiltersViewController.filters.allTrackers" = "All trackers";
+"FiltersViewController.filters.trackersForToday" = "Trackers for today";
+"FiltersViewController.filters.completed" = "Completed";
+"FiltersViewController.filters.notCompleted" = "Not completed";
